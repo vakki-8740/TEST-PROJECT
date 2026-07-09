@@ -119,55 +119,6 @@ function switchTab(tabId) {
   }
 }
 
-// ====================== BROADCAST ======================
-document.getElementById('sendBroadcastBtn').addEventListener('click', async function() {
-  var text = document.getElementById('broadcastText').value.trim();
-  if (!text) { showToast('Please enter a message'); return; }
-
-  this.disabled = true;
-  this.textContent = 'Sending...';
-  document.getElementById('broadcastLog').textContent = '';
-
-  try {
-    var snapshot = await fdb.collection('chatUsers').get();
-    var sent = 0;
-    var logEl = document.getElementById('broadcastLog');
-
-    for (var i = 0; i < snapshot.docs.length; i++) {
-      var userDoc = snapshot.docs[i];
-      var userId = userDoc.id;
-
-      await fdb.collection('chatMessages').doc(userId).collection('messages').add({
-        sender: 'admin',
-        text: text,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        deleted: false,
-        isBroadcast: true
-      });
-
-      await fdb.collection('chatUsers').doc(userId).update({
-        lastMessage: text,
-        lastActive: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      sent++;
-      if (i % 5 === 0) {
-        logEl.textContent = 'Sent to ' + sent + ' users...';
-      }
-    }
-
-    logEl.textContent = 'Broadcast sent to ' + sent + ' users!';
-    showToast('Broadcast sent to ' + sent + ' users');
-    document.getElementById('broadcastText').value = '';
-  } catch (err) {
-    console.error('Broadcast error:', err);
-    showToast('Broadcast failed: ' + err.message);
-  }
-
-  this.disabled = false;
-  this.textContent = 'Send to All Users';
-});
-
 // ====================== STATS ======================
 function refreshStats() {
   if (!users) return;
