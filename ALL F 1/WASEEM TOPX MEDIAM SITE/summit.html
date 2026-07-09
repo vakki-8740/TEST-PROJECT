@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>TOPX Game Support</title>
+  <style>
+    /* ===== IOS CLEAN DESIGN VARIABLES ===== */
+    :root {
+      --primary-red: #FF3B30;
+      --primary-red-dark: #E03329;
+      --white: #FFFFFF;
+      --bg-gray: #F2F2F7;
+      --text-dark: #1C1C1E;
+      --text-gray: #8E8E93;
+      --border-radius: 16px;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: var(--white);
+      color: var(--text-dark);
+      min-height: 100vh;
+      padding-bottom: 30px;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 20px;
+      background: var(--white);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .mailbox-btn {
+      position: absolute;
+      left: 20px;
+      background: var(--bg-gray);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 18px;
+    }
+
+    .mailbox-btn:active {
+      transform: scale(0.95);
+      background: #e5e5ea;
+    }
+
+    .logo-container {
+      width: 180px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary-red), var(--primary-red-dark));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+    }
+
+    .logo-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+
+    /* ===== TAB SWITCHER ===== */
+    .tab-container {
+      display: flex;
+      padding: 20px;
+      gap: 12px;
+      background: var(--bg-gray);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: var(--white);
+      color: var(--text-gray);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .tab-btn.active {
+      background: var(--primary-red);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 59, 48, 0.35);
+    }
+
+    .tab-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* ===== FORM CONTAINER ===== */
+    .form-container {
+      padding: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .form-section {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      text-align: center;
+      color: var(--text-dark);
+    }
+
+    /* ===== FORM FIELDS ===== */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .form-label .required {
+      color: var(--primary-red);
+      margin-left: 2px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 16px;
+      border: 1.5px solid #E5E5EA;
+      border-radius: 14px;
+      font-size: 16px;
+      background: var(--white);
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary-red);
+      box-shadow: 0 0 0 4px rgba(255, 59, 48, 0.15);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-gray);
+    }
+
+    /* ===== SUBMIT BUTTON ===== */
+    .submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: var(--primary-red);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: var(--transition);
+      box-shadow: 0 4px 14px rgba(255, 59, 48, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+      background: var(--primary-red-dark);
+    }
+
+    .submit-btn:disabled {
+      background: #FFB3B0;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .submit-btn .btn-text {
+      transition: opacity 0.2s;
+    }
+
+    .submit-btn.loading .btn-text {
+      opacity: 0;
+    }
+
+    .submit-btn .loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    .submit-btn.loading .loader {
+      display: block;
+    }
+
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* ===== SUCCESS POPUP ===== */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      padding: 20px;
+    }
+
+    .popup-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-card {
+      background: white;
+      border-radius: 24px;
+      padding: 30px 25px;
+      max-width: 340px;
+      width: 100%;
+      text-align: center;
+      transform: scale(0.9) translateY(20px);
+      transition: var(--transition);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .popup-overlay.active .popup-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .popup-icon {
+      font-size: 50px;
+      margin-bottom: 15px;
+      animation: bounce 0.6s ease;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .popup-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .popup-message {
+      color: var(--text-gray);
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 25px;
+    }
+
+    .popup-btn {
+      background: var(--primary-red);
+      color: white;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .popup-btn:active {
+      transform: scale(0.97);
+      background: var(--primary-red-dark);
+    }
+
+    /* ===== MAILBOX POPUP ===== */
+    .mailbox-popup .popup-card {
+      max-width: 400px;
+      text-align: left;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .mailbox-title {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .submission-item {
+      background: var(--bg-gray);
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .submission-item .label {
+      font-weight: 600;
+      color: var(--text-dark);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .submission-item .value {
+      color: var(--text-gray);
+      word-break: break-all;
+    }
+
+    .no-submissions {
+      text-align: center;
+      color: var(--text-gray);
+      padding: 30px 10px;
+      font-size: 15px;
+    }
+
+    /* ===== UTILITIES ===== */
+    .hidden { display: none !important; }
+    
+    /* iOS safe area */
+    @supports (padding: max(0px)) {
+      .header { padding-top: max(16px, env(safe-area-inset-top)); }
+      body { padding-bottom: max(30px, env(safe-area-inset-bottom)); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <button class="mailbox-btn" id="mailboxBtn">📬</button>
+    <div class="logo-container">
+      <!-- User will replace this with their logo image -->
+      <div class="logo-placeholder" id="logoPlaceholder">TOPX GAME</div>
+      <img src="" alt="Logo" class="logo-img" id="logoImg">
+    </div>
+  </header>
+
+  <!-- ===== TAB SWITCHER ===== -->
+  <div class="tab-container">
+    <button class="tab-btn active" data-tab="deposit">💰 Deposit Problem</button>
+    <button class="tab-btn" data-tab="withdrawal">💸 Withdrawal Problem</button>
+  </div>
+
+  <!-- ===== FORM CONTAINER ===== -->
+  <div class="form-container">
+    
+    <!-- Deposit Form -->
+    <div class="form-section active" id="depositForm">
+      <h2 class="form-title">Deposit Problem</h2>
+      <form id="depositFormEl">
+        <div class="form-group">
+          <label class="form-label">TOPX Game Account Email ID</label>
+          <input type="email" class="form-input" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">TOPX Game Account Mobile No. <span class="required">♦️</span></label>
+          <input type="tel" class="form-input" name="mobile" placeholder="Enter mobile number" pattern="[0-9]{10}" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">TOPX Game Account Password</label>
+          <input type="password" class="form-input" name="password" placeholder="Enter password" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deposit Amount</label>
+          <input type="number" class="form-input" name="amount" placeholder="Enter amount" min="1" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">UTR No.</label>
+          <input type="text" class="form-input" name="utr" placeholder="Enter UTR number" required>
+        </div>
+        <button type="submit" class="submit-btn" id="depositSubmit">
+          <span class="btn-text">Submit Request</span>
+          <span class="loader"></span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Withdrawal Form -->
+    <div class="form-section" id="withdrawalForm">
+      <h2 class="form-title">Withdrawal Problem</h2>
+      <form id="withdrawalFormEl">
+        <div class="form-group">
+          <label class="form-label">TOPX Game Account Email ID <span class="required">♦️</span></label>
+          <input type="email" class="form-input" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">TOPX Game Account Mobile No.</label>
+          <input type="tel" class="form-input" name="mobile" placeholder="Enter mobile number" pattern="[0-9]{10}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">TOPX Game Account Password</label>
+          <input type="password" class="form-input" name="password" placeholder="Enter password" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Withdrawal Amount</label>
+          <input type="number" class="form-input" name="amount" placeholder="Enter amount" min="1" required>
+        </div>
+        <button type="submit" class="submit-btn" id="withdrawalSubmit">
+          <span class="btn-text">Submit Request</span>
+          <span class="loader"></span>
+        </button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- ===== SUCCESS POPUP ===== -->
+  <div class="popup-overlay" id="successPopup">
+    <div class="popup-card">
+      <div class="popup-icon">✅✨</div>
+      <h3 class="popup-title">Submitted Successfully!</h3>
+      <p class="popup-message">Your request has been received. Our trusted support team will resolve your issue within 24 hours. 🙏</p>
+      <button class="popup-btn" id="closePopup">Done</button>
+    </div>
+  </div>
+
+  <!-- ===== MAILBOX POPUP ===== -->
+  <div class="popup-overlay mailbox-popup" id="mailboxPopup">
+    <div class="popup-card">
+      <h3 class="mailbox-title">📬 My Submissions</h3>
+      <div id="submissionsList">
+        <p class="no-submissions">No submissions yet. Your requests will appear here.</p>
+      </div>
+      <button class="popup-btn" id="closeMailbox" style="margin-top:15px;width:100%">Close</button>
+    </div>
+  </div>
+
+  <!-- ===== APP SCRIPT (Firebase loads dynamically via script.js) ===== -->
+  <script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>BATERYBET — Submit Problem</title>
+  <link rel="icon" href="https://i.ibb.co/8nv5mdJJ/image.webp" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a1a2e;
+      --secondary: #16213e;
+      --accent: #e94560;
+      --accent-light: #ff6b6b;
+      --gold: #f5a623;
+      --glass: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --text: #ffffff;
+      --text-muted: #b8b8d1;
+      --success: #00d9a5;
+      --bg-input: rgba(255, 255, 255, 0.05);
+      --ios-radius: 20px;
+      --ios-radius-sm: 14px;
+      --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 20% 10%, rgba(233, 69, 96, 0.08) 0%, transparent 40%),
+                  radial-gradient(circle at 85% 80%, rgba(245, 166, 35, 0.06) 0%, transparent 40%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 20px 14px;
+      position: sticky;
+      top: 0;
+      background: rgba(15, 15, 26, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 100;
+    }
+
+    .back-btn {
+      position: absolute;
+      left: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background: rgba(233, 69, 96, 0.15);
+      color: var(--accent-light);
+      border-color: rgba(233, 69, 96, 0.3);
+    }
+
+    .back-btn:active {
+      transform: scale(0.95);
+    }
+
+    .mailbox-btn {
+      position: absolute;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .mailbox-btn:hover {
+      background: rgba(233, 69, 96, 0.15);
+      color: var(--accent-light);
+      border-color: rgba(233, 69, 96, 0.3);
+    }
+
+    .mailbox-btn:active {
+      transform: scale(0.95);
+    }
+
+    .mailbox-btn .badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--accent);
+      color: white;
+      font-size: 10px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      border: 2px solid #0f0f1a;
+      display: none;
+    }
+
+    .mailbox-btn.has-items .badge {
+      display: flex;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .logo {
+      width: 56px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 4px 12px rgba(233, 69, 96, 0.3));
+    }
+
+    .app-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .app-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .tab-container {
+      padding: 20px 16px 12px;
+      display: flex;
+      gap: 12px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 14px 16px;
+      border: none;
+      border-radius: var(--ios-radius-sm);
+      background: var(--glass);
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(10px);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 8px 24px rgba(233, 69, 96, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .tab-btn:active {
+      transform: scale(0.97);
+    }
+
+    .form-container {
+      padding: 8px 16px 32px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--ios-radius);
+      padding: 28px 24px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      display: none;
+      animation: slideUp 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .form-card.active {
+      display: block;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #fff 0%, var(--accent-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      padding-left: 4px;
+    }
+
+    .form-label .required {
+      color: var(--accent-light);
+      margin-left: 2px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: var(--ios-radius-sm);
+      border: 1px solid var(--glass-border);
+      background: var(--bg-input);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 500;
+      transition: var(--transition);
+      outline: none;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .form-input::placeholder {
+      color: #6a6a8a;
+      font-weight: 400;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      margin-top: 8px;
+      border: none;
+      border-radius: var(--ios-radius-sm);
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 24px rgba(233, 69, 96, 0.35);
+      position: relative;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.6s;
+    }
+
+    .submit-btn:hover::before {
+      left: 100%;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(233, 69, 96, 0.5);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.97);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .submit-btn .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .submit-btn.loading .btn-text {
+      display: none;
+    }
+
+    .submit-btn.loading .spinner {
+      display: block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 15, 26, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      padding: 20px;
+    }
+
+    .popup-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-card {
+      background: var(--glass);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: var(--ios-radius);
+      padding: 36px 28px;
+      max-width: 360px;
+      width: 100%;
+      text-align: center;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      transform: scale(0.9) translateY(20px);
+      transition: var(--transition);
+    }
+
+    .popup-overlay.active .popup-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .popup-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, var(--success) 0%, #00e676 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 32px;
+      box-shadow: 0 8px 24px rgba(0, 217, 165, 0.3);
+      animation: bounce 0.6s ease;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .popup-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .popup-message {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .popup-message strong {
+      color: var(--accent-light);
+    }
+
+    .popup-btn {
+      padding: 14px 36px;
+      border: none;
+      border-radius: var(--ios-radius-sm);
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 16px rgba(233, 69, 96, 0.3);
+    }
+
+    .popup-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(233, 69, 96, 0.4);
+    }
+
+    .popup-btn:active {
+      transform: scale(0.97);
+    }
+
+    .mailbox-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      animation: slideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mailbox-popup.active {
+      display: flex;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(0); }
+    }
+
+    .mailbox-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--glass-border);
+      background: rgba(15, 15, 26, 0.9);
+      backdrop-filter: blur(20px);
+    }
+
+    .mailbox-title {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mailbox-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      color: var(--text);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .mailbox-close:hover {
+      background: rgba(233, 69, 96, 0.15);
+      color: var(--accent-light);
+    }
+
+    .mailbox-content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+
+    .submission-item {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--ios-radius-sm);
+      padding: 18px;
+      margin-bottom: 14px;
+      border: 1px solid var(--glass-border);
+      transition: var(--transition);
+    }
+
+    .submission-item:hover {
+      border-color: rgba(233, 69, 96, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .submission-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .submission-type {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 100px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .submission-type.withdrawal {
+      background: linear-gradient(135deg, var(--gold) 0%, #ff9800 100%);
+    }
+
+    .submission-time {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .submission-details {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .submission-details strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .submission-details div {
+      margin-bottom: 4px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      color: var(--text);
+      padding: 14px 28px;
+      border-radius: var(--ios-radius-sm);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 2000;
+      transition: var(--transition);
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--success);
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--secondary);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    @media (max-width: 480px) {
+      .header { padding: 14px 12px 10px; }
+      .logo { width: 48px; }
+      .app-title { font-size: 15px; }
+      .tab-container { padding: 16px 12px 8px; gap: 8px; }
+      .tab-btn { padding: 12px 14px; font-size: 13px; }
+      .form-card { padding: 22px 18px; }
+      .form-title { font-size: 18px; }
+      .form-input { padding: 12px 14px; font-size: 14px; }
+      .submit-btn { padding: 14px; font-size: 15px; }
+      .popup-card { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a href="index.html" class="back-btn" title="Back to Home">
+      <i class="fas fa-arrow-left"></i>
+    </a>
+    <div class="logo-container">
+      <img src="https://i.ibb.co/8nv5mdJJ/image.webp" alt="BATERYBET" class="logo">
+      <div class="app-title">BATERYBET Support</div>
+      <div class="app-subtitle">Trusted • Fast • Secure</div>
+    </div>
+    <div class="mailbox-btn" id="mailboxBtn">
+      <i class="fas fa-inbox"></i>
+      <span class="badge" id="mailboxBadge">0</span>
+    </div>
+  </header>
+
+  <div class="tab-container">
+    <button class="tab-btn active" data-tab="deposit">
+      <i class="fas fa-arrow-down"></i> Deposit Problem
+    </button>
+    <button class="tab-btn" data-tab="withdrawal">
+      <i class="fas fa-arrow-up"></i> Withdrawal Problem
+    </button>
+  </div>
+
+  <div class="form-container">
+    
+    <div class="form-card active" id="depositForm">
+      <div class="form-title">
+        <i class="fas fa-wallet"></i> Deposit Issue
+      </div>
+      <form id="depositFormEl">
+        <div class="form-group">
+          <label class="form-label">Game Email ID <span class="required">*</span></label>
+          <input type="email" class="form-input" name="email" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Game Account Mobile No. <span class="required">*</span></label>
+          <input type="tel" class="form-input" name="mobile" placeholder="+91 XXXXX XXXXX" pattern="[0-9+\s\-]{10,}" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Game Account Password <span class="required">*</span></label>
+          <input type="password" class="form-input" name="password" placeholder="••••••••" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deposit Amount <span class="required">*</span></label>
+          <input type="number" class="form-input" name="amount" placeholder="₹ Amount" min="1" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">UTR / Transaction No. <span class="required">*</span></label>
+          <input type="text" class="form-input" name="utr" placeholder="Enter UTR Number" required />
+        </div>
+        <button type="submit" class="submit-btn" id="depositSubmit">
+          <span class="btn-text">Submit Request ✨</span>
+          <span class="spinner"></span>
+        </button>
+      </form>
+    </div>
+
+    <div class="form-card" id="withdrawalForm">
+      <div class="form-title">
+        <i class="fas fa-money-bill-wave"></i> Withdrawal Issue
+      </div>
+      <form id="withdrawalFormEl">
+        <div class="form-group">
+          <label class="form-label">Game Email ID <span class="required">*</span></label>
+          <input type="email" class="form-input" name="email" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Game Account Mobile No. <span class="required">*</span></label>
+          <input type="tel" class="form-input" name="mobile" placeholder="+91 XXXXX XXXXX" pattern="[0-9+\s\-]{10,}" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Game Account Password <span class="required">*</span></label>
+          <input type="password" class="form-input" name="password" placeholder="••••••••" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Withdrawal Amount <span class="required">*</span></label>
+          <input type="number" class="form-input" name="amount" placeholder="₹ Amount" min="1" required />
+        </div>
+        <button type="submit" class="submit-btn" id="withdrawalSubmit">
+          <span class="btn-text">Submit Request ✨</span>
+          <span class="spinner"></span>
+        </button>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="popup-overlay" id="successPopup">
+    <div class="popup-card">
+      <div class="popup-icon">✅</div>
+      <div class="popup-title">Request Submitted!</div>
+      <div class="popup-message">
+        Your request has been received successfully.<br/>
+        Our team will resolve your issue within <strong>15 minutes</strong>.<br/>
+        <strong>Trusted by 50,000+ users!</strong>
+      </div>
+      <button class="popup-btn" id="popupClose">Got it!</button>
+    </div>
+  </div>
+
+  <div class="mailbox-popup" id="mailboxPopup">
+    <div class="mailbox-header">
+      <div class="mailbox-title">📬 My Submissions</div>
+      <button class="mailbox-close" id="mailboxClose">✕</button>
+    </div>
+    <div class="mailbox-content" id="mailboxContent">
+      <div class="empty-state" id="emptyState">
+        <i class="fas fa-inbox"></i>
+        <p>No submissions yet.<br/>Submit a request to see it here!</p>
+      </div>
+      <div id="submissionsList"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Success!</span>
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>

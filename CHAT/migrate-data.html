@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Migration</title>
+  <style>
+    body { font-family: -apple-system, sans-serif; background: #1a1f2e; color: #fff; padding: 20px; max-width: 600px; margin: auto; }
+    h1 { color: #22c55e; }
+    pre { background: #2d3447; padding: 16px; border-radius: 12px; max-height: 400px; overflow: auto; font-size: 13px; }
+    button { background: #22c55e; color: #000; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 16px; }
+    button:disabled { opacity: 0.5; }
+    .ok { color: #22c55e; }
+    .err { color: #ef4444; }
+    .info { color: #3b82f6; }
+  </style>
+</head>
+<body>
+  <h1>🚀 Data Migration Tool</h1>
+  <p>Old collections (<code>users</code>, <code>messages</code>) → New collections (<code>chatUsers</code>, <code>chatMessages/{id}/messages</code>, <code>chatSessions</code>)</p>
+  <button id="migrateBtn" onclick="migrate()">Start Migration</button>
+  <pre id="log">Ready to migrate...</pre>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBNzgygZVvV1QuOcPIXgfSCmP3D0xs37LU",
+      authDomain: "chat-data-3233b.firebaseapp.com",
+      databaseURL: "https://chat-data-3233b-default-rtdb.firebaseio.com",
+      projectId: "chat-data-3233b",
+      storageBucket: "chat-data-3233b.firebasestorage.app",
+      messagingSenderId: "781730752698",
+      appId: "1:781730752698:web:0df5196d94f9c2d9367a83"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const logEl = document.getElementById('log');
+    const btn = document.getElementById('migrateBtn');
+
+    function log(msg, type = 'info') {
+      logEl.innerHTML += `\n<span class="${type}">${msg}</span>`;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    async function migrate() {
+      btn.disabled = true;
+      btn.textContent = 'Migrating...';
+      logEl.innerHTML = 'Starting migration...';
+
+      try {
+        // Step 1: Count old data
+        const usersSnap = await db.collection('users').get();
+        const msgsSnap = await db.collection('messages').get();
+        log(`Found ${usersSnap.size} users, ${msgsSnap.size} messages in old collections`);
+
+        // Step 2: Check if counters doc exists
+        let counterVal = 1;
+        const counterDoc = await db.collection('counters').doc('userCounter').get();
+        if (counterDoc.exists) {
+          counterVal = counterDoc.data().value;
+        } else {
+          await db.collection('counters').doc('userCounter').set({ value: 1 });
+        }
+
+        // Step 3: Migrate users → chatUsers
+        let migratedUsers = 0;
+        let skippedUsers = 0;
+        const userMap = {}; // old userId → new chatUser id
+
+        for (const doc of usersSnap.docs) {
+          const oldData = doc.data();
+          const oldUserId = doc.id;
+
+          // Check if already migrated
+          const existingQuery = await db.collection('chatUsers')
+            .where('userName', '==', oldData.username || oldData.name || `User #${oldUserId}`)
+            .limit(1)
+            .get();
+
+          if (!existingQuery.empty) {
+            userMap[oldUserId] = existingQuery.docs[0].id;
+            skippedUsers++;
+            log(`⏭ User #${oldUserId} (${oldData.username}) already exists in chatUsers`, 'info');
+            continue;
+          }
+
+          const newUserData = {
+            assignedId: parseInt(oldUserId) || counterVal++,
+            userName: oldData.username || oldData.name || `User #${oldUserId}`,
+            quotexUid: '',
+            language: '',
+            category: '',
+            categoryLabel: '',
+            blocked: false,
+            telegramThreadId: null,
+            lastMessage: oldData.lastMessage || '',
+            lastActive: oldData.lastMessageAt || oldData.createdAt || firebase.firestore.FieldValue.serverTimestamp(),
+            createdAt: oldData.createdAt || firebase.firestore.FieldValue.serverTimestamp(),
+            online: oldData.online === true,
+            activeSession: 'main'
+          };
+
+          const ref = await db.collection('chatUsers').add(newUserData);
+          userMap[oldUserId] = ref.id;
+          migratedUsers++;
+
+          // Create default session
+          await db.collection('chatSessions').doc(ref.id).collection('sessions').doc('main').set({
+            name: 'Chat 1',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            lastMessage: oldData.lastMessage || '',
+            order: 1
+          });
+
+          log(`✅ User #${oldUserId} (${oldData.username}) → chatUsers/${ref.id}`, 'ok');
+
+          // Update counter
+          await db.collection('counters').doc('userCounter').update({ value: counterVal++ });
+        }
+
+        log(`\nUsers: ${migratedUsers} migrated, ${skippedUsers} skipped`, 'info');
+
+        // Step 4: Migrate messages → chatMessages/{userId}/messages
+        let migratedMsgs = 0;
+        let skippedMsgs = 0;
+
+        // Group messages by userId
+        const msgsByUser = {};
+        for (const doc of msgsSnap.docs) {
+          const data = doc.data();
+          const uid = String(data.userId);
+          if (!msgsByUser[uid]) msgsByUser[uid] = [];
+          msgsByUser[uid].push({ id: doc.id, data });
+        }
+
+        for (const [oldUserId, msgs] of Object.entries(msgsByUser)) {
+          const newUserId = userMap[oldUserId];
+          if (!newUserId) {
+            log(`⚠ No chatUser mapping for userId ${oldUserId}, skipping ${msgs.length} messages`, 'err');
+            skippedMsgs += msgs.length;
+            continue;
+          }
+
+          for (const msg of msgs) {
+            const old = msg.data;
+
+            // Check if already migrated
+            const existingMsg = await db.collection('chatMessages').doc(newUserId)
+              .collection('messages').doc(msg.id).get();
+            if (existingMsg.exists) {
+              skippedMsgs++;
+              continue;
+            }
+
+            const newMsgData = {
+              sender: old.isAdmin ? 'admin' : 'user',
+              text: old.text || null,
+              imageUrl: old.imageUrl || null,
+              timestamp: old.createdAt || firebase.firestore.FieldValue.serverTimestamp(),
+              deleted: false,
+              isCategoryTag: false,
+              isAutoReply: false,
+              sessionId: null,
+              category: null
+            };
+
+            await db.collection('chatMessages').doc(newUserId)
+              .collection('messages').doc(msg.id).set(newMsgData);
+            migratedMsgs++;
+          }
+          log(`✅ ${msgs.length} messages migrated for userId ${oldUserId}`, 'ok');
+        }
+
+        log(`\nMessages: ${migratedMsgs} migrated, ${skippedMsgs} skipped`, 'info');
+        log(`\n🎉 Migration complete!`, 'ok');
+        log(`\n📊 Summary:`, 'info');
+        log(`   chatUsers: ${migratedUsers} new + ${skippedUsers} existing`);
+        log(`   chatMessages: ${migratedMsgs} migrated`);
+        btn.textContent = '✅ Migration Done!';
+
+      } catch (err) {
+        log(`\n❌ Error: ${err.message}`, 'err');
+        console.error(err);
+        btn.disabled = false;
+        btn.textContent = 'Retry Migration';
+      }
+    }
+  </script>
+</body>
+</html>

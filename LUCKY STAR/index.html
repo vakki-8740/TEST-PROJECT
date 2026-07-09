@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Star Game — Official Support</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- Opening Animation -->
+    <div id="preloader">
+        <div class="preloader-content">
+            <img src="https://i.ibb.co/8nrMpxb8/Screenshot-2026-06-08-110811-removebg-preview.png" alt="Lucky Star Logo" class="preloader-logo">
+            <div class="preloader-spinner"></div>
+            <p class="preloader-text">Official Support Loading...</p>
+        </div>
+    </div>
+
+    <!-- Side Menu -->
+    <div id="side-menu" class="side-menu">
+        <div class="side-menu-header">
+            <img src="https://i.ibb.co/8nrMpxb8/Screenshot-2026-06-08-110811-removebg-preview.png" alt="Logo" class="menu-logo">
+            <button id="close-menu" class="close-menu"><i class="fas fa-times"></i></button>
+        </div>
+        <nav class="side-nav">
+            <a href="index.html" class="nav-item active"><i class="fas fa-home"></i> Home Page</a>
+            <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i> My Profile</a>
+            <a href="#about" class="nav-item"><i class="fas fa-info-circle"></i> About Site</a>
+            <a href="#privacy" class="nav-item"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+            <a href="#" onclick="if(!sessionStorage.getItem('ls_logged_in')){window.location.href='submit.html';return false;}window.open('https://chat-page.edgeone.app','_blank');return false;" class="nav-item"><i class="fas fa-comment-dots"></i> Direct Chat</a>
+        </nav>
+    </div>
+    <div id="menu-overlay" class="menu-overlay"></div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <button id="menu-btn" class="menu-btn"><i class="fas fa-bars"></i></button>
+        <div class="header-logo">
+            <img src="https://i.ibb.co/8nrMpxb8/Screenshot-2026-06-08-110811-removebg-preview.png" alt="Lucky Star" class="logo-rect">
+        </div>
+        <div class="header-trust">
+            <a href="#" onclick="if(!sessionStorage.getItem('ls_logged_in')){window.location.href='submit.html';return false;}window.open('https://chat-page.edgeone.app','_blank');return false;" class="trust-badge chat-badge"><i class="fas fa-comment-dots"></i> Chat</a>
+            <span class="trust-badge"><i class="fas fa-check-circle"></i> Verified</span>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1><i class="fas fa-star"></i> Lucky Star Game</h1>
+            <h2>Official Support Center</h2>
+            <p class="hero-desc">
+                <i class="fas fa-headset"></i> We are the <strong>only official mobile support team</strong> for Lucky Star Game. 
+                Our dedicated team resolves your <strong>Deposit</strong>, <strong>Withdrawal</strong>, and <strong>Account</strong> issues quickly and securely.
+            </p>
+            <div class="trust-indicators">
+                <div class="indicator"><i class="fas fa-lock"></i> 100% Secure</div>
+                <div class="indicator"><i class="fas fa-bolt"></i> Fast Response</div>
+                <div class="indicator"><i class="fas fa-user-shield"></i> Trusted Users</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guidance Sections -->
+    <main class="container">
+        
+        <!-- Deposit Guidance -->
+        <section class="guide-card" id="deposit-guide">
+            <div class="guide-header">
+                <div class="guide-icon"><i class="fas fa-wallet"></i></div>
+                <h3>Deposit Problem <span class="badge">Fixed</span></h3>
+            </div>
+            <p class="guide-intro">Follow these steps to resolve your deposit issue. Our team verifies every request manually.</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-user"></i> Enter User Name</h4>
+                        <p>Provide your exact registered game username for identity verification.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-mobile-alt"></i> Enter Mobile Number</h4>
+                        <p>Use the mobile number linked to your game account.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-envelope"></i> Enter Email ID</h4>
+                        <p>Your active email address to receive updates.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-money-bill-wave"></i> Deposit Amount</h4>
+                        <p>Enter the exact amount you attempted to deposit.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-receipt"></i> UTR Number</h4>
+                        <p>Provide the Unique Transaction Reference (UTR) from your payment app.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">6</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-image"></i> Upload Payment Image</h4>
+                        <p>Attach a clear screenshot of your successful payment.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Withdrawal Guidance -->
+        <section class="guide-card" id="withdrawal-guide">
+            <div class="guide-header">
+                <div class="guide-icon icon-purple"><i class="fas fa-hand-holding-usd"></i></div>
+                <h3>Withdrawal Problem <span class="badge badge-purple">Solved</span></h3>
+            </div>
+            <p class="guide-intro">If your withdrawal is stuck or failed, submit the details below and we will process it immediately.</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-user"></i> Enter User Name</h4>
+                        <p>Your registered game username.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-mobile-alt"></i> Enter Mobile Number</h4>
+                        <p>Linked mobile number for verification.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-envelope"></i> Enter Email ID</h4>
+                        <p>Active email for status updates.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-piggy-bank"></i> Deposit Amount</h4>
+                        <p>Your total deposited balance in the game.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-coins"></i> Enter Withdrawal Amount</h4>
+                        <p>The amount you tried to withdraw.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">6</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-image"></i> Upload Withdrawal Issue Image</h4>
+                        <p>Screenshot showing the failed or pending withdrawal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Other Problems -->
+        <section class="guide-card" id="other-guide">
+            <div class="guide-header">
+                <div class="guide-icon icon-orange"><i class="fas fa-exclamation-triangle"></i></div>
+                <h3>Other Problems <span class="badge badge-orange">Help</span></h3>
+            </div>
+            <p class="guide-intro">Facing any other issue? Describe your problem and we will assist you within minutes.</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-user"></i> Enter User Name</h4>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-mobile-alt"></i> Enter Mobile Number</h4>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-envelope"></i> Enter Email ID</h4>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-pen"></i> Write Issue Description</h4>
+                        <p>Explain your problem in detail so we can help faster.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">5</div>
+                    <div class="step-content">
+                        <h4><i class="fas fa-image"></i> Upload Issue Image</h4>
+                        <p>Attach any relevant screenshot.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <p><i class="fas fa-check-double"></i> Ready to fix your problem?</p>
+            <div class="cta-buttons">
+                <a href="submit.html" class="btn-submit-ios">
+                    <span class="btn-text">Submit Forms</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="#" onclick="if(!sessionStorage.getItem('ls_logged_in')){window.location.href='submit.html';return false;}window.open('https://chat-page.edgeone.app','_blank');return false;" class="btn-submit-ios btn-chat">
+                    <span class="btn-text"><i class="fas fa-comment-dots"></i> Direct Chat</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- About Site -->
+        <section class="info-section" id="about">
+            <h3><i class="fas fa-info-circle"></i> About Site</h3>
+            <p>
+                This is the <strong>only official support portal</strong> for Lucky Star Game. We are a dedicated team of professionals 
+                working 24/7 to ensure your gaming experience remains smooth. Whether it's a payment issue, withdrawal delay, 
+                or any account-related concern — we handle everything with top priority and complete confidentiality.
+            </p>
+            <div class="features-grid">
+                <div class="feature"><i class="fas fa-shield-alt"></i><span>Secure Data</span></div>
+                <div class="feature"><i class="fas fa-clock"></i><span>24/7 Support</span></div>
+                <div class="feature"><i class="fas fa-user-check"></i><span>Manual Verification</span></div>
+                <div class="feature"><i class="fas fa-bolt"></i><span>Instant Response</span></div>
+            </div>
+        </section>
+
+        <!-- Privacy Policy -->
+        <section class="info-section" id="privacy">
+            <h3><i class="fas fa-shield-alt"></i> Privacy Policy</h3>
+            <p>
+                Your privacy is our top commitment. All information submitted through this portal is <strong>encrypted and protected</strong>. 
+                We only use your details for verification and problem resolution. We never share your personal data with third parties. 
+                Images and documents uploaded are stored securely and deleted after the issue is resolved.
+            </p>
+        </section>
+
+    </main>
+
+    <footer class="main-footer">
+        <p><i class="fas fa-copyright"></i> 2026 Lucky Star Game Official Support. All rights reserved.</p>
+        <p class="footer-note">Mobile Responsible Only</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

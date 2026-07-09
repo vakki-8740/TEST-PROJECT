@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>BATERYBET — My Requests</title>
+  <link rel="icon" href="https://i.ibb.co/8nv5mdJJ/image.webp" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; -webkit-font-smoothing:antialiased; }
+    :root {
+      --primary: #1a1a2e; --secondary: #16213e; --accent: #e94560; --accent-light: #ff6b6b;
+      --gold: #f5a623; --glass: rgba(255,255,255,0.06); --glass-border: rgba(255,255,255,0.12);
+      --text: #fff; --text-muted: #b8b8d1; --success: #00d9a5; --bg-input: rgba(255,255,255,0.05);
+      --ios-radius: 20px; --ios-radius-sm: 14px; --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    body {
+      font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+      background: linear-gradient(135deg,#0f0f1a 0%,#1a1a2e 50%,#16213e 100%);
+      color: var(--text); min-height: 100vh; overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; top:-50%; left:-50%; width:200%; height:200%;
+      background: radial-gradient(circle at 20% 10%, rgba(233,69,96,0.08) 0%, transparent 40%),
+                  radial-gradient(circle at 85% 80%, rgba(245,166,35,0.06) 0%, transparent 40%);
+      z-index: -1; pointer-events: none;
+    }
+    .header {
+      display: flex; align-items: center; justify-content: center; padding: 18px 20px 14px;
+      position: sticky; top: 0; background: rgba(15,15,26,0.85);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--glass-border); z-index: 100;
+    }
+    .back-btn {
+      position: absolute; left: 16px; width: 40px; height: 40px; border-radius: 12px;
+      background: var(--glass); border: 1px solid var(--glass-border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 16px; cursor: pointer;
+      transition: var(--transition); text-decoration: none;
+    }
+    .back-btn:hover { background: rgba(233,69,96,0.15); color: var(--accent-light); border-color: rgba(233,69,96,0.3); }
+    .back-btn:active { transform: scale(0.95); }
+    .logo-container { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .logo { width: 56px; height: auto; display: block; filter: drop-shadow(0 4px 12px rgba(233,69,96,0.3)); }
+    .app-title { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+    .app-subtitle { font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; }
+    .page-pad { padding: 20px 16px 32px; max-width: 700px; margin: 0 auto; }
+    .count-bar { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; font-weight: 500; }
+    .req-list { display: flex; flex-direction: column; gap: 12px; }
+    .req-card {
+      background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--ios-radius-sm); padding: 18px; border: 1px solid var(--glass-border);
+      transition: var(--transition); cursor: pointer;
+    }
+    .req-card:hover { border-color: rgba(233,69,96,0.25); transform: translateY(-2px); }
+    .req-card:active { transform: scale(0.98); }
+    .req-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .req-badge {
+      font-size: 11px; font-weight: 700; padding: 5px 14px; border-radius: 100px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .badge-deposit { background: linear-gradient(135deg,var(--success) 0%,#00e676 100%); color: #000; }
+    .badge-withdrawal { background: linear-gradient(135deg,var(--gold) 0%,#ff9800 100%); color: #000; }
+    .badge-unblock { background: linear-gradient(135deg,#AF52DE 0%,#c084fc 100%); color: #fff; }
+    .badge-other { background: rgba(255,255,255,0.1); color: var(--text-muted); }
+    .req-time { font-size: 11px; color: var(--text-muted); }
+    .req-field { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+    .req-field strong { color: var(--text); font-weight: 600; }
+    .req-actions { display: flex; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--glass-border); }
+    .req-action-btn {
+      flex: 1; padding: 8px; border: none; border-radius: 10px;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: var(--transition); font-family: inherit;
+    }
+    .req-action-btn:active { transform: scale(0.95); }
+    .btn-view { background: rgba(0,122,255,0.15); color: #007AFF; }
+    .btn-edit { background: rgba(255,149,0,0.15); color: #FF9500; }
+    .btn-delete { background: rgba(255,59,48,0.15); color: #FF3B30; }
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .empty-state i { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+    .empty-state p { font-size: 14px; line-height: 1.7; }
+    .popup-overlay {
+      position: fixed; inset: 0; background: rgba(15,15,26,0.9); backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px); display: flex; align-items: center; justify-content: center;
+      z-index: 1000; opacity: 0; visibility: hidden; transition: var(--transition); padding: 20px;
+    }
+    .popup-overlay.active { opacity: 1; visibility: visible; }
+    .popup-card {
+      background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-radius: var(--ios-radius); padding: 28px 24px; max-width: 420px; width: 100%;
+      border: 1px solid var(--glass-border); box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      transform: scale(0.9) translateY(20px); transition: var(--transition);
+      max-height: 85vh; overflow-y: auto;
+    }
+    .popup-overlay.active .popup-card { transform: scale(1) translateY(0); }
+    .popup-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .popup-close {
+      width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.1);
+      border: none; color: var(--text); font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      position: absolute; top: 16px; right: 16px; transition: var(--transition);
+    }
+    .popup-close:hover { background: rgba(233,69,96,0.2); color: var(--accent-light); }
+    .detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--glass-border); font-size: 13px; }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { color: var(--text-muted); font-weight: 500; }
+    .detail-value { color: var(--text); font-weight: 600; text-align: right; word-break: break-all; max-width: 60%; }
+    .detail-value a { color: var(--success); text-decoration: underline; }
+    .edit-field { margin-bottom: 14px; }
+    .edit-field label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
+    .edit-field input, .edit-field textarea {
+      width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--glass-border);
+      background: var(--bg-input); color: var(--text); font-size: 13px; font-weight: 500;
+      outline: none; font-family: inherit; transition: var(--transition);
+    }
+    .edit-field input:focus, .edit-field textarea:focus {
+      border-color: var(--accent); box-shadow: 0 0 0 3px rgba(233,69,96,0.15);
+    }
+    .edit-actions { display: flex; gap: 10px; margin-top: 16px; }
+    .edit-actions button {
+      flex: 1; padding: 12px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: var(--transition); font-family: inherit;
+    }
+    .edit-actions button:active { transform: scale(0.97); }
+    .btn-save { background: linear-gradient(135deg,var(--success) 0%,#00e676 100%); color: #000; }
+    .btn-cancel { background: var(--glass); color: var(--text); border: 1px solid var(--glass-border); }
+    .toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(120px);
+      background: var(--glass); backdrop-filter: blur(20px); color: var(--text);
+      padding: 14px 28px; border-radius: var(--ios-radius-sm); border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3); font-size: 14px; font-weight: 600;
+      display: flex; align-items: center; gap: 10px; z-index: 2000;
+      transition: var(--transition); max-width: 90%; text-align: center;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    @media (max-width:480px) {
+      .header { padding: 14px 12px 10px; } .logo { width: 48px; } .app-title { font-size: 15px; }
+      .page-pad { padding: 16px 12px 24px; } .popup-card { padding: 22px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="index.html" class="back-btn" title="Back to Home"><i class="fas fa-arrow-left"></i></a>
+    <div class="logo-container">
+      <img src="https://i.ibb.co/8nv5mdJJ/image.webp" alt="BATERYBET" class="logo">
+      <div class="app-title">My Requests</div>
+      <div class="app-subtitle">View • Edit • Manage</div>
+    </div>
+    <div style="width:40px"></div>
+  </header>
+  <div class="page-pad">
+    <div class="count-bar" id="countBar">Loading...</div>
+    <div class="req-list" id="reqList"></div>
+  </div>
+
+  <!-- Detail Popup -->
+  <div class="popup-overlay" id="detailPopup">
+    <div class="popup-card" style="position:relative;">
+      <button class="popup-close" id="detailClose"><i class="fas fa-times"></i></button>
+      <div class="popup-title" id="detailTitle">Request Details</div>
+      <div id="detailBody"></div>
+    </div>
+  </div>
+
+  <!-- Edit Popup -->
+  <div class="popup-overlay" id="editPopup">
+    <div class="popup-card" style="position:relative;">
+      <button class="popup-close" id="editClose"><i class="fas fa-times"></i></button>
+      <div class="popup-title">✏️ Edit Request</div>
+      <div id="editBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMessage">Success!</span></div>
+  <script src="app.js"></script>
+  <script>
+    function loadRequests() {
+      var list = document.getElementById('reqList');
+      var countBar = document.getElementById('countBar');
+      var requests = getLocalRequests();
+      if (!countBar) return;
+      if (!requests.length) {
+        countBar.textContent = 'No requests found';
+        if (list) list.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>You haven\'t submitted any requests yet.<br/>Submit a request to see it here!</p></div>';
+        return;
+      }
+      countBar.textContent = requests.length + ' request' + (requests.length > 1 ? 's' : '');
+      if (!list) return;
+      list.innerHTML = requests.map(function(r) {
+        var badgeClass = 'badge-other';
+        var label = r.type || 'Other';
+        if (r.type === 'deposit') { badgeClass = 'badge-deposit'; label = 'Deposit'; }
+        else if (r.type === 'withdrawal') { badgeClass = 'badge-withdrawal'; label = 'Withdrawal'; }
+        else if (r.type === 'unblock') { badgeClass = 'badge-unblock'; label = 'Unlock Withdrawal'; }
+        var info = '';
+        if (r.game_uid) info += '<div class="req-field"><strong>UID:</strong> ' + r.game_uid + '</div>';
+        else info += '<div class="req-field"><strong>Email:</strong> ' + (r.email || '—') + '</div>';
+        if (r.amount) info += '<div class="req-field"><strong>Amount:</strong> ₹' + r.amount + '</div>';
+        if (r.mobile) info += '<div class="req-field"><strong>Mobile:</strong> ' + r.mobile + '</div>';
+        return '<div class="req-card">' +
+          '<div class="req-head"><span class="req-badge ' + badgeClass + '">' + label + '</span><span class="req-time">' + (r._reqTime || r.time || '') + '</span></div>' +
+          info +
+          '<div class="req-actions">' +
+          '<button class="req-action-btn btn-view" onclick="viewRequest(\'' + r.reqId + '\')"><i class="fas fa-eye"></i> View</button>' +
+          '<button class="req-action-btn btn-edit" onclick="editRequest(\'' + r.reqId + '\')"><i class="fas fa-pen"></i> Edit</button>' +
+          '<button class="req-action-btn btn-delete" onclick="deleteRequest(\'' + r.reqId + '\')"><i class="fas fa-trash"></i> Delete</button>' +
+          '</div></div>';
+      }).join('');
+    }
+
+    function viewRequest(id) {
+      var requests = getLocalRequests();
+      var r = requests.find(function(x) { return x.reqId === id; });
+      if (!r) { toast('Request not found'); return; }
+      var title = document.getElementById('detailTitle');
+      var body = document.getElementById('detailBody');
+      if (title) title.textContent = '📋 Request Details';
+      var skip = ['reqId', '_reqTime', '_editedAt', 'site_id', 'type'];
+      var html = '<div class="detail-row"><span class="detail-label">Type</span><span class="detail-value">' + (r.type || '—') + '</span></div>';
+      html += '<div class="detail-row"><span class="detail-label">Date</span><span class="detail-value">' + (r._reqTime || r.time || '—') + '</span></div>';
+      Object.keys(r).forEach(function(k) {
+        if (skip.indexOf(k) !== -1) return;
+        if (r[k] === null || r[k] === undefined || r[k] === '') return;
+        var val = r[k];
+        if (typeof val === 'string' && (val.startsWith('http://') || val.startsWith('https://'))) {
+          val = '<a href="' + val + '" target="_blank">View Image ↗</a>';
+        } else if (Array.isArray(val)) {
+          val = val.map(function(v) { return typeof v === 'string' && v.startsWith('http') ? '<a href="' + v + '" target="_blank">View ↗</a>' : v; }).join(', ');
+        }
+        html += '<div class="detail-row"><span class="detail-label">' + k.replace(/_/g, ' ') + '</span><span class="detail-value">' + val + '</span></div>';
+      });
+      if (body) body.innerHTML = html;
+      var popup = document.getElementById('detailPopup');
+      if (popup) popup.classList.add('active');
+    }
+
+    function editRequest(id) {
+      var requests = getLocalRequests();
+      var r = requests.find(function(x) { return x.reqId === id; });
+      if (!r) { toast('Request not found'); return; }
+      var body = document.getElementById('editBody');
+      var skip = ['reqId', '_reqTime', '_editedAt', 'site_id', 'type'];
+      var html = '<input type="hidden" id="editReqId" value="' + r.reqId + '" />';
+      Object.keys(r).forEach(function(k) {
+        if (skip.indexOf(k) !== -1) return;
+        if (k === 'time' || k === 'created_at') return;
+        var val = r[k];
+        if (typeof val === 'string' && (val.startsWith('http://') || val.startsWith('https://'))) return;
+        if (Array.isArray(val)) return;
+        html += '<div class="edit-field"><label>' + k.replace(/_/g, ' ') + '</label><input type="text" name="' + k + '" value="' + (val || '') + '" /></div>';
+      });
+      html += '<div class="edit-actions"><button class="btn-cancel" onclick="document.getElementById(\'editPopup\').classList.remove(\'active\')"><i class="fas fa-times"></i> Cancel</button><button class="btn-save" onclick="saveEdit()"><i class="fas fa-check"></i> Save</button></div>';
+      if (body) body.innerHTML = html;
+      var popup = document.getElementById('editPopup');
+      if (popup) popup.classList.add('active');
+    }
+
+    function saveEdit() {
+      var id = document.getElementById('editReqId');
+      if (!id) return;
+      var reqId = id.value;
+      var inputs = document.querySelectorAll('#editBody input[name]');
+      var newData = {};
+      inputs.forEach(function(inp) {
+        newData[inp.name] = inp.value.trim();
+      });
+      var ok = updateLocalRequest(reqId, newData);
+      if (ok) { toast('Request updated'); document.getElementById('editPopup').classList.remove('active'); loadRequests(); }
+      else { toast('Update failed', 'error'); }
+    }
+
+    function deleteRequest(id) {
+      if (!confirm('Delete this request? It will only be removed from your view. Admin data will remain.')) return;
+      var ok = deleteLocalRequest(id);
+      if (ok) { toast('Request removed from your list'); loadRequests(); }
+      else { toast('Delete failed', 'error'); }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadRequests);
+    document.getElementById('detailClose')?.addEventListener('click', function() { document.getElementById('detailPopup').classList.remove('active'); });
+    document.getElementById('detailPopup')?.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
+    document.getElementById('editClose')?.addEventListener('click', function() { document.getElementById('editPopup').classList.remove('active'); });
+    document.getElementById('editPopup')?.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
+  </script>
+</body>
+</html>

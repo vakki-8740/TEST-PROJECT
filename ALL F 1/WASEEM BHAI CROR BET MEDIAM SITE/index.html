@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>CroreBet - Official Support</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --primary: #1a1a2e;
+  --primary-dark: #0f0f1a;
+  --accent-gold: #f5c518;
+  --accent-orange: #ff8c00;
+  --accent-red: #e63946;
+  --accent-green: #2ecc71;
+  --glass-bg: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.1);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255,255,255,0.6);
+  --text-tertiary: rgba(255,255,255,0.35);
+  --ios-blue: #007AFF;
+  --ios-radius: 16px;
+  --ios-radius-sm: 12px;
+  --ios-radius-lg: 22px;
+  --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
+  --shadow-glow: 0 0 40px rgba(245,197,24,0.15);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  background: var(--primary-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.status-bar-space {
+  height: env(safe-area-inset-top, 0px);
+  background: var(--primary-dark);
+}
+
+.nav-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.nav-wrapper.scrolled {
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background: rgba(15,15,26,0.85);
+  border-bottom: 0.5px solid rgba(255,255,255,0.08);
+}
+
+.navbar {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.nav-logo img {
+  width: 54px;
+  height: auto;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+.nav-logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-logo-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.nav-logo-sub {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 100px;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--text-primary);
+  background: var(--glass-bg);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+}
+
+.nav-cta {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+  color: #000 !important;
+  font-weight: 600 !important;
+  padding: 10px 22px !important;
+  border-radius: 100px !important;
+  font-size: 13px !important;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 15px rgba(245,197,24,0.3);
+  transition: all 0.3s ease !important;
+}
+
+.nav-cta:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 25px rgba(245,197,24,0.45) !important;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange)) !important;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+
+.mobile-menu-btn:active {
+  background: var(--glass-bg);
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+
+.mobile-menu-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.mobile-menu-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(30,30,50,0.98);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-radius: 20px 20px 0 0;
+  padding: 16px 24px 40px;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.mobile-menu.open .mobile-menu-content {
+  transform: translateY(0);
+}
+
+.mobile-menu-handle {
+  width: 36px;
+  height: 5px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 100px;
+  margin: 0 auto 24px;
+}
+
+.mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mobile-menu-link {
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: 17px;
+  font-weight: 500;
+  padding: 16px 20px;
+  border-radius: 14px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mobile-menu-link:active {
+  background: rgba(255,255,255,0.06);
+}
+
+.mobile-menu-link .menu-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--glass-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.mobile-menu-cta {
+  margin-top: 16px;
+  display: block;
+  text-align: center;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+  color: #000;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+}
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 24px 80px;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: -20%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(245,197,24,0.08) 0%, transparent 70%);
+  animation: float1 8s ease-in-out infinite;
+}
+
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  right: -20%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(255,140,0,0.06) 0%, transparent 70%);
+  animation: float2 10s ease-in-out infinite;
+}
+
+@keyframes float1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, 20px); }
+}
+
+@keyframes float2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, -30px); }
+}
+
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: var(--accent-gold);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFloat 6s ease-in-out infinite;
+}
+
+.particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.particle:nth-child(2) { left: 20%; top: 60%; animation-delay: 1s; }
+.particle:nth-child(3) { left: 50%; top: 30%; animation-delay: 2s; }
+.particle:nth-child(4) { left: 70%; top: 70%; animation-delay: 3s; }
+.particle:nth-child(5) { left: 85%; top: 40%; animation-delay: 4s; }
+.particle:nth-child(6) { left: 35%; top: 80%; animation-delay: 1.5s; }
+.particle:nth-child(7) { left: 60%; top: 15%; animation-delay: 2.5s; }
+.particle:nth-child(8) { left: 90%; top: 55%; animation-delay: 3.5s; }
+
+@keyframes particleFloat {
+  0% { opacity: 0; transform: translateY(0) scale(1); }
+  20% { opacity: 0.6; }
+  80% { opacity: 0.3; }
+  100% { opacity: 0; transform: translateY(-120px) scale(0.3); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 800px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(245,197,24,0.1);
+  border: 1px solid rgba(245,197,24,0.2);
+  border-radius: 100px;
+  padding: 8px 20px;
+  margin-bottom: 28px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.hero-badge-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--accent-green);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero-badge span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-gold);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-size: clamp(36px, 7vw, 68px);
+  font-weight: 800;
+  line-height: 1.08;
+  margin-bottom: 20px;
+  animation: fadeInUp 0.8s ease-out 0.1s both;
+}
+
+.hero-title .highlight {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: clamp(16px, 2.5vw, 20px);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 560px;
+  margin: 0 auto 40px;
+  font-weight: 400;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+  color: #000;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 16px 36px;
+  border-radius: 100px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  box-shadow: 0 6px 25px rgba(245,197,24,0.35);
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 40px rgba(245,197,24,0.5);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 16px 36px;
+  border-radius: 100px;
+  text-decoration: none;
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 60px;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent-gold);
+  line-height: 1.2;
+}
+
+.hero-stat-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.hero-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(255,255,255,0.1);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section {
+  padding: 100px 24px;
+  position: relative;
+}
+
+.section-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 60px;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.section-label::before,
+.section-label::after {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: rgba(245,197,24,0.4);
+}
+
+.section-title {
+  font-size: clamp(28px, 4.5vw, 44px);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.section-desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.problems-section {
+  background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
+}
+
+.problems-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.problem-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--ios-radius);
+  padding: 32px;
+  transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.problem-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-orange));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.problem-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+  border-color: rgba(245,197,24,0.15);
+}
+
+.problem-card:hover::before {
+  opacity: 1;
+}
+
+.problem-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.problem-icon.deposit {
+  background: rgba(245,197,24,0.12);
+  color: var(--accent-gold);
+}
+
+.problem-icon.withdrawal {
+  background: rgba(46,204,113,0.12);
+  color: var(--accent-green);
+}
+
+.problem-icon.account {
+  background: rgba(0,122,255,0.12);
+  color: var(--ios-blue);
+}
+
+.problem-icon.payment {
+  background: rgba(230,57,70,0.12);
+  color: var(--accent-red);
+}
+
+.problem-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.problem-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+
+.problem-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-gold);
+  text-decoration: none;
+  transition: gap 0.2s;
+}
+
+.problem-link:hover {
+  gap: 10px;
+}
+
+.solve-section {
+  background: var(--primary);
+}
+
+.solve-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.solve-tab {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.solve-tab:hover {
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.08);
+}
+
+.solve-tab.active {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+  color: #000;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(245,197,24,0.3);
+}
+
+.solve-content {
+  display: none;
+}
+
+.solve-content.active {
+  display: block;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.solve-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.solve-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.solve-step {
+  display: flex;
+  gap: 20px;
+  padding: 24px 0;
+  position: relative;
+}
+
+.solve-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 22px;
+  top: 68px;
+  bottom: 0;
+  width: 2px;
+  background: rgba(245,197,24,0.15);
+}
+
+.solve-step-num {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: rgba(245,197,24,0.1);
+  border: 2px solid rgba(245,197,24,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.solve-step-content h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.solve-step-content p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.solve-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.solve-image img {
+  width: 100%;
+  max-width: 420px;
+  border-radius: var(--ios-radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--glass-border);
+}
+
+.info-section {
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+
+.info-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.info-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--ios-radius-lg);
+  padding: 40px 36px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+
+.info-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 24px;
+}
+
+.info-card-badge.deposit-badge {
+  background: rgba(245,197,24,0.12);
+  color: var(--accent-gold);
+  border: 1px solid rgba(245,197,24,0.2);
+}
+
+.info-card-badge.withdrawal-badge {
+  background: rgba(46,204,113,0.12);
+  color: var(--accent-green);
+  border: 1px solid rgba(46,204,113,0.2);
+}
+
+.info-card h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.info-card > p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.info-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--ios-radius-sm);
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.2s;
+}
+
+.info-list li:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.1);
+}
+
+.info-list-icon {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.info-card:first-child .info-list-icon {
+  background: rgba(245,197,24,0.1);
+  color: var(--accent-gold);
+}
+
+.info-card:last-child .info-list-icon {
+  background: rgba(46,204,113,0.1);
+  color: var(--accent-green);
+}
+
+.info-list-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.info-list-text span {
+  display: block;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.gallery-section {
+  background: var(--primary-dark);
+  overflow: hidden;
+}
+
+.gallery-scroll {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 24px 20px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.gallery-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-item {
+  min-width: 280px;
+  max-width: 320px;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+.gallery-item img {
+  width: 100%;
+  border-radius: var(--ios-radius);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.02);
+}
+
+.faq-section {
+  background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
+}
+
+.faq-list {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.faq-item {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--ios-radius);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  border-color: rgba(255,255,255,0.15);
+}
+
+.faq-item.open {
+  border-color: rgba(245,197,24,0.2);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.faq-question h4 {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.faq-toggle {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.faq-item.open .faq-toggle {
+  background: rgba(245,197,24,0.15);
+  color: var(--accent-gold);
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.faq-answer-inner {
+  padding: 0 24px 24px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.cta-section {
+  background: var(--primary);
+  padding: 100px 24px;
+}
+
+.cta-card {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(245,197,24,0.08) 0%, rgba(255,140,0,0.05) 100%);
+  border: 1px solid rgba(245,197,24,0.15);
+  border-radius: 28px;
+  padding: 64px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(245,197,24,0.04) 0%, transparent 50%);
+  animation: ctaGlow 6s ease-in-out infinite;
+}
+
+@keyframes ctaGlow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.6; }
+}
+
+.cta-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-icon {
+  font-size: 48px;
+  margin-bottom: 24px;
+}
+
+.cta-card h2 {
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 800;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.cta-card p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 480px;
+  margin: 0 auto 36px;
+  line-height: 1.6;
+}
+
+.footer {
+  background: var(--primary-dark);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 60px 24px 32px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 48px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  max-width: 320px;
+}
+
+.footer-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.footer-brand-logo img {
+  width: 48px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.footer-brand-logo span {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--accent-gold);
+}
+
+.footer-brand p {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  line-height: 1.7;
+}
+
+.footer-links-group {
+  display: flex;
+  gap: 64px;
+  flex-wrap: wrap;
+}
+
+.footer-col h5 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 14px;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  padding: 6px 0;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover {
+  color: var(--text-primary);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-bottom p {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-bottom-links a {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-bottom-links a:hover {
+  color: var(--text-secondary);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: all 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+.back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+  color: #000;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(245,197,24,0.4);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  transform: translateY(-4px) scale(1.05);
+}
+
+.back-to-top:active {
+  transform: scale(0.92);
+}
+
+.problem-card:active,
+.info-card:active,
+.gallery-item:active {
+  transform: scale(0.98);
+}
+
+.notice-bar {
+  background: rgba(230,57,70,0.1);
+  border-bottom: 1px solid rgba(230,57,70,0.15);
+  padding: 10px 24px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  font-weight: 500;
+}
+
+.notice-bar strong {
+  color: var(--accent-red);
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .navbar {
+    padding: 12px 20px;
+  }
+
+  .hero {
+    padding: 100px 20px 60px;
+    min-height: auto;
+  }
+
+  .hero-stats {
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat-value {
+    font-size: 22px;
+  }
+
+  .section {
+    padding: 72px 20px;
+  }
+
+  .problems-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .solve-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .solve-image {
+    order: -1;
+  }
+
+  .info-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .info-card {
+    padding: 28px 24px;
+  }
+
+  .gallery-item {
+    min-width: 240px;
+  }
+
+  .cta-card {
+    padding: 48px 28px;
+    border-radius: 22px;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .footer-links-group {
+    gap: 40px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 14px 28px;
+    font-size: 15px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .solve-tabs {
+    gap: 6px;
+  }
+
+  .solve-tab {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-stat-divider {
+    display: none;
+  }
+
+  .hero-stats {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.page-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-content {
+  text-align: center;
+}
+
+.loader-content img {
+  width: 80px;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  animation: loaderPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loaderPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.9); opacity: 0.6; }
+}
+
+.loader-bar {
+  width: 120px;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 100px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-orange));
+  border-radius: 100px;
+  animation: loaderFill 1.2s ease-out forwards;
+}
+
+@keyframes loaderFill {
+  to { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-loader" id="pageLoader">
+  <div class="loader-content">
+    <img src="https://i.ibb.co/dJxZhSGw/Screenshot-2026-05-02-122044.png" alt="CroreBet">
+    <div class="loader-bar">
+      <div class="loader-bar-fill"></div>
+    </div>
+  </div>
+</div>
+
+<div class="nav-wrapper" id="navbar">
+  <nav class="navbar">
+    <a href="#" class="nav-logo">
+      <img src="https://i.ibb.co/dJxZhSGw/Screenshot-2026-05-02-122044.png" alt="CroreBet Logo">
+      <div class="nav-logo-text">
+        <span class="nav-logo-title">CroreBet</span>
+        <span class="nav-logo-sub">Official Support</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#home" class="nav-link active">Home</a>
+      <a href="#problems" class="nav-link">Problems</a>
+      <a href="#how-to-solve" class="nav-link">Solutions</a>
+      <a href="#info" class="nav-link">Info</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+      <a href="summit.html" class="nav-link nav-cta">Submit Problem</a>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+      ☰
+    </button>
+  </nav>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-backdrop" id="mobileMenuBackdrop"></div>
+  <div class="mobile-menu-content">
+    <div class="mobile-menu-handle"></div>
+    <div class="mobile-menu-links">
+      <a href="#home" class="mobile-menu-link">
+        <span class="menu-icon">🏠</span> Home
+      </a>
+      <a href="#problems" class="mobile-menu-link">
+        <span class="menu-icon">⚠️</span> Common Problems
+      </a>
+      <a href="#how-to-solve" class="mobile-menu-link">
+        <span class="menu-icon">🔧</span> How to Solve
+      </a>
+      <a href="#info" class="mobile-menu-link">
+        <span class="menu-icon">📋</span> Required Info
+      </a>
+      <a href="#faq" class="mobile-menu-link">
+        <span class="menu-icon">❓</span> FAQ
+      </a>
+    </div>
+    <a href="summit.html" class="mobile-menu-cta">Submit Your Problem →</a>
+  </div>
+</div>
+
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="hero-particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      <span>Official Support Center</span>
+    </div>
+    <h1 class="hero-title">
+      We're Here to<br><span class="highlight">Solve Your Problem</span>
+    </h1>
+    <p class="hero-subtitle">
+      Facing issues with deposits or withdrawals? Our dedicated support team is ready to help you resolve any problem quickly and securely.
+    </p>
+    <div class="hero-actions">
+      <a href="summit.html" class="btn-primary">
+        Submit Your Problem
+        <span>→</span>
+      </a>
+      <a href="https://chat-page.edgeone.app" class="btn-secondary" style="background:#2ecc71;color:#000;border-color:#2ecc71;" target="_blank">
+        <span>💬</span>
+        DIRECT CHAT
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-value">24/7</div>
+        <div class="hero-stat-label">Support Available</div>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">2 Min</div>
+        <div class="hero-stat-label">Avg. Response</div>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">99.8%</div>
+        <div class="hero-stat-label">Issues Resolved</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="notice-bar">
+  <strong>⚠️ Important:</strong> CroreBet support will never ask for your password outside of the official support form. Stay safe!
+</div>
+
+<section class="section problems-section" id="problems">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">
+        <span>Common Problems</span>
+      </div>
+      <h2 class="section-title">What Issue Are<br>You Facing?</h2>
+      <p class="section-desc">Select the problem that matches your situation. We have step-by-step solutions ready for each one.</p>
+    </div>
+    <div class="problems-grid">
+      <div class="problem-card reveal reveal-delay-1">
+        <div class="problem-icon deposit">💰</div>
+        <h3>Deposit Not Credited</h3>
+        <p>Your payment was deducted but the amount hasn't been added to your game wallet. This usually resolves within a few minutes, but if not, we'll fix it.</p>
+        <a href="#how-to-solve" class="problem-link">View Solution →</a>
+      </div>
+      <div class="problem-card reveal reveal-delay-2">
+        <div class="problem-icon withdrawal">🏦</div>
+        <h3>Withdrawal Pending / Failed</h3>
+        <p>Your withdrawal request is stuck on pending or was rejected. We'll verify your details and process it immediately through our support system.</p>
+        <a href="#how-to-solve" class="problem-link">View Solution →</a>
+      </div>
+      <div class="problem-card reveal reveal-delay-3">
+        <div class="problem-icon account">👤</div>
+        <h3>Account Access Issues</h3>
+        <p>Unable to log in, forgot password, or account locked? We'll help you regain access to your CroreBet account securely and quickly.</p>
+        <a href="#how-to-solve" class="problem-link">View Solution →</a>
+      </div>
+      <div class="problem-card reveal reveal-delay-4">
+        <div class="problem-icon payment">💳</div>
+        <h3>Payment Gateway Error</h3>
+        <p>Getting errors during payment or transaction failures at the gateway level. Our team will trace your transaction and ensure it's resolved.</p>
+        <a href="#how-to-solve" class="problem-link">View Solution →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section solve-section" id="how-to-solve">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">
+        <span>Step-by-Step Guide</span>
+      </div>
+      <h2 class="section-title">How to Solve<br>Your Problem</h2>
+      <p class="section-desc">Follow these simple steps to resolve your deposit or withdrawal issue. Most problems are solved within minutes.</p>
+    </div>
+
+    <div class="solve-tabs reveal">
+      <button class="solve-tab active" data-tab="deposit-solve">Deposit Issue</button>
+      <button class="solve-tab" data-tab="withdrawal-solve">Withdrawal Issue</button>
+    </div>
+
+    <div class="solve-content active" id="deposit-solve">
+      <div class="solve-layout">
+        <div class="solve-steps reveal">
+          <div class="solve-step">
+            <div class="solve-step-num">1</div>
+            <div class="solve-step-content">
+              <h4>Click "Submit Problem" Button</h4>
+              <p>Go to the Submit Problem page from the button on this page or from the navigation menu at the top.</p>
+            </div>
+          </div>
+          <div class="solve-step">
+            <div class="solve-step-num">2</div>
+            <div class="solve-step-content">
+              <h4>Select "Deposit Problem"</h4>
+              <p>Choose the Deposit Problem option from the problem type selector on the form page.</p>
+            </div>
+          </div>
+          <div class="solve-step">
+            <div class="solve-step-num">3</div>
+            <div class="solve-step-content">
+              <h4>Enter Your Game Email ID</h4>
+              <p>Provide the email address that is registered with your CroreBet game account.</p>
+            </div>
+          </div>
+          <div class="solve-step">
+            <div class="solve-step-num">4</div>
+            <div class="solve-step-content">
+              <h4>Enter Mobile Number & Password</h4>
+              <p>Fill in your registered mobile number and your game account password for verification.</p>
+            </div>
+          </div>
+          <div class="solve-step">
+            <div class="solve-step-num">5</div>
+            <div class="solve-step-content">
+              <h4>Enter Deposit Amount & UTR Number</h4>
+              <p>Provide the exact deposit amount and the UTR (Unique Transaction Reference) number from your payment.</p>
+            </div>
+          </div>
+          <div class="solve-step">
+            <div class="solve-step-num">6</div>
+            <div class="solve-step-content">
+              <h4>Submit & Wait for Resolution</h4>
+              <p>Click submit and our team will verify your transaction. Your deposit will be credited within 2-10 minutes.</p>
+            </div>
+          </div>
+        </div>
+        <div class="solve-image reveal reveal-delay-2">
+          <img src="https://i.ibb.co/bjHpq0z8/Chat-GPT-Image-May-22-2026-05-51-57-PM.png" alt="Deposit Solution Guide">
+        </div>
+      </div>
+    </div>
+
+    <div class="solve-content" id="withdrawal-solve">
+      <div class="solve-layout">
+        <div class="solve-steps reveal">
+          <div class="solve-step">
+            <div class="solve-step-num">1</div>
+            <div class="solve-step-content">
+              <h4>Click "Submit Problem" Button</h4>
+              <p>Navigate to the Submit Problem page using the button below or from the top navigation bar.</p>
+            </div>
+          </div>
+          <div class="solve-step">
+            <div class="solve-step-num">2</div>
+            <div class="solve-step-content">
+              <h4>Select "Withdrawal Problem"</h4>
+              <p>Choose the Withdrawal Problem option from the problem type dropdown on the submission form.</p>
+            </div>
+          </div>
+          <div class="solve-step">
+            <div class="solve-step-num">3</div>
+            <div class="solve-step-content">
+              <h4>Enter Your Game Email ID</h4>
+              <p>Provide the email address associated with your CroreBet game account for identification.</p>
+            </div>
+          </div>
+          <div class="solve-step">
+            <div class="solve-step-num">4</div>
+            <div class="solve-step-content">
+              <h4>Enter Mobile Number & Password</h4>
+              <p>Fill in your registered mobile number and account password so we can verify ownership.</p>
+            </div>
+          </div>
+          <div class="solve-step">
+            <div class="solve-step-num">5</div>
+            <div class="solve-step-content">
+              <h4>Enter Withdrawal Amount</h4>
+              <p>Provide the exact withdrawal amount that is pending or failed in your account.</p>
+            </div>
+          </div>
+          <div class="solve-step">
+            <div class="solve-step-num">6</div>
+            <div class="solve-step-content">
+              <h4>Submit & Wait for Processing</h4>
+              <p>Our team will review and process your withdrawal. You'll receive the amount within 5-15 minutes.</p>
+            </div>
+          </div>
+        </div>
+        <div class="solve-image reveal reveal-delay-2">
+          <img src="https://i.ibb.co/sdYWFMzk/Chat-GPT-Image-May-22-2026-05-52-00-PM.png" alt="Withdrawal Solution Guide">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section info-section" id="info">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">
+        <span>Required Information</span>
+      </div>
+      <h2 class="section-title">Details You'll Need<br>to Provide</h2>
+      <p class="section-desc">Keep this information ready before submitting your problem. This helps us resolve your issue faster.</p>
+    </div>
+    <div class="info-cards">
+      <div class="info-card reveal reveal-delay-1">
+        <div class="info-card-badge deposit-badge">💰 Deposit Problem</div>
+        <h3>For Deposit Issues</h3>
+        <p>If your deposit was not credited, please provide the following details:</p>
+        <ul class="info-list">
+          <li>
+            <div class="info-list-icon">✉️</div>
+            <div class="info-list-text">
+              Game Email ID
+              <span>Your registered email address</span>
+            </div>
+          </li>
+          <li>
+            <div class="info-list-icon">📱</div>
+            <div class="info-list-text">
+              Game Account Mobile No.
+              <span>Registered phone number</span>
+            </div>
+          </li>
+          <li>
+            <div class="info-list-icon">🔒</div>
+            <div class="info-list-text">
+              Game Account Password
+              <span>For account verification</span>
+            </div>
+          </li>
+          <li>
+            <div class="info-list-icon">💵</div>
+            <div class="info-list-text">
+              Deposit Amount
+              <span>Exact amount you deposited</span>
+            </div>
+          </li>
+          <li>
+            <div class="info-list-icon">🔢</div>
+            <div class="info-list-text">
+              UTR Number
+              <span>Transaction reference number</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="info-card reveal reveal-delay-2">
+        <div class="info-card-badge withdrawal-badge">🏦 Withdrawal Problem</div>
+        <h3>For Withdrawal Issues</h3>
+        <p>If your withdrawal is pending or failed, please provide these details:</p>
+        <ul class="info-list">
+          <li>
+            <div class="info-list-icon">✉️</div>
+            <div class="info-list-text">
+              Game Email ID
+              <span>Your registered email address</span>
+            </div>
+          </li>
+          <li>
+            <div class="info-list-icon">📱</div>
+            <div class="info-list-text">
+              Game Account Mobile No.
+              <span>Registered phone number</span>
+            </div>
+          </li>
+          <li>
+            <div class="info-list-icon">🔒</div>
+            <div class="info-list-text">
+              Game Account Password
+              <span>For account verification</span>
+            </div>
+          </li>
+          <li>
+            <div class="info-list-icon">💵</div>
+            <div class="info-list-text">
+              Withdrawal Amount
+              <span>Amount you requested to withdraw</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section gallery-section" id="gallery">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">
+        <span>Game Overview</span>
+      </div>
+      <h2 class="section-title">CroreBet Game<br>Screenshots</h2>
+      <p class="section-desc">Take a look at the CroreBet game interface. These screenshots will help you identify the sections mentioned in our guides.</p>
+    </div>
+  </div>
+  <div class="gallery-scroll">
+    <div class="gallery-item">
+      <img src="https://i.ibb.co/bjHpq0z8/Chat-GPT-Image-May-22-2026-05-51-57-PM.png" alt="CroreBet Screenshot 1">
+    </div>
+    <div class="gallery-item">
+      <img src="https://i.ibb.co/sdYWFMzk/Chat-GPT-Image-May-22-2026-05-52-00-PM.png" alt="CroreBet Screenshot 2">
+    </div>
+    <div class="gallery-item">
+      <img src="https://i.ibb.co/1GGT6z44/Chat-GPT-Image-May-22-2026-05-52-03-PM.png" alt="CroreBet Screenshot 3">
+    </div>
+    <div class="gallery-item">
+      <img src="https://i.ibb.co/Lz6dKHXn/Chat-GPT-Image-May-22-2026-05-52-05-PM.png" alt="CroreBet Screenshot 4">
+    </div>
+    <div class="gallery-item">
+      <img src="https://i.ibb.co/zTGzNfcw/Chat-GPT-Image-May-22-2026-05-52-08-PM.png" alt="CroreBet Screenshot 5">
+    </div>
+  </div>
+</section>
+
+<section class="section faq-section" id="faq">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">
+        <span>FAQ</span>
+      </div>
+      <h2 class="section-title">Frequently Asked<br>Questions</h2>
+      <p class="section-desc">Quick answers to the most common questions about deposits, withdrawals, and account issues.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-question">
+          <h4>How long does it take to resolve a deposit issue?</h4>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Most deposit issues are resolved within 2-10 minutes after you submit your problem with the correct details. In rare cases, it may take up to 30 minutes during peak hours. Make sure to provide the correct UTR number for faster resolution.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-1">
+        <div class="faq-question">
+          <h4>Why is my withdrawal stuck on pending?</h4>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Withdrawals can get stuck due to bank processing delays, incorrect bank details, or pending verification. Submit your problem through our support form with your game email, mobile number, password, and the withdrawal amount. Our team will process it manually.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-2">
+        <div class="faq-question">
+          <h4>Is it safe to share my password on the support form?</h4>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            Yes, the official CroreBet support form uses secure encrypted submission. Your password is required solely for account verification purposes and is handled by our authorized support team only. Never share your password through any other channel.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-3">
+        <div class="faq-question">
+          <h4>What is a UTR number and where do I find it?</h4>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            UTR (Unique Transaction Reference) is a 12-22 digit number assigned to every UPI/bank transaction. You can find it in your payment app (PhonePe, Google Pay, Paytm, etc.) under transaction history. Look for the specific payment you made and the UTR/Reference number will be listed in the transaction details.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item reveal reveal-delay-4">
+        <div class="faq-question">
+          <h4>My deposit was deducted twice. What should I do?</h4>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            If your account was charged twice, submit a problem with both UTR numbers and the total deducted amount. Our team will verify both transactions and credit the correct amount to your game wallet. Duplicate charges are usually reversed within 15-30 minutes.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">
+          <h4>Can I submit multiple problems at once?</h4>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            We recommend submitting one problem at a time to ensure accurate and fast resolution. Once your first issue is resolved, you can submit another one. Each submission is tracked separately by our support team.
+          </div>
+        </div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-question">
+          <h4>What if I entered wrong details in the form?</h4>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            If you entered incorrect details, simply submit a new form with the correct information. Our team will process the latest submission. Make sure to double-check your email, mobile number, and UTR number before submitting.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <div class="cta-card reveal">
+    <div class="cta-icon">🚀</div>
+    <h2>Ready to Solve Your Problem?</h2>
+    <p>Submit your issue now and our support team will resolve it within minutes. We're available 24/7 to help you.</p>
+    <a href="summit.html" class="btn-primary" style="font-size:17px; padding: 18px 44px;">
+      Submit Your Problem Now
+      <span>→</span>
+    </a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-logo">
+          <img src="https://i.ibb.co/dJxZhSGw/Screenshot-2026-05-02-122044.png" alt="CroreBet">
+          <span>CroreBet</span>
+        </div>
+        <p>Official support center for CroreBet Game. We help resolve deposit, withdrawal, and account-related issues 24/7.</p>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-col">
+          <h5>Support</h5>
+          <a href="#problems">Common Problems</a>
+          <a href="#how-to-solve">How to Solve</a>
+          <a href="#info">Required Info</a>
+          <a href="summit.html">Submit Problem</a>
+        </div>
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <a href="#faq">FAQ</a>
+          <a href="#gallery">Game Screenshots</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 CroreBet Game. All rights reserved. Official Support Site.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Crorebet Game - Support Center</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f2f2f7; min-height: 100vh; overflow-x: hidden; color: #1c1c1e; }
+  .header { background: linear-gradient(135deg, #007aff, #5856d6); padding: 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.15); }
+  .status-bar { height: 44px; display: flex; align-items: center; justify-content: center; }
+  .status-bar span { color: white; font-size: 12px; font-weight: 600; }
+  .nav-bar { padding: 10px 16px 14px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-left { display: flex; align-items: center; gap: 10px; }
+  .nav-left i { color: white; font-size: 18px; }
+  .nav-title { text-align: center; flex: 1; }
+  .nav-title h1 { color: white; font-size: 17px; font-weight: 700; letter-spacing: 0.3px; }
+  .nav-title p { color: rgba(255,255,255,0.8); font-size: 12px; font-weight: 500; margin-top: 2px; }
+  .nav-right { cursor: pointer; padding: 8px; border-radius: 12px; transition: background 0.2s; position: relative; }
+  .nav-right:hover { background: rgba(255,255,255,0.2); }
+  .nav-right i { color: white; font-size: 20px; }
+  .tab-container { background: white; margin: 16px 16px 0; border-radius: 14px; padding: 4px; display: flex; position: relative; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+  .tab-btn { flex: 1; padding: 12px 16px; border: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #8e8e93; cursor: pointer; border-radius: 11px; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; z-index: 2; }
+  .tab-btn i { font-size: 16px; }
+  .tab-btn.active { color: white; background: linear-gradient(135deg, #007aff, #5856d6); box-shadow: 0 4px 15px rgba(0,122,255,0.3); }
+  .form-wrapper { padding: 16px; }
+  .form-section { display: none; animation: fadeSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+  .form-section.active { display: block; }
+  @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .form-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 1px 12px rgba(0,0,0,0.06); }
+  .form-card-title { font-size: 13px; font-weight: 600; color: #8e8e93; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .form-card-title i { color: #007aff; font-size: 14px; }
+  .input-group { margin-bottom: 16px; }
+  .input-group:last-of-type { margin-bottom: 20px; }
+  .input-label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .input-label i { color: #007aff; font-size: 14px; width: 20px; text-align: center; }
+  .input-label span { font-size: 14px; font-weight: 600; color: #3a3a3c; }
+  .input-label .required-dot { color: #ff3b30; font-size: 8px; margin-left: 2px; }
+  .input-field { width: 100%; padding: 14px 16px; border: 2px solid #e5e5ea; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500; color: #1c1c1e; background: #f9f9fb; outline: none; transition: all 0.3s ease; }
+  .input-field::placeholder { color: #c7c7cc; font-weight: 400; }
+  .input-field:focus { border-color: #007aff; background: white; box-shadow: 0 0 0 4px rgba(0,122,255,0.1); }
+  .input-field.valid { border-color: #34c759; }
+  .input-field.invalid { border-color: #ff3b30; }
+  .submit-btn { width: 100%; padding: 16px; border: none; border-radius: 14px; background: linear-gradient(135deg, #007aff, #5856d6); color: white; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,122,255,0.3); margin-top: 8px; position: relative; overflow: hidden; }
+  .submit-btn:active { transform: scale(0.97); }
+  .submit-btn.loading { pointer-events: none; }
+  .submit-btn .btn-text { transition: all 0.3s ease; }
+  .submit-btn .spinner { display: none; width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .submit-btn.loading .spinner { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .popup { background: white; border-radius: 24px; padding: 36px 28px; width: 85%; max-width: 340px; text-align: center; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+  @keyframes popIn { from { opacity: 0; transform: scale(0.5) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .popup-icon { width: 80px; height: 80px; background: linear-gradient(135deg, #34c759, #30d158); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: iconBounce 0.6s ease 0.3s; box-shadow: 0 8px 25px rgba(52,199,89,0.3); }
+  @keyframes iconBounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+  .popup-icon i { color: white; font-size: 36px; }
+  .popup h2 { font-size: 22px; font-weight: 800; color: #1c1c1e; margin-bottom: 8px; }
+  .popup .trusted-text { font-size: 14px; color: #34c759; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .popup .trusted-text i { font-size: 14px; }
+  .popup p { font-size: 14px; color: #8e8e93; line-height: 1.5; margin-bottom: 24px; }
+  .popup-btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg, #007aff, #5856d6); color: white; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .popup-btn:active { transform: scale(0.97); }
+  .page { display: none; animation: fadeSlideIn 0.4s ease; }
+  .page.active { display: block; }
+  .mailbox-header { background: linear-gradient(135deg, #007aff, #5856d6); padding: 58px 16px 20px; display: flex; align-items: center; gap: 12px; }
+  .back-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; }
+  .back-btn:hover { background: rgba(255,255,255,0.3); }
+  .back-btn i { color: white; font-size: 16px; }
+  .mailbox-header h2 { color: white; font-size: 20px; font-weight: 700; }
+  .mailbox-content { padding: 16px; }
+  .mailbox-empty { text-align: center; padding: 60px 20px; }
+  .mailbox-empty i { font-size: 60px; color: #d1d1d6; margin-bottom: 16px; }
+  .mailbox-empty h3 { font-size: 18px; font-weight: 700; color: #1c1c1e; margin-bottom: 8px; }
+  .mailbox-empty p { font-size: 14px; color: #8e8e93; }
+  .message-card { background: white; border-radius: 16px; padding: 18px; margin-bottom: 12px; box-shadow: 0 1px 8px rgba(0,0,0,0.06); animation: slideUp 0.4s ease; border-left: 4px solid #007aff; }
+  .message-card.withdrawal { border-left-color: #ff9500; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .message-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .message-type { display: flex; align-items: center; gap: 8px; }
+  .message-type-badge { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .message-type-badge.deposit { background: rgba(0,122,255,0.1); color: #007aff; }
+  .message-type-badge.withdrawal { background: rgba(255,149,0,0.1); color: #ff9500; }
+  .message-time { font-size: 12px; color: #8e8e93; font-weight: 500; }
+  .message-details { display: flex; flex-direction: column; gap: 6px; }
+  .message-detail { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f2f2f7; }
+  .message-detail:last-child { border-bottom: none; }
+  .message-detail .label { font-size: 12px; color: #8e8e93; font-weight: 500; }
+  .message-detail .value { font-size: 13px; color: #1c1c1e; font-weight: 600; text-align: right; max-width: 60%; word-break: break-all; }
+  .delete-btn { background: none; border: none; color: #ff3b30; cursor: pointer; padding: 6px; border-radius: 8px; transition: background 0.2s; font-size: 14px; }
+  .delete-btn:hover { background: rgba(255,59,48,0.1); }
+  .clear-all-btn { width: 100%; padding: 14px; border: 2px solid #ff3b30; border-radius: 12px; background: transparent; color: #ff3b30; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 8px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .clear-all-btn:active { background: rgba(255,59,48,0.1); transform: scale(0.98); }
+  .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1001; overflow: hidden; }
+  .confetti { position: absolute; width: 10px; height: 10px; top: -10px; animation: confettiFall 3s ease-in forwards; }
+  @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+  .badge { background: #ff3b30; color: white; font-size: 10px; font-weight: 800; min-width: 18px; height: 18px; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 5px; position: absolute; top: 4px; right: 4px; animation: popBadge 0.3s ease; }
+  @keyframes popBadge { from { transform: scale(0); } to { transform: scale(1); } }
+  @media (max-width: 380px) { .form-card { padding: 16px; } .input-field { padding: 12px 14px; font-size: 14px; } }
+  ::-webkit-scrollbar { width: 0; }
+</style>
+</head>
+<body>
+
+<div id="homePage" class="page active">
+  <div class="header">
+    <div class="status-bar"><span>CROREBET GAME</span></div>
+    <div class="nav-bar">
+      <div class="nav-left"><i class="fas fa-shield-halved"></i></div>
+      <div class="nav-title"><h1>CROREBET GAME</h1><p>Support Center</p></div>
+      <div class="nav-right" onclick="openMailbox()"><i class="fas fa-envelope"></i><span class="badge" id="msgBadge" style="display:none;">0</span></div>
+    </div>
+  </div>
+  <div class="tab-container">
+    <button class="tab-btn active" onclick="switchTab('deposit')" id="depositTab"><i class="fas fa-circle-arrow-down"></i> Deposit</button>
+    <button class="tab-btn" onclick="switchTab('withdrawal')" id="withdrawalTab"><i class="fas fa-circle-arrow-up"></i> Withdrawal</button>
+  </div>
+  <div class="form-wrapper">
+    <div class="form-section active" id="depositSection">
+      <div class="form-card">
+        <div class="form-card-title"><i class="fas fa-circle-info"></i> Deposit Problem — Fill Details</div>
+        <div class="input-group"><div class="input-label"><i class="fas fa-envelope"></i><span>CROREBET GAME Account Email ID</span></div><input type="email" class="input-field" id="d_email" placeholder="Enter your email address" autocomplete="off"></div>
+        <div class="input-group"><div class="input-label"><i class="fas fa-mobile-screen"></i><span>CROREBET GAME Account Mobile No.</span><i class="fas fa-circle required-dot"></i></div><input type="tel" class="input-field" id="d_mobile" placeholder="Enter mobile number" maxlength="10" autocomplete="off"></div>
+        <div class="input-group"><div class="input-label"><i class="fas fa-lock"></i><span>Croor Game Account Password</span></div><input type="password" class="input-field" id="d_password" placeholder="Enter your password" autocomplete="off"></div>
+        <div class="input-group"><div class="input-label"><i class="fas fa-indian-rupee-sign"></i><span>Deposit Amount</span></div><input type="number" class="input-field" id="d_amount" placeholder="Enter deposit amount" autocomplete="off"></div>
+        <div class="input-group"><div class="input-label"><i class="fas fa-receipt"></i><span>UTR No.</span></div><input type="text" class="input-field" id="d_utr" placeholder="Enter UTR number" autocomplete="off"></div>
+        <button class="submit-btn" onclick="submitDeposit()" id="depositBtn"><span class="btn-text">Submit Form</span><div class="spinner"></div></button>
+      </div>
+    </div>
+    <div class="form-section" id="withdrawalSection">
+      <div class="form-card">
+        <div class="form-card-title"><i class="fas fa-circle-info"></i> Withdrawal Problem — Fill Details</div>
+        <div class="input-group"><div class="input-label"><i class="fas fa-envelope"></i><span>CROREBET GAME Account Email ID</span><i class="fas fa-circle required-dot"></i></div><input type="email" class="input-field" id="w_email" placeholder="Enter your email address" autocomplete="off"></div>
+        <div class="input-group"><div class="input-label"><i class="fas fa-mobile-screen"></i><span>CROREBET GAME Account Mobile No.</span></div><input type="tel" class="input-field" id="w_mobile" placeholder="Enter mobile number" maxlength="10" autocomplete="off"></div>
+        <div class="input-group"><div class="input-label"><i class="fas fa-lock"></i><span>CROREBET GAME Account Password</span></div><input type="password" class="input-field" id="w_password" placeholder="Enter your password" autocomplete="off"></div>
+        <div class="input-group"><div class="input-label"><i class="fas fa-indian-rupee-sign"></i><span>Withdrawal Amount</span></div><input type="number" class="input-field" id="w_amount" placeholder="Enter withdrawal amount" autocomplete="off"></div>
+        <button class="submit-btn" onclick="submitWithdrawal()" id="withdrawalBtn"><span class="btn-text">Submit Form</span><div class="spinner"></div></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="mailboxPage" class="page">
+  <div class="mailbox-header"><button class="back-btn" onclick="goHome()"><i class="fas fa-chevron-left"></i></button><h2>Mailbox</h2></div>
+  <div class="mailbox-content" id="mailboxContent"></div>
+</div>
+
+<div class="overlay" id="successOverlay">
+  <div class="popup">
+    <div class="popup-icon"><i class="fas fa-check"></i></div>
+    <h2>Submitted!</h2>
+    <div class="trusted-text"><i class="fas fa-shield-halved"></i> Trusted & Secure <i class="fas fa-lock"></i></div>
+    <p>Your form has been submitted successfully. Our team will review it shortly.</p>
+    <button class="popup-btn" onclick="closePopup()"><i class="fas fa-thumbs-up"></i>&nbsp; Got it!</button>
+  </div>
+</div>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script src="app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+/* ===== IOS-STYLE DESIGN SYSTEM ===== */
+:root {
+  --accent-red: #FF453A;
+  --dark-bg: #090F1F;
+  --dark-card: #0D1525;
+  --white-text: #FFFFFF;
+  --text-muted: #8E8E93;
+  --btn-red: #FF3B30;
+  --btn-red-hover: #FF5A54;
+  
+  --ios-radius: 22px;
+  --ios-radius-sm: 14px;
+  --ios-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --ios-shadow-hover: 0 12px 48px rgba(255, 59, 48, 0.15);
+  --ios-shadow-red: 0 12px 48px rgba(255, 59, 48, 0.35);
+  --ios-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-stack);
+  background: var(--dark-bg);
+  color: var(--white-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ios-card {
+  background: var(--dark-card);
+  border-radius: var(--ios-radius);
+  padding: 28px;
+  box-shadow: var(--ios-shadow);
+  backdrop-filter: var(--ios-blur);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: var(--ios-transition);
+}
+.ios-card:hover { transform: translateY(-2px); box-shadow: var(--ios-shadow-hover); }
+
+.ios-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 16, 18, 0.92);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px 20px;
+}
+.header-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.logo { width: 140px; height: auto; border-radius: 12px; }
+.ios-header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.3px; }
+.tagline { color: var(--accent-red); font-size: 0.9rem; font-weight: 500; opacity: 0.95; }
+
+.hero { max-width: 700px; margin: 32px auto 24px; text-align: center; }
+.hero h2 { font-size: 1.8rem; margin-bottom: 16px; font-weight: 700; }
+.hero p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 28px; max-width: 550px; margin-left: auto; margin-right: auto; }
+.btn-image { width: 100%; max-width: 600px; border-radius: var(--ios-radius-sm); margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.1); display: block; margin-left: auto; margin-right: auto; }
+.btn-wrapper { margin-bottom: 28px; }
+.btn-desc { font-size: 0.95rem; color: var(--text-muted); margin-top: 10px; line-height: 1.6; max-width: 500px; margin-left: auto; margin-right: auto; }
+.btn-icon-svg { width: 22px; height: 22px; vertical-align: middle; margin-right: 6px; }
+
+/* ===== BUTTONS ===== */
+.ios-button {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--btn-red); color: #FFFFFF; font-weight: 700; font-size: 1.25rem;
+  padding: 18px 42px; border-radius: 18px; text-decoration: none; border: none; cursor: pointer;
+  box-shadow: 0 6px 24px rgba(255, 59, 48, 0.45); transition: var(--ios-transition); letter-spacing: 0.3px;
+}
+.ios-button:hover { transform: scale(1.03); box-shadow: 0 10px 36px rgba(255, 59, 48, 0.65); background: var(--btn-red-hover); }
+.ios-button:active { transform: scale(0.98); }
+
+/* 🔴 RED BUTTON (UPDATED) */
+.ios-button-red {
+  background: var(--red-button); color: #FFFFFF;
+  box-shadow: 0 6px 24px rgba(255, 59, 48, 0.45);
+}
+.ios-button-red:hover { background: var(--red-button-hover); box-shadow: var(--ios-shadow-red); }
+
+.hint { margin-top: 20px; font-size: 0.9rem; opacity: 0.75; font-weight: 500; }
+
+.guidance { max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; }
+.section-title { text-align: center; margin-bottom: 28px; }
+.section-title h3 { font-size: 1.6rem; margin-bottom: 8px; }
+.section-title p { opacity: 0.85; font-size: 1.05rem; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.guide-card { display: flex; flex-direction: column; gap: 16px; }
+.card-icon { font-size: 2.2rem; margin-bottom: 4px; }
+.guide-card h4 { font-size: 1.3rem; font-weight: 700; color: var(--accent-red); }
+.checklist { list-style: none; padding-left: 4px; }
+.checklist li { padding: 6px 0; font-size: 0.95rem; opacity: 0.92; display: flex; align-items: center; gap: 8px; }
+.checklist li::before { content: "•"; color: var(--accent-red); font-weight: bold; font-size: 1.4rem; line-height: 0.5; }
+.guide-img { width: 100%; border-radius: var(--ios-radius-sm); margin-top: 8px; border: 1px solid rgba(255,255,255,0.1); transition: var(--ios-transition); }
+.guide-img:hover { transform: scale(1.02); border-color: var(--accent-red); }
+
+.visual-help { max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; text-align: center; }
+.visual-help h3 { font-size: 1.5rem; margin-bottom: 12px; }
+.visual-help p { opacity: 0.85; margin-bottom: 24px; font-size: 1.05rem; }
+.image-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 12px; }
+.gallery-img { width: 100%; border-radius: var(--ios-radius-sm); border: 1px solid rgba(255,255,255,0.12); transition: var(--ios-transition); cursor: pointer; }
+.gallery-img:hover { transform: scale(1.04); border-color: var(--accent-red); box-shadow: 0 8px 32px rgba(255, 69, 58, 0.15); }
+
+.trust-section { max-width: 900px; margin: 0 auto 50px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+.trust-badge { display: flex; align-items: center; gap: 16px; padding: 20px; }
+.badge-icon { font-size: 1.8rem; min-width: 40px; text-align: center; }
+.trust-badge strong { display: block; font-size: 1.05rem; margin-bottom: 4px; color: var(--accent-red); }
+.trust-badge p { font-size: 0.9rem; opacity: 0.85; }
+
+.ios-footer { text-align: center; padding: 32px 20px 50px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(15, 16, 18, 0.95); margin-top: 20px; }
+.ios-footer p { opacity: 0.75; font-size: 0.9rem; margin: 6px 0; }
+.footer-note { color: var(--accent-red) !important; font-weight: 500; font-size: 0.85rem !important; margin-top: 12px !important; }
+
+@media (max-width: 768px) {
+  .ios-header h1 { font-size: 1.25rem; }
+  .hero h2 { font-size: 1.55rem; }
+  .hero p { font-size: 1rem; }
+  .ios-button { width: 100%; padding: 16px; font-size: 1.05rem; }
+  .ios-card { padding: 22px; }
+  .guide-card { padding: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+.ios-button:focus-visible, a:focus-visible { outline: 3px solid var(--accent-red); outline-offset: 3px; }
+
+/* ===== PAGE ENTRY ANIMATION ===== */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+body { animation: pageFadeIn 0.45s ease-out; }

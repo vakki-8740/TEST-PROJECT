@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>1UP Official Support - Game Help & Support Center</title>
+    <link rel="icon" href="https://i.ibb.co/V0f0xm2r/image.webp" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00C853;
+            --primary-dark: #00A844;
+            --primary-deeper: #008F39;
+            --primary-light: #4CAF50;
+            --primary-ultra-light: #E8F5E9;
+            --accent: #00E676;
+            --accent2: #1DE9B6;
+            --accent3: #00BFA5;
+            --emerald: #2ECC71;
+            --mint: #A8E6CF;
+            --bg-white: #FFFFFF;
+            --bg-light: #F8FBF9;
+            --bg-grey: #F1F5F3;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #F5FAF7;
+            --bg-section: #F4F9F6;
+            --bg-green-tint: #F0FFF4;
+            --text-dark: #1A2E23;
+            --text-primary: #2D3B33;
+            --text-secondary: #5A6E62;
+            --text-muted: #8A9B91;
+            --text-light: #B0BFB6;
+            --success: #00C853;
+            --warning: #FF9800;
+            --danger: #F44336;
+            --info: #2196F3;
+            --gradient-1: linear-gradient(135deg, #00C853, #00E676);
+            --gradient-2: linear-gradient(135deg, #00A844, #00C853);
+            --gradient-3: linear-gradient(135deg, #1DE9B6, #00C853);
+            --gradient-4: linear-gradient(135deg, #00C853 0%, #2ECC71 50%, #00E676 100%);
+            --gradient-hero: linear-gradient(135deg, #00C853 0%, #00E676 50%, #1DE9B6 100%);
+            --gradient-card: linear-gradient(135deg, rgba(0,200,83,0.03), rgba(0,230,118,0.01));
+            --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 15px 50px rgba(0, 0, 0, 0.12);
+            --shadow-green: 0 8px 30px rgba(0, 200, 83, 0.15);
+            --shadow-green-lg: 0 12px 40px rgba(0, 200, 83, 0.2);
+            --shadow-btn: 0 6px 20px rgba(0, 200, 83, 0.25);
+            --border-color: #E8EDE9;
+            --border-light: #EFF3F0;
+            --border-green: rgba(0, 200, 83, 0.15);
+            --border-green-light: rgba(0, 200, 83, 0.08);
+            --radius: 20px;
+            --radius-sm: 14px;
+            --radius-xs: 10px;
+            --radius-xxs: 8px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .bg-decoration {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.04;
+            animation: bgFloat 25s ease-in-out infinite;
+        }
+
+        .bg-circle:nth-child(1) { width: 500px; height: 500px; background: var(--primary); top: -200px; right: -150px; animation-duration: 30s; }
+        .bg-circle:nth-child(2) { width: 400px; height: 400px; background: var(--accent2); bottom: -200px; left: -100px; animation-duration: 25s; animation-delay: -5s; }
+        .bg-circle:nth-child(3) { width: 300px; height: 300px; background: var(--emerald); top: 40%; left: -100px; animation-duration: 35s; animation-delay: -10s; }
+
+        @keyframes bgFloat {
+            0%, 100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(30px,-20px) scale(1.05); }
+            66% { transform: translate(-20px,30px) scale(0.95); }
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-light); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
+
+        /* HEADER */
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid var(--border-light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+            border-bottom-color: var(--border-color);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-xs);
+            background: var(--bg-green-tint);
+            border: 1px solid var(--border-green-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4.5px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-btn:hover {
+            background: rgba(0, 200, 83, 0.1);
+            border-color: var(--border-green);
+            transform: scale(1.04);
+        }
+
+        .menu-btn:active { transform: scale(0.96); }
+
+        .menu-btn span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background: var(--primary-dark);
+            border-radius: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-btn span:nth-child(2) { width: 14px; }
+
+        .menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); width: 18px; background: var(--danger); }
+        .menu-btn.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); width: 18px; background: var(--danger); }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-logo img {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-xs);
+            object-fit: contain;
+            border: 1.5px solid var(--border-green);
+            background: var(--bg-green-tint);
+            padding: 2px;
+        }
+
+        .header-logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-logo-text h1 {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            line-height: 1.2;
+            letter-spacing: -0.3px;
+        }
+
+        .header-logo-text span {
+            font-size: 9.5px;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 13px;
+            background: var(--bg-green-tint);
+            border: 1px solid var(--border-green-light);
+            border-radius: 20px;
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            letter-spacing: 0.3px;
+        }
+
+        .header-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            box-shadow: 0 0 8px rgba(0, 200, 83, 0.4);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.4); }
+        }
+
+        /* SIDE MENU */
+        .menu-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.25);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s ease;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        .menu-overlay.active { opacity: 1; visibility: visible; }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 295px;
+            height: 100%;
+            background: var(--bg-white);
+            z-index: 2001;
+            transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+            overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+            box-shadow: 10px 0 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .side-menu.active { left: 0; }
+
+        .side-menu-header {
+            padding: 28px 22px 22px;
+            background: linear-gradient(135deg, var(--bg-green-tint), var(--bg-white));
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+        }
+
+        .side-menu-header img {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            border: 2px solid var(--border-green);
+            object-fit: contain;
+            background: var(--bg-green-tint);
+            padding: 3px;
+        }
+
+        .side-menu-header-text h2 {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        .side-menu-header-text p {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        .side-menu-close {
+            position: absolute;
+            top: 22px;
+            right: 16px;
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-xs);
+            background: rgba(244, 67, 54, 0.06);
+            border: 1px solid rgba(244, 67, 54, 0.1);
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .side-menu-close:hover { background: rgba(244, 67, 54, 0.1); transform: scale(1.05); }
+
+        .side-menu-nav { padding: 14px; }
+
+        .side-menu-label {
+            font-size: 9.5px;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 12px 14px 8px;
+        }
+
+        .side-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 3px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+        }
+
+        .side-menu-item:hover {
+            background: var(--bg-green-tint);
+            color: var(--text-dark);
+            border-color: var(--border-green-light);
+        }
+
+        .side-menu-item.active {
+            background: var(--bg-green-tint);
+            border-color: var(--border-green);
+            color: var(--primary-dark);
+        }
+
+        .side-menu-item i {
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            background: rgba(0, 200, 83, 0.06);
+            color: var(--primary);
+            transition: all 0.25s ease;
+        }
+
+        .side-menu-item.active i {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 200, 83, 0.2);
+        }
+
+        .side-menu-item span { font-size: 13.5px; font-weight: 500; }
+        .side-menu-item.active span { font-weight: 600; }
+
+        .side-menu-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 10px 16px;
+        }
+
+        /* MAIN */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            padding-top: 68px;
+        }
+
+        .page-section {
+            display: none;
+            animation: fadeInPage 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .page-section.active { display: block; }
+
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* HERO */
+        .hero {
+            padding: 30px 20px 25px;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(180deg, var(--bg-green-tint) 0%, var(--bg-light) 100%);
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(0, 200, 83, 0.06) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .hero-logo { position: relative; margin-bottom: 20px; }
+
+        .hero-logo-ring {
+            width: 108px;
+            height: 108px;
+            border-radius: 28px;
+            background: var(--bg-white);
+            border: 2px solid var(--border-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+            animation: logoFloat 5s ease-in-out infinite;
+            box-shadow: var(--shadow-green);
+        }
+
+        .hero-logo-ring::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 32px;
+            border: 1.5px solid rgba(0, 200, 83, 0.06);
+        }
+
+        .hero-logo-ring img {
+            width: 78px;
+            height: 78px;
+            border-radius: 20px;
+            object-fit: contain;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .hero-verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            background: var(--bg-white);
+            border: 1px solid var(--border-green);
+            border-radius: 22px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .hero-verified i { font-size: 13px; color: var(--primary); }
+
+        .hero h2 {
+            font-size: 27px;
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .hero h2 em {
+            font-style: normal;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h3 {
+            font-size: 14.5px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .hero p {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin: 0 auto;
+            line-height: 1.75;
+        }
+
+        /* STATS */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px;
+            margin: 0 18px 28px;
+            background: var(--bg-white);
+            border-radius: 18px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            padding: 14px 6px;
+            border-radius: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .stat-item:hover { background: var(--bg-green-tint); }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .stat-label {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        /* SECTION TITLE */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 20px;
+            margin-bottom: 16px;
+        }
+
+        .section-title-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .section-title-text h3 {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            color: var(--text-dark);
+        }
+
+        .section-title-text p {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        /* SERVICE CARDS */
+        .services-grid {
+            padding: 0 18px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+
+        .service-card {
+            background: var(--bg-white);
+            border-radius: 18px;
+            padding: 22px 14px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:nth-child(1)::before { background: var(--gradient-1); }
+        .service-card:nth-child(2)::before { background: var(--gradient-3); }
+        .service-card:nth-child(3)::before { background: linear-gradient(135deg, var(--warning), #FF5722); }
+        .service-card:nth-child(4)::before { background: linear-gradient(135deg, var(--danger), #D32F2F); }
+
+        .service-card:hover::before, .service-card:active::before { opacity: 1; }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-green);
+            box-shadow: var(--shadow-green);
+        }
+
+        .service-card:active { transform: translateY(-1px) scale(0.98); }
+
+        .service-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 21px;
+        }
+
+        .service-card:nth-child(1) .service-icon { background: rgba(0, 200, 83, 0.08); color: var(--primary); }
+        .service-card:nth-child(2) .service-icon { background: rgba(29, 233, 182, 0.08); color: var(--accent3); }
+        .service-card:nth-child(3) .service-icon { background: rgba(255, 152, 0, 0.08); color: var(--warning); }
+        .service-card:nth-child(4) .service-icon { background: rgba(244, 67, 54, 0.08); color: var(--danger); }
+
+        .service-card h4 { font-size: 12.5px; font-weight: 700; margin-bottom: 5px; color: var(--text-dark); }
+        .service-card p { font-size: 10.5px; color: var(--text-muted); line-height: 1.5; }
+
+        /* PROCESS CARDS */
+        .process-section { padding: 0 18px; margin-bottom: 32px; }
+
+        .process-card {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .process-card.expanded {
+            border-color: var(--border-green);
+            box-shadow: var(--shadow-green);
+        }
+
+        .process-card-header {
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .process-card-header:hover { background: var(--bg-green-tint); }
+        .process-card-header:active { background: rgba(0, 200, 83, 0.06); }
+
+        .process-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 800;
+            flex-shrink: 0;
+            color: white;
+        }
+
+        .deposit-card .process-number { background: var(--gradient-1); box-shadow: 0 4px 12px rgba(0,200,83,0.2); }
+        .withdrawal-card .process-number { background: var(--gradient-3); box-shadow: 0 4px 12px rgba(29,233,182,0.2); }
+        .other-card .process-number { background: linear-gradient(135deg, var(--warning), #FF5722); box-shadow: 0 4px 12px rgba(255,152,0,0.2); }
+
+        .process-header-text { flex: 1; min-width: 0; }
+        .process-header-text h4 { font-size: 14px; font-weight: 700; margin-bottom: 3px; color: var(--text-dark); }
+        .process-header-text p { font-size: 10.5px; color: var(--text-muted); }
+
+        .process-toggle {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: var(--bg-green-tint);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .process-toggle i {
+            font-size: 11px;
+            color: var(--primary);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .process-card.expanded .process-toggle { background: rgba(0, 200, 83, 0.12); }
+        .process-card.expanded .process-toggle i { transform: rotate(180deg); }
+
+        .process-card-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .process-card.expanded .process-card-body { max-height: 1500px; }
+
+        .process-content { padding: 0 18px 20px; }
+
+        .process-divider { height: 1px; background: var(--border-color); margin-bottom: 16px; }
+
+        .process-intro {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            line-height: 1.75;
+            margin-bottom: 18px;
+            padding: 14px 16px;
+            background: var(--bg-green-tint);
+            border-radius: 14px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .step-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 14px;
+            background: var(--bg-light);
+            border-radius: 14px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .step-item:hover {
+            background: var(--bg-green-tint);
+            border-color: var(--border-green-light);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .step-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 15px;
+        }
+
+        .deposit-card .step-icon { background: rgba(0, 200, 83, 0.08); color: var(--primary); }
+        .withdrawal-card .step-icon { background: rgba(29, 233, 182, 0.08); color: var(--accent3); }
+        .other-card .step-icon { background: rgba(255, 152, 0, 0.08); color: var(--warning); }
+
+        .step-text h5 { font-size: 12.5px; font-weight: 650; margin-bottom: 4px; color: var(--text-dark); }
+        .step-text p { font-size: 11.5px; color: var(--text-muted); line-height: 1.65; }
+
+        .important-note {
+            margin-top: 14px;
+            padding: 14px;
+            background: rgba(244, 67, 54, 0.04);
+            border: 1px solid rgba(244, 67, 54, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .important-note i { color: var(--danger); font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+        .important-note p { font-size: 11.5px; color: var(--text-secondary); line-height: 1.65; }
+        .important-note strong { color: var(--danger); }
+
+        /* HOW IT WORKS */
+        .how-it-works { padding: 0 18px; margin-bottom: 32px; }
+
+        .hiw-timeline { position: relative; padding-left: 28px; }
+
+        .hiw-timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--accent2), var(--accent3), var(--emerald));
+            border-radius: 2px;
+            opacity: 0.3;
+        }
+
+        .hiw-step {
+            position: relative;
+            padding: 16px;
+            background: var(--bg-white);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .hiw-step:hover { border-color: var(--border-green-light); box-shadow: var(--shadow-sm); }
+
+        .hiw-step::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 20px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2.5px solid var(--bg-light);
+        }
+
+        .hiw-step:nth-child(1)::before { background: var(--primary); box-shadow: 0 0 8px rgba(0,200,83,0.3); }
+        .hiw-step:nth-child(2)::before { background: var(--accent2); box-shadow: 0 0 8px rgba(29,233,182,0.3); }
+        .hiw-step:nth-child(3)::before { background: var(--accent3); box-shadow: 0 0 8px rgba(0,191,165,0.3); }
+        .hiw-step:nth-child(4)::before { background: var(--emerald); box-shadow: 0 0 8px rgba(46,204,113,0.3); }
+
+        .hiw-step-num { font-size: 9.5px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 5px; }
+        .hiw-step h4 { font-size: 13.5px; font-weight: 700; margin-bottom: 5px; color: var(--text-dark); }
+        .hiw-step p { font-size: 11.5px; color: var(--text-muted); line-height: 1.65; }
+
+        /* TRUST */
+        .trust-section { padding: 0 18px; margin-bottom: 32px; }
+
+        .trust-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+        .trust-item {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 20px 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .trust-item:hover { border-color: var(--border-green-light); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+        .trust-item i { font-size: 22px; margin-bottom: 10px; display: block; }
+        .trust-item:nth-child(1) i { color: var(--primary); }
+        .trust-item:nth-child(2) i { color: var(--accent3); }
+        .trust-item:nth-child(3) i { color: var(--warning); }
+        .trust-item h5 { font-size: 11px; font-weight: 700; margin-bottom: 3px; color: var(--text-dark); }
+        .trust-item p { font-size: 9.5px; color: var(--text-muted); }
+
+        /* CTA */
+        .cta-section { padding: 0 18px; margin-bottom: 32px; }
+
+        .cta-card {
+            background: var(--gradient-hero);
+            border-radius: var(--radius);
+            padding: 32px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-green-lg);
+        }
+
+        .cta-card::before {
+            content: '';
+            position: absolute;
+            top: -80px; right: -80px;
+            width: 220px; height: 220px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+            pointer-events: none;
+        }
+
+        .cta-card::after {
+            content: '';
+            position: absolute;
+            bottom: -60px; left: -60px;
+            width: 180px; height: 180px;
+            background: radial-gradient(circle, rgba(255,255,255,0.06), transparent);
+            pointer-events: none;
+        }
+
+        .cta-card h3 { font-size: 19px; font-weight: 800; margin-bottom: 10px; position: relative; color: white; }
+        .cta-card p { font-size: 12.5px; color: rgba(255,255,255,0.85); margin-bottom: 24px; line-height: 1.65; position: relative; }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 34px;
+            background: white;
+            color: var(--primary-dark);
+            border: none;
+            border-radius: 14px;
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            position: relative;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+            letter-spacing: 0.2px;
+        }
+
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2); }
+        .cta-btn:active { transform: translateY(-1px) scale(0.98); }
+        .cta-btn i { font-size: 13px; color: var(--primary); transition: transform 0.3s ease; }
+        .cta-btn:hover i:last-child { transform: translateX(4px); }
+
+        /* FAQ */
+        .faq-section { padding: 0 18px; margin-bottom: 32px; }
+
+        .faq-item {
+            background: var(--bg-white);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .faq-item.expanded { border-color: var(--border-green); box-shadow: var(--shadow-sm); }
+
+        .faq-question {
+            padding: 15px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            gap: 10px;
+        }
+
+        .faq-question:hover { background: var(--bg-green-tint); }
+        .faq-question span { font-size: 12.5px; font-weight: 600; flex: 1; color: var(--text-dark); }
+
+        .faq-question i {
+            color: var(--text-light);
+            font-size: 11px;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .faq-item.expanded .faq-question i { transform: rotate(180deg); color: var(--primary); }
+
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+        .faq-item.expanded .faq-answer { max-height: 300px; }
+
+        .faq-answer-inner {
+            padding: 0 16px 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.75;
+            border-top: 1px solid var(--border-color);
+            padding-top: 14px;
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 28px 20px 35px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 15px;
+            background: var(--bg-white);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .footer-logo img { width: 28px; height: 28px; border-radius: 8px; object-fit: contain; }
+        .footer-logo span { font-size: 15px; font-weight: 800; color: var(--primary-dark); }
+        .footer p { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; line-height: 1.6; }
+
+        .footer-links { display: flex; justify-content: center; gap: 22px; margin-top: 14px; }
+        .footer-links a { font-size: 11px; color: var(--primary); text-decoration: none; transition: color 0.3s ease; font-weight: 500; }
+        .footer-links a:hover { color: var(--primary-dark); }
+
+        /* ABOUT + PRIVACY */
+        .about-content, .privacy-content { padding: 20px 18px; }
+
+        .about-hero { text-align: center; padding: 25px 0 22px; margin-bottom: 22px; }
+
+        .about-hero-logo {
+            width: 85px; height: 85px;
+            border-radius: 22px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-white);
+            border: 2px solid var(--border-green);
+            box-shadow: var(--shadow-green);
+        }
+
+        .about-hero-logo img { width: 65px; height: 65px; border-radius: 16px; object-fit: contain; }
+        .about-hero h2 { font-size: 23px; font-weight: 800; margin-bottom: 8px; color: var(--text-dark); letter-spacing: -0.3px; }
+        .about-hero p { font-size: 12.5px; color: var(--text-muted); max-width: 480px; margin: 0 auto; line-height: 1.7; }
+
+        .about-card {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            padding: 22px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-xs);
+            transition: all 0.3s ease;
+        }
+
+        .about-card:hover { border-color: var(--border-green-light); box-shadow: var(--shadow-sm); }
+        .about-card h3 { font-size: 15.5px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; color: var(--text-dark); }
+        .about-card h3 i { color: var(--primary); font-size: 17px; }
+        .about-card p, .about-card li { font-size: 12.5px; color: var(--text-secondary); line-height: 1.8; }
+        .about-card ul { list-style: none; margin-top: 10px; }
+        .about-card ul li { padding: 7px 0; display: flex; align-items: flex-start; gap: 10px; }
+        .about-card ul li::before { content: '\2713'; color: var(--primary); font-weight: 700; margin-top: 1px; flex-shrink: 0; }
+
+        .privacy-section {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            padding: 22px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-xs);
+            transition: all 0.3s ease;
+        }
+
+        .privacy-section:hover { border-color: var(--border-green-light); box-shadow: var(--shadow-sm); }
+        .privacy-section h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; color: var(--text-dark); }
+        .privacy-section h3 i { color: var(--primary); font-size: 16px; }
+        .privacy-section p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 8px; }
+        .privacy-section ul { list-style: none; padding-left: 0; }
+        .privacy-section ul li { font-size: 12.5px; color: var(--text-secondary); line-height: 1.8; padding: 3px 0 3px 18px; position: relative; }
+        .privacy-section ul li::before { content: ''; position: absolute; left: 4px; top: 11px; width: 5px; height: 5px; border-radius: 50%; background: var(--primary); opacity: 0.4; }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: var(--bg-green-tint);
+            border: 1px solid var(--border-green-light);
+            border-radius: 12px;
+            color: var(--primary-dark);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 18px;
+            text-decoration: none;
+        }
+
+        .back-btn:hover { background: rgba(0, 200, 83, 0.1); border-color: var(--border-green); }
+        .back-btn:active { transform: scale(0.97); }
+
+        /* RESPONSIVE */
+        @media (max-width: 380px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .trust-grid { grid-template-columns: 1fr 1fr; }
+            .stats-bar { flex-wrap: wrap; }
+            .stat-item { min-width: calc(50% - 6px); }
+        }
+
+        @media (min-width: 768px) {
+            .services-grid { grid-template-columns: repeat(4, 1fr); }
+            .hero h2 { font-size: 34px; }
+            .main-content { max-width: 780px; margin: 0 auto; }
+        }
+
+        /* LOADING */
+        .loading-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .loading-logo {
+            width: 60px; height: 60px;
+            border-radius: 18px;
+            object-fit: contain;
+            margin-bottom: 22px;
+            animation: loadingPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .loading-bar-container {
+            width: 160px; height: 3px;
+            background: rgba(0, 200, 83, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .loading-bar {
+            width: 40%; height: 100%;
+            background: var(--gradient-1);
+            border-radius: 3px;
+            animation: loadingSlide 1.2s ease-in-out infinite;
+        }
+
+        @keyframes loadingSlide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(400%); }
+        }
+
+        .loading-screen p { font-size: 12px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.5px; }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 12px 20px;
+            background: var(--bg-white);
+            border: 1px solid var(--border-green);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-dark);
+            z-index: 5000;
+            transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-lg);
+            white-space: nowrap;
+        }
+
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast i { color: var(--primary); font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <!-- Loading -->
+    <div class="loading-screen" id="loadingScreen">
+        <img class="loading-logo" src="https://i.ibb.co/V0f0xm2r/image.webp" alt="1UP">
+        <div class="loading-bar-container"><div class="loading-bar"></div></div>
+        <p>Loading 1UP Support...</p>
+    </div>
+
+    <div class="bg-decoration">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <div class="header-left">
+                <div class="menu-btn" id="menuBtn">
+                    <span></span><span></span><span></span>
+                </div>
+                <div class="header-logo">
+                    <img src="https://i.ibb.co/V0f0xm2r/image.webp" alt="1UP Logo">
+                    <div class="header-logo-text">
+                        <h1>1UP SUPPORT</h1>
+                        <span>Official Help Center</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-badge"><div class="dot"></div>Online</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <nav class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <img src="https://i.ibb.co/V0f0xm2r/image.webp" alt="1UP Logo">
+            <div class="side-menu-header-text">
+                <h2>1UP GAME</h2>
+                <p>Official Support Portal</p>
+            </div>
+            <div class="side-menu-close" id="menuClose"><i class="fas fa-times"></i></div>
+        </div>
+        <div class="side-menu-nav">
+            <div class="side-menu-label">Main Navigation</div>
+            <a class="side-menu-item active" data-page="home" href="#"><i class="fas fa-home"></i><span>Home Page</span></a>
+            <a class="side-menu-item" data-page="about" href="#"><i class="fas fa-info-circle"></i><span>About Site</span></a>
+            <a class="side-menu-item" data-page="privacy" href="#"><i class="fas fa-shield-alt"></i><span>Privacy Policy</span></a>
+            <div class="side-menu-divider"></div>
+            <div class="side-menu-label">Quick Actions</div>
+            <a class="side-menu-item" href="summit.html"><i class="fas fa-paper-plane"></i><span>Submit Form</span></a>
+            <a class="side-menu-item" href="#"><i class="fas fa-headset"></i><span>Contact Support</span></a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+
+        <!-- HOME -->
+        <div class="page-section active" id="page-home">
+            <section class="hero">
+                <div class="hero-glow"></div>
+                <div class="hero-logo">
+                    <div class="hero-logo-ring">
+                        <img src="https://i.ibb.co/V0f0xm2r/image.webp" alt="1UP Game Logo">
+                    </div>
+                </div>
+                <div class="hero-verified"><i class="fas fa-check-circle"></i>Verified Official Support</div>
+                <h2><em>1UP Game</em> Official Support</h2>
+                <h3>🎮 Your Trusted Help Center for 1UP Game</h3>
+                <p>Welcome to the official 1UP Game Support Center. We are here to help you resolve all your game-related problems including Deposit Issues, Withdrawal Issues, and other Account Problems quickly and securely. 🛡️</p>
+            </section>
+
+            <section class="stats-bar">
+                <div class="stat-item"><div class="stat-value">50K+</div><div class="stat-label">Users Helped</div></div>
+                <div class="stat-item"><div class="stat-value">24/7</div><div class="stat-label">Support</div></div>
+                <div class="stat-item"><div class="stat-value">99%</div><div class="stat-label">Resolved</div></div>
+                <div class="stat-item"><div class="stat-value">5 Min</div><div class="stat-label">Avg. Time</div></div>
+            </section>
+
+            <div class="section-title">
+                <div class="section-title-icon" style="background:rgba(0,200,83,0.08);color:var(--primary);"><i class="fas fa-concierge-bell"></i></div>
+                <div class="section-title-text"><h3>Our Services</h3><p>How we can help you today</p></div>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card"><div class="service-icon"><i class="fas fa-wallet"></i></div><h4>Deposit Fix</h4><p>Resolve deposit failures & pending issues</p></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-money-bill-wave"></i></div><h4>Withdrawal Fix</h4><p>Fix withdrawal stuck & processing errors</p></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-user-shield"></i></div><h4>Account Issues</h4><p>Login, verification & account recovery</p></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-bug"></i></div><h4>Game Errors</h4><p>Technical bugs & game crash solutions</p></div>
+            </div>
+
+            <div class="section-title">
+                <div class="section-title-icon" style="background:rgba(29,233,182,0.08);color:var(--accent3);"><i class="fas fa-clipboard-list"></i></div>
+                <div class="section-title-text"><h3>How to Resolve Your Problem</h3><p>Follow these simple steps for quick resolution</p></div>
+            </div>
+
+            <div class="process-section">
+                <div class="process-card deposit-card expanded">
+                    <div class="process-card-header">
+                        <div class="process-number">1</div>
+                        <div class="process-header-text"><h4>💰 Deposit Problem Resolution</h4><p>Fix your deposit related issues step by step</p></div>
+                        <div class="process-toggle"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="process-card-body"><div class="process-content">
+                        <div class="process-divider"></div>
+                        <div class="process-intro">ℹ️ If your deposit amount has not been credited to your 1UP Game account, or if you are facing any deposit failure/pending issue, please follow the steps below carefully. You will need to provide verification details so our team can locate and resolve your problem.</div>
+                        <div class="step-list">
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-envelope"></i></div><div class="step-text"><h5>Step 1 — 1UP Game Account Email ID 📧</h5><p>Provide the registered Email ID linked to your 1UP Game account. This helps us verify your identity and locate your account in our system.</p></div></div>
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-mobile-alt"></i></div><div class="step-text"><h5>Step 2 — 1UP Game Account Mobile No. 📱</h5><p>Enter your registered mobile number associated with your 1UP Game account. This is required for account verification purposes.</p></div></div>
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-lock"></i></div><div class="step-text"><h5>Step 3 — 1UP Game Account Password 🔐</h5><p>Provide your account password for secure verification. This ensures only the genuine account holder can raise a support request.</p></div></div>
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-coins"></i></div><div class="step-text"><h5>Step 4 — Deposit Amount 💵</h5><p>Enter the exact amount that you deposited but was not credited to your account. This helps us trace your transaction quickly.</p></div></div>
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-receipt"></i></div><div class="step-text"><h5>Step 5 — UTR Number 🧾</h5><p>Provide the UTR (Unique Transaction Reference) number from your payment. This is the most important detail to track and verify your deposit transaction.</p></div></div>
+                        </div>
+                        <div class="important-note"><i class="fas fa-exclamation-triangle"></i><p><strong>Important:</strong> Please make sure all details are correct before submitting. Incorrect information may delay the resolution process. Your data is 100% secure and encrypted. 🔒</p></div>
+                    </div></div>
+                </div>
+
+                <div class="process-card withdrawal-card">
+                    <div class="process-card-header">
+                        <div class="process-number">2</div>
+                        <div class="process-header-text"><h4>🏦 Withdrawal Problem Resolution</h4><p>Fix your withdrawal related issues step by step</p></div>
+                        <div class="process-toggle"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="process-card-body"><div class="process-content">
+                        <div class="process-divider"></div>
+                        <div class="process-intro">ℹ️ If your withdrawal request is stuck, pending for a long time, rejected, or the amount has not been received in your bank account, please follow the steps below. Our team will verify your details and resolve the issue as soon as possible.</div>
+                        <div class="step-list">
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-envelope"></i></div><div class="step-text"><h5>Step 1 — 1UP Game Account Email ID 📧</h5><p>Provide the registered Email ID linked to your 1UP Game account. This is the primary identifier used to find your account and withdrawal request.</p></div></div>
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-mobile-alt"></i></div><div class="step-text"><h5>Step 2 — 1UP Game Account Mobile No. 📱</h5><p>Enter the registered mobile number linked to your account. This provides an additional layer of identity verification for security.</p></div></div>
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-lock"></i></div><div class="step-text"><h5>Step 3 — 1UP Game Account Password 🔐</h5><p>Provide your account password to confirm you are the authorized account owner. Without this, we cannot process your request.</p></div></div>
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-hand-holding-usd"></i></div><div class="step-text"><h5>Step 4 — Withdrawal Amount 💸</h5><p>Enter the exact withdrawal amount that is stuck or not received. This allows our team to identify and match your withdrawal transaction in the system.</p></div></div>
+                        </div>
+                        <div class="important-note"><i class="fas fa-exclamation-triangle"></i><p><strong>Important:</strong> Withdrawal issues are usually resolved within 10-30 minutes after form submission. Please provide accurate details to avoid any delays. Your information is fully protected. 🛡️</p></div>
+                    </div></div>
+                </div>
+
+                <div class="process-card other-card">
+                    <div class="process-card-header">
+                        <div class="process-number">3</div>
+                        <div class="process-header-text"><h4>🔧 Other Game Problems</h4><p>Account recovery, login errors & more</p></div>
+                        <div class="process-toggle"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="process-card-body"><div class="process-content">
+                        <div class="process-divider"></div>
+                        <div class="process-intro">ℹ️ Facing issues other than Deposit or Withdrawal? Such as login problems, OTP not received, account locked, game crashing, bonus not credited, or any other technical issue? Follow these steps to get help from our support team.</div>
+                        <div class="step-list">
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-envelope"></i></div><div class="step-text"><h5>Step 1 — 1UP Game Account Email ID 📧</h5><p>Your registered email helps us quickly locate your account in the system and review your issue history.</p></div></div>
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-mobile-alt"></i></div><div class="step-text"><h5>Step 2 — 1UP Game Account Mobile No. 📱</h5><p>Registered mobile number for verification and to contact you if needed during the resolution process.</p></div></div>
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-lock"></i></div><div class="step-text"><h5>Step 3 — 1UP Game Account Password 🔐</h5><p>Required for identity verification. Only authorized users can request changes to their accounts.</p></div></div>
+                            <div class="step-item"><div class="step-icon"><i class="fas fa-comment-dots"></i></div><div class="step-text"><h5>Step 4 — Describe Your Problem 📝</h5><p>Explain your issue in detail in the form. The more information you provide, the faster we can resolve it for you.</p></div></div>
+                        </div>
+                        <div class="important-note"><i class="fas fa-exclamation-triangle"></i><p><strong>Note:</strong> For any game-related problem, our team is available 24/7. Most issues are resolved within minutes. Your privacy and security is our top priority. ✅</p></div>
+                    </div></div>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <div class="section-title-icon" style="background:rgba(0,230,118,0.08);color:var(--emerald);"><i class="fas fa-route"></i></div>
+                <div class="section-title-text"><h3>How It Works</h3><p>Simple 4-step process to resolve your issue</p></div>
+            </div>
+
+            <div class="how-it-works">
+                <div class="hiw-timeline">
+                    <div class="hiw-step"><div class="hiw-step-num">Step 01</div><h4>📋 Choose Your Problem Type</h4><p>Select whether you have a Deposit, Withdrawal, or Other issue from the form options.</p></div>
+                    <div class="hiw-step"><div class="hiw-step-num">Step 02</div><h4>✏️ Fill in Your Details</h4><p>Enter your account email, mobile number, password, and other required information for verification.</p></div>
+                    <div class="hiw-step"><div class="hiw-step-num">Step 03</div><h4>📤 Submit Your Form</h4><p>Click the "Submit Form" button to send your request to our support team for processing.</p></div>
+                    <div class="hiw-step"><div class="hiw-step-num">Step 04</div><h4>✅ Problem Resolved!</h4><p>Our team will review and resolve your issue quickly. Most problems are fixed within 5-30 minutes!</p></div>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <div class="section-title-icon" style="background:rgba(255,152,0,0.08);color:var(--warning);"><i class="fas fa-award"></i></div>
+                <div class="section-title-text"><h3>Why Trust Us</h3><p>Your security is our top priority</p></div>
+            </div>
+
+            <div class="trust-section">
+                <div class="trust-grid">
+                    <div class="trust-item"><i class="fas fa-shield-alt"></i><h5>100% Secure</h5><p>End-to-end encrypted</p></div>
+                    <div class="trust-item"><i class="fas fa-certificate"></i><h5>Official Support</h5><p>Verified & Authorized</p></div>
+                    <div class="trust-item"><i class="fas fa-bolt"></i><h5>Fast Resolution</h5><p>Within 5-30 minutes</p></div>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <div class="section-title-icon" style="background:rgba(244,67,54,0.08);color:var(--danger);"><i class="fas fa-question-circle"></i></div>
+                <div class="section-title-text"><h3>Frequently Asked Questions</h3><p>Quick answers to common queries</p></div>
+            </div>
+
+            <div class="faq-section">
+                <div class="faq-item"><div class="faq-question"><span>🤔 Why do I need to provide my password?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><div class="faq-answer-inner">Your password is required for identity verification only. This ensures that only the genuine account holder can raise a support request. Your password is fully encrypted and never stored or shared with anyone. Our system uses bank-level security protocols to protect your data.</div></div></div>
+                <div class="faq-item"><div class="faq-question"><span>⏱️ How long does it take to resolve my issue?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><div class="faq-answer-inner">Most issues are resolved within 5 to 30 minutes after form submission. In some cases, complex issues may take up to 24 hours. Our support team works 24/7 to ensure the fastest resolution possible for all users.</div></div></div>
+                <div class="faq-item"><div class="faq-question"><span>🔒 Is my personal data safe with you?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><div class="faq-answer-inner">Absolutely! We use industry-standard 256-bit SSL encryption to protect all data. Your personal information is only used for verification and problem resolution. We never share, sell, or misuse your data under any circumstances. Read our Privacy Policy for more details.</div></div></div>
+                <div class="faq-item"><div class="faq-question"><span>📞 Can I contact support directly?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer"><div class="faq-answer-inner">Yes, the fastest way to get help is by submitting the support form on this page. Our team monitors all submissions in real-time and will begin working on your issue immediately after receiving your request.</div></div></div>
+            </div>
+
+            <div class="cta-section">
+                <div class="cta-card">
+                    <h3>🚀 Ready to Fix Your Problem?</h3>
+                    <p>Click the button below to submit your support form. Our expert team will resolve your issue within minutes!</p>
+                    <a href="summit.html" class="cta-btn"><i class="fas fa-paper-plane"></i>Submit Form<i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="page-section" id="page-about">
+            <div class="about-content">
+                <div class="back-btn" data-page="home"><i class="fas fa-arrow-left"></i>Back to Home</div>
+                <div class="about-hero">
+                    <div class="about-hero-logo"><img src="https://i.ibb.co/V0f0xm2r/image.webp" alt="1UP Logo"></div>
+                    <h2>About 1UP Official Support</h2>
+                    <p>Learn more about who we are and how we're committed to helping 1UP Game players worldwide.</p>
+                </div>
+                <div class="about-card"><h3><i class="fas fa-bullseye"></i> Our Mission</h3><p>1UP Official Support is the authorized and verified support platform for the 1UP Game. Our mission is to provide fast, secure, and reliable assistance to all 1UP Game players who face issues with their accounts, deposits, withdrawals, or any other game-related problems.</p><p style="margin-top:10px;">We believe every player deserves a smooth gaming experience, and our dedicated support team works around the clock to ensure that.</p></div>
+                <div class="about-card"><h3><i class="fas fa-star"></i> What We Offer</h3><ul><li>24/7 Real-time support for all game-related problems</li><li>Quick resolution of Deposit issues with UTR verification</li><li>Fast processing of stuck or pending Withdrawal requests</li><li>Account recovery and login issue assistance</li><li>Technical bug reporting and resolution support</li><li>100% encrypted and secure data handling</li><li>Dedicated team of trained support professionals</li></ul></div>
+                <div class="about-card"><h3><i class="fas fa-history"></i> Our Track Record</h3><p>Since our launch, we have successfully helped over <strong>50,000+ players</strong> resolve their issues. With a <strong>99% resolution rate</strong> and an average response time of just <strong>5 minutes</strong>, we are proud to be the most trusted support platform for 1UP Game.</p></div>
+                <div class="about-card"><h3><i class="fas fa-users"></i> Our Team</h3><p>Our team consists of experienced support professionals who are trained to handle all types of game-related issues. Every team member undergoes rigorous training to ensure they can provide the best possible assistance to our users. We are passionate about gaming and committed to making your experience with 1UP Game as enjoyable as possible.</p></div>
+                <div class="about-card"><h3><i class="fas fa-handshake"></i> Our Promise</h3><ul><li>We will never share your personal data with third parties</li><li>All support requests are handled with the utmost priority</li><li>We use bank-level encryption to protect your information</li><li>Our service is completely free for all 1UP Game players</li><li>We continuously improve our platform based on user feedback</li></ul></div>
+            </div>
+        </div>
+
+        <!-- PRIVACY -->
+        <div class="page-section" id="page-privacy">
+            <div class="privacy-content">
+                <div class="back-btn" data-page="home"><i class="fas fa-arrow-left"></i>Back to Home</div>
+                <div class="about-hero"><h2>🔒 Privacy Policy</h2><p>Your privacy matters to us. Read how we collect, use, and protect your personal data at 1UP Official Support.</p></div>
+                <div class="privacy-section"><h3><i class="fas fa-file-contract"></i> Introduction</h3><p>This Privacy Policy describes how 1UP Official Support ("we", "our", "us") collects, uses, and protects the personal information you provide when using our support services. By using our platform, you agree to the terms outlined in this policy.</p><p>Last Updated: May 2025</p></div>
+                <div class="privacy-section"><h3><i class="fas fa-database"></i> Information We Collect</h3><p>When you submit a support form, we may collect the following information:</p><ul><li>Your 1UP Game Account Email ID</li><li>Your registered Mobile Number</li><li>Your Account Password (for verification purposes only)</li><li>Transaction details such as Deposit Amount, Withdrawal Amount, UTR Number</li><li>Description of your problem or issue</li><li>Device information and browser type (automatically collected)</li></ul></div>
+                <div class="privacy-section"><h3><i class="fas fa-cogs"></i> How We Use Your Information</h3><p>The information collected is used exclusively for:</p><ul><li>Verifying your identity as the legitimate account owner</li><li>Locating your account and transaction records in our system</li><li>Resolving your reported issues (deposits, withdrawals, account problems)</li><li>Communicating with you regarding the status of your support request</li><li>Improving our support services and user experience</li></ul></div>
+                <div class="privacy-section"><h3><i class="fas fa-lock"></i> Data Security</h3><p>We take your data security extremely seriously. Here's how we protect your information:</p><ul><li>All data transmissions are encrypted using 256-bit SSL/TLS encryption</li><li>Your password is used only for one-time verification and is not stored in plain text</li><li>Access to user data is restricted to authorized support personnel only</li><li>We regularly audit our security systems to prevent unauthorized access</li><li>Our servers are protected by enterprise-grade firewalls and security protocols</li></ul></div>
+                <div class="privacy-section"><h3><i class="fas fa-share-alt"></i> Data Sharing</h3><p>We are committed to protecting your privacy. We do <strong>NOT</strong>:</p><ul><li>Sell your personal data to any third party</li><li>Share your information with advertisers or marketing companies</li><li>Use your data for any purpose other than resolving your support request</li><li>Transfer your data to any unauthorized entity</li></ul><p style="margin-top:10px;">Your information may only be shared with the 1UP Game official team if required to resolve your issue.</p></div>
+                <div class="privacy-section"><h3><i class="fas fa-cookie-bite"></i> Cookies & Tracking</h3><p>Our website may use minimal cookies to improve your browsing experience. These cookies do not collect personal information and are used solely for:</p><ul><li>Remembering your session preferences</li><li>Analyzing website traffic to improve our services</li><li>Ensuring the security and proper functioning of our platform</li></ul></div>
+                <div class="privacy-section"><h3><i class="fas fa-user-check"></i> Your Rights</h3><p>As a user, you have the following rights:</p><ul><li>Request access to the personal data we hold about you</li><li>Request correction of any inaccurate information</li><li>Request deletion of your personal data from our systems</li><li>Withdraw your consent at any time by contacting our support team</li></ul></div>
+                <div class="privacy-section"><h3><i class="fas fa-child"></i> Children's Privacy</h3><p>Our services are not intended for users under the age of 18. We do not knowingly collect personal information from minors. If you believe a minor has provided us with personal information, please contact us immediately.</p></div>
+                <div class="privacy-section"><h3><i class="fas fa-sync-alt"></i> Policy Updates</h3><p>We reserve the right to update this Privacy Policy at any time. Any changes will be posted on this page with an updated revision date. We encourage you to review this policy periodically to stay informed about how we protect your information.</p></div>
+                <div class="privacy-section"><h3><i class="fas fa-envelope-open-text"></i> Contact Us</h3><p>If you have any questions or concerns about this Privacy Policy or how your data is handled, please don't hesitate to reach out through our support form. We are committed to addressing your concerns promptly and transparently.</p></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo"><img src="https://i.ibb.co/V0f0xm2r/image.webp" alt="1UP"><span>1UP Official Support</span></div>
+            <p>🎮 The Official Support Center for 1UP Game</p>
+            <p>Made with ❤️ by 1UP Official Support Team</p>
+            <p style="margin-top:5px;">© 2025 1UP Game. All Rights Reserved.</p>
+            <div class="footer-links"><a href="#" data-page="home">Home</a><a href="#" data-page="about">About</a><a href="#" data-page="privacy">Privacy Policy</a></div>
+        </footer>
+    </main>
+
+    <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastText">Welcome to 1UP Support!</span></div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded',function(){
+        var ls=document.getElementById('loadingScreen');
+        window.addEventListener('load',function(){setTimeout(function(){ls.classList.add('hidden');showT('Welcome to 1UP Official Support! 🎮')},1800)});
+        setTimeout(function(){ls.classList.add('hidden')},3500);
+
+        var h=document.getElementById('header');
+        window.addEventListener('scroll',function(){h.classList.toggle('scrolled',window.pageYOffset>50)});
+
+        var mb=document.getElementById('menuBtn'),mo=document.getElementById('menuOverlay'),sm=document.getElementById('sideMenu'),mc=document.getElementById('menuClose');
+        function oM(){sm.classList.add('active');mo.classList.add('active');mb.classList.add('active');document.body.style.overflow='hidden'}
+        function cM(){sm.classList.remove('active');mo.classList.remove('active');mb.classList.remove('active');document.body.style.overflow=''}
+        mb.addEventListener('click',function(){sm.classList.contains('active')?cM():oM()});
+        mo.addEventListener('click',cM);mc.addEventListener('click',cM);
+
+        var ps=document.querySelectorAll('.page-section'),mi=document.querySelectorAll('.side-menu-item[data-page]'),al=document.querySelectorAll('[data-page]');
+        function nav(p){ps.forEach(function(s){s.classList.remove('active')});var t=document.getElementById('page-'+p);if(t)t.classList.add('active');mi.forEach(function(i){i.classList.remove('active');if(i.getAttribute('data-page')===p)i.classList.add('active')});window.scrollTo({top:0,behavior:'smooth'});cM();setTimeout(reObs,100)}
+        al.forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();var p=this.getAttribute('data-page');if(p)nav(p)})});
+
+        document.querySelectorAll('.process-card-header').forEach(function(h){h.addEventListener('click',function(){var c=this.closest('.process-card'),e=c.classList.contains('expanded');document.querySelectorAll('.process-card').forEach(function(x){x.classList.remove('expanded')});if(!e)c.classList.add('expanded')})});
+
+        document.querySelectorAll('.faq-question').forEach(function(q){q.addEventListener('click',function(){var i=this.closest('.faq-item'),e=i.classList.contains('expanded');document.querySelectorAll('.faq-item').forEach(function(f){f.classList.remove('expanded')});if(!e)i.classList.add('expanded')})});
+
+        document.querySelectorAll('.service-card').forEach(function(c,i){c.addEventListener('click',function(){var pc=document.querySelectorAll('.process-card');pc.forEach(function(x){x.classList.remove('expanded')});var idx=i<pc.length?i:pc.length-1;pc[idx].classList.add('expanded');setTimeout(function(){pc[idx].scrollIntoView({behavior:'smooth',block:'center'})},100);showT('Scroll down to see the process! 👇')})});
+
+        var obs=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.style.opacity='1';en.target.style.transform='translateY(0)';obs.unobserve(en.target)}})},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+        function initA(){document.querySelectorAll('.service-card,.process-card,.hiw-step,.trust-item,.faq-item,.cta-card,.about-card,.privacy-section').forEach(function(el,i){el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity 0.6s ease '+(i%4)*0.08+'s,transform 0.6s ease '+(i%4)*0.08+'s';obs.observe(el)})}
+        function reObs(){document.querySelectorAll('.page-section.active .service-card,.page-section.active .process-card,.page-section.active .hiw-step,.page-section.active .trust-item,.page-section.active .faq-item,.page-section.active .cta-card,.page-section.active .about-card,.page-section.active .privacy-section').forEach(function(el,i){if(!el.style.opacity||el.style.opacity==='0'){el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity 0.5s ease '+(i%4)*0.06+'s,transform 0.5s ease '+(i%4)*0.06+'s';obs.observe(el)}})}
+        initA();
+
+        var sv=document.querySelectorAll('.stat-value'),sa=false;
+        var so=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting&&!sa){sa=true;[{e:sv[0],n:50,s:'K+'},{e:sv[1],n:24,s:'/7'},{e:sv[2],n:99,s:'%'},{e:sv[3],n:5,s:' Min'}].forEach(function(t){if(!t.e)return;var c=0,inc=t.n/(2000/16);var ti=setInterval(function(){c+=inc;if(c>=t.n){c=t.n;clearInterval(ti)}t.e.textContent=Math.floor(c)+t.s},16)})}})},{threshold:0.5});
+        var sb=document.querySelector('.stats-bar');if(sb)so.observe(sb);
+
+        var tt=document.getElementById('toast'),tx=document.getElementById('toastText'),tto;
+        function showT(m){if(tto){clearTimeout(tto);tt.classList.remove('show')}setTimeout(function(){tx.textContent=m;tt.classList.add('show');tto=setTimeout(function(){tt.classList.remove('show')},3000)},50)}
+
+        document.addEventListener('keydown',function(e){if(e.key==='Escape')cM()});
+        var lte=0;document.addEventListener('touchend',function(e){var n=Date.now();if(n-lte<=300)e.preventDefault();lte=n},false);
+    });
+    </script>
+</body>
+</html>

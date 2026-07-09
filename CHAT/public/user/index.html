@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Support Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --ios-blue: #007AFF;
+      --ios-green: #34C759;
+      --ios-gray: #E9E9EB;
+      --ios-dark-gray: #8E8E93;
+      --ios-bg: #F2F2F7;
+      --ios-text: #1C1C1E;
+      --ios-subtext: #8E8E93;
+      --ios-separator: #C6C6C8;
+      --safe-top: env(safe-area-inset-top, 20px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --ios-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      --ios-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: var(--ios-bg);
+      color: var(--ios-text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* iOS Navigation Bar */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding-top: var(--safe-top);
+      background: rgba(249, 249, 249, 0.94);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 0.5px solid var(--ios-separator);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      padding: 0 16px;
+      position: relative;
+    }
+
+    .nav-title {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    .menu-btn {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ios-blue);
+      font-size: 20px;
+      transition: background 0.15s;
+    }
+
+    .menu-btn:active {
+      background: rgba(0, 122, 255, 0.1);
+    }
+
+    .profile-btn {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .profile-btn:active {
+      background: rgba(0, 122, 255, 0.1);
+    }
+
+    /* Connection Status */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 24px;
+      font-size: 11px;
+      color: var(--ios-subtext);
+      background: rgba(249, 249, 249, 0.94);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .status-dot.online {
+      background: #34C759;
+    }
+
+    .status-dot.offline {
+      background: var(--ios-dark-gray);
+    }
+
+    /* Chat Messages */
+    .chat-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding-top: calc(var(--safe-top) + 68px);
+      padding-bottom: calc(var(--safe-bottom) + 120px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .messages {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 16px;
+      gap: 6px;
+    }
+
+    .message {
+      max-width: 78%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 16px;
+      line-height: 1.4;
+      word-wrap: break-word;
+      animation: messageIn 0.4s var(--ios-spring);
+      position: relative;
+      will-change: transform, opacity;
+    }
+
+    @keyframes messageIn {
+      0% { opacity: 0; transform: scale(0.85) translateY(14px); }
+      55% { opacity: 1; transform: scale(1.025) translateY(-2px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .message.user {
+      align-self: flex-end;
+      background: var(--ios-blue);
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message.admin {
+      align-self: flex-start;
+      background: var(--ios-green);
+      color: white;
+      border-bottom-left-radius: 4px;
+    }
+
+    .message.admin.auto-reply {
+      background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+      color: var(--ios-text);
+      border-left: 3px solid var(--ios-green);
+    }
+
+    .message.admin.cat-tag {
+      background: rgba(52, 199, 89, 0.1);
+      color: var(--ios-green);
+      font-size: 14px;
+      border-radius: 12px;
+      max-width: 75%;
+      align-self: flex-start;
+      border: 1px solid rgba(52, 199, 89, 0.2);
+    }
+
+    .message img {
+      max-width: 100%;
+      border-radius: 12px;
+      display: block;
+      margin: -2px 0;
+    }
+
+    .message .time {
+      font-size: 11px;
+      opacity: 0.7;
+      margin-top: 4px;
+      display: block;
+      text-align: right;
+    }
+
+    .message.admin .time,
+    .message.user .time {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .message.admin.auto-reply .time {
+      color: var(--ios-subtext);
+    }
+
+    .message .delete-msg-btn {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #FF3B30;
+      border: none;
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      z-index: 5;
+    }
+
+    .message:hover .delete-msg-btn {
+      display: flex;
+    }
+
+    @media (hover: none) {
+      .message .delete-msg-btn {
+        display: flex;
+        opacity: 0.4;
+      }
+      .message .delete-msg-btn:active {
+        opacity: 1;
+      }
+    }
+
+    /* System message (date separator) */
+    .system-msg {
+      text-align: center;
+      font-size: 12px;
+      color: var(--ios-subtext);
+      margin: 16px 0 8px;
+    }
+
+    .system-msg span {
+      background: var(--ios-bg);
+      padding: 4px 12px;
+      border-radius: 10px;
+    }
+
+    /* Typing indicator */
+    .typing {
+      align-self: flex-start;
+      background: #E8E8EC;
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      padding: 12px 18px;
+      display: none;
+      gap: 4px;
+    }
+
+    .typing.active {
+      display: flex;
+    }
+
+    .typing span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ios-dark-gray);
+      animation: typing 1.4s infinite ease-in-out;
+    }
+
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing {
+      0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+      30% { opacity: 1; transform: translateY(-4px); }
+    }
+
+    /* Input Bar */
+    .input-bar {
+      position: fixed;
+      bottom: 48px;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding-bottom: var(--safe-bottom);
+      background: rgba(249, 249, 249, 0.94);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-top: 0.5px solid var(--ios-separator);
+    }
+
+    .input-inner {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      padding: 8px 12px;
+      min-height: 52px;
+    }
+
+    .attach-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      color: var(--ios-blue);
+      font-size: 20px;
+      transition: background 0.2s;
+    }
+
+    .attach-btn:active {
+      background: rgba(0, 122, 255, 0.1);
+    }
+
+    .text-input {
+      flex: 1;
+      border: none;
+      border-radius: 20px;
+      background: var(--ios-bg);
+      padding: 10px 16px;
+      font-size: 16px;
+      font-family: inherit;
+      color: var(--ios-text);
+      outline: none;
+      max-height: 100px;
+      resize: none;
+      line-height: 1.4;
+    }
+
+    .text-input::placeholder {
+      color: var(--ios-subtext);
+    }
+
+    .send-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: var(--ios-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      color: white;
+      font-size: 16px;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .send-btn:active {
+      opacity: 0.7;
+      transform: scale(0.92);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Image preview in input */
+    .image-preview {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px 0;
+    }
+
+    .image-preview.active {
+      display: flex;
+    }
+
+    .image-preview img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .image-preview .remove-img {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ios-dark-gray);
+      color: white;
+      border: none;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Welcome Message Card */
+    .welcome-msg {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8f5e9 100%);
+      border: 1px solid rgba(0, 122, 255, 0.12);
+      border-radius: 16px;
+      padding: 24px 20px 20px;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+      text-align: center;
+      animation: welcomeIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes welcomeIn {
+      0% { opacity: 0; transform: translateY(-20px) scale(0.92); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .wm-greeting {
+      font-size: 48px;
+      line-height: 1;
+      margin-bottom: 6px;
+      animation: greetPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+    }
+
+    @keyframes greetPop {
+      0% { opacity: 0; transform: scale(0) rotate(-10deg); }
+      70% { transform: scale(1.15) rotate(3deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    .wm-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ios-blue);
+      margin-bottom: 4px;
+      animation: fadeUp 0.5s ease 0.35s both;
+    }
+
+    .wm-subtitle {
+      font-size: 14px;
+      color: var(--ios-subtext);
+      margin-bottom: 4px;
+      animation: fadeUp 0.5s ease 0.5s both;
+    }
+
+    .wm-text {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+      animation: fadeUp 0.5s ease 0.65s both;
+    }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(12px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Language & Category Sections */
+    .wm-language-section, .wm-category-section {
+      margin-bottom: 14px;
+      padding: 14px;
+      background: rgba(249, 249, 249, 0.8);
+      border-radius: 14px;
+      border: 1px solid var(--ios-separator);
+      display: none;
+    }
+
+    .wm-language-section.show, .wm-category-section.show {
+      display: block;
+      animation: catIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes catIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .wm-language-title, .wm-category-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ios-text);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .wm-language-options, .wm-category-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .wm-lang-btn, .wm-cat-btn {
+      background: white;
+      border: 1px solid var(--ios-separator);
+      border-radius: 10px;
+      padding: 10px 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      text-align: left;
+      width: 100%;
+      font-size: 12px;
+      color: var(--ios-text);
+      font-weight: 500;
+      font-family: inherit;
+    }
+
+    .wm-lang-btn:active, .wm-cat-btn:active {
+      background: var(--ios-gray);
+    }
+
+    .wm-lang-btn.selected, .wm-cat-btn.selected {
+      background: rgba(0, 122, 255, 0.08);
+      border-color: var(--ios-blue);
+      color: var(--ios-blue);
+    }
+
+    .wm-lang-icon, .wm-cat-icon {
+      flex-shrink: 0;
+      display: flex;
+      font-size: 18px;
+    }
+
+    .wm-lang-label, .wm-cat-label {
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      background: rgba(249, 249, 249, 0.94);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-top: 0.5px solid var(--ios-separator);
+      padding: 6px 0;
+      padding-bottom: calc(6px + var(--safe-bottom, 0px));
+    }
+
+    .bottom-nav .nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      background: none;
+      border: none;
+      color: var(--ios-subtext);
+      font-size: 10px;
+      font-weight: 500;
+      padding: 4px 0;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .bottom-nav .nav-btn.active {
+      color: var(--ios-blue);
+    }
+
+    .bottom-nav .nav-btn svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+    }
+
+    .bottom-nav .nav-btn:active {
+      opacity: 0.7;
+    }
+
+    /* Profile Area */
+    .profile-area {
+      position: fixed;
+      top: calc(var(--safe-top) + 68px);
+      left: 0;
+      right: 0;
+      bottom: calc(48px + var(--safe-bottom, 0px));
+      display: none;
+      flex-direction: column;
+      padding: 20px 16px;
+      overflow-y: auto;
+      align-items: center;
+    }
+
+    .profile-area.active {
+      display: flex;
+    }
+
+    .prof-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--ios-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      border: 2px solid var(--ios-separator);
+    }
+
+    .prof-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .prof-name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 2px;
+      color: var(--ios-text);
+    }
+
+    .prof-badge {
+      font-size: 13px;
+      color: var(--ios-subtext);
+      margin-bottom: 24px;
+    }
+
+    .prof-card {
+      width: 100%;
+      max-width: 360px;
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 0.5px solid var(--ios-separator);
+    }
+
+    .prof-card .p-field {
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .prof-card .p-field:last-child {
+      margin-bottom: 0;
+    }
+
+    .prof-card .p-field label {
+      display: block;
+      font-size: 12px;
+      color: var(--ios-subtext);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .prof-card .p-field .p-val {
+      font-size: 15px;
+      color: var(--ios-text);
+      font-weight: 500;
+    }
+
+    .prof-card .p-field .p-val.hide {
+      display: none;
+    }
+
+    .prof-card .p-field .p-inp {
+      display: none;
+      width: 100%;
+      border: 1px solid var(--ios-separator);
+      border-radius: 8px;
+      color: var(--ios-text);
+      padding: 10px 12px;
+      font-size: 15px;
+      outline: none;
+      font-family: inherit;
+      background: var(--ios-bg);
+    }
+
+    .prof-card .p-field .p-inp:focus {
+      border-color: var(--ios-blue);
+    }
+
+    .prof-card .p-field .p-inp.show {
+      display: block;
+    }
+
+    .prof-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .prof-actions button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .prof-actions button:active {
+      opacity: 0.7;
+    }
+
+    .prof-actions .edit-btn {
+      background: var(--ios-blue);
+      color: white;
+    }
+
+    .prof-actions .logout-btn {
+      background: transparent;
+      color: #FF3B30;
+      border: 1px solid #FF3B30;
+    }
+
+    .prof-actions .clear-btn {
+      background: rgba(255, 59, 48, 0.08);
+      color: #FF3B30;
+    }
+
+    /* Side Menu */
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 400;
+      display: none;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .menu-overlay.open {
+      display: block;
+    }
+
+    .menu-panel {
+      position: fixed;
+      top: 0;
+      left: -290px;
+      width: 260px;
+      height: 100%;
+      background: white;
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 24px 16px;
+      box-shadow: 4px 0 30px rgba(0, 0, 0, 0.15);
+      padding-top: calc(24px + var(--safe-top, 0px));
+    }
+
+    .menu-panel.open {
+      left: 0;
+    }
+
+    .menu-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-shrink: 0;
+    }
+
+    .menu-header span {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ios-text);
+    }
+
+    .menu-close {
+      background: none;
+      border: none;
+      color: var(--ios-subtext);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .menu-sessions {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .menu-sessions .ms-title {
+      font-size: 12px;
+      color: var(--ios-subtext);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0 0 12px;
+      font-weight: 600;
+    }
+
+    .menu-session-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-bottom: 2px;
+    }
+
+    .menu-session-item:active {
+      background: var(--ios-gray);
+    }
+
+    .menu-session-item.active {
+      background: rgba(0, 122, 255, 0.08);
+    }
+
+    .menu-session-item .msi-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+      color: var(--ios-subtext);
+    }
+
+    .menu-session-item.active .msi-icon {
+      color: var(--ios-blue);
+    }
+
+    .menu-session-item .msi-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .menu-session-item .msi-info .msi-name {
+      font-size: 14px;
+      color: var(--ios-text);
+      font-weight: 500;
+    }
+
+    .menu-session-item .msi-info .msi-preview {
+      font-size: 12px;
+      color: var(--ios-subtext);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 110px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      animation: toastIn 0.3s ease;
+      z-index: 700;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* Loading spinner */
+    .loading-spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--ios-gray);
+      border-top-color: var(--ios-blue);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Empty state */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .empty-state .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .empty-state h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+      color: var(--ios-subtext);
+      line-height: 1.5;
+    }
+
+    /* ==================== LOGIN MODAL ==================== */
+    .login-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 900;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 24px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .login-overlay.active {
+      display: flex;
+    }
+
+    .login-box {
+      background: rgba(249, 249, 249, 0.96);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-radius: 20px;
+      padding: 32px 24px 24px;
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+      animation: modalIn 0.3s ease;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    @keyframes modalIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .login-box h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--ios-text);
+    }
+
+    .login-box p {
+      font-size: 14px;
+      color: var(--ios-subtext);
+      margin-bottom: 24px;
+    }
+
+    .login-box .field {
+      text-align: left;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .login-box .field label {
+      font-size: 13px;
+      color: var(--ios-subtext);
+      font-weight: 500;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .login-box .field input {
+      width: 100%;
+      border: 1px solid var(--ios-separator);
+      border-radius: 10px;
+      color: var(--ios-text);
+      padding: 14px 16px;
+      font-size: 16px;
+      outline: none;
+      font-family: inherit;
+      background: var(--ios-bg);
+      transition: border-color 0.2s;
+    }
+
+    .login-box .field input:focus {
+      border-color: var(--ios-blue);
+    }
+
+    .login-box .field input::placeholder {
+      color: var(--ios-subtext);
+    }
+
+    .login-box .next-btn {
+      width: 100%;
+      background: var(--ios-blue);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .login-box .next-btn:active {
+      opacity: 0.7;
+    }
+
+    .login-box .next-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    /* Login Animation */
+    .login-anim {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .login-anim.active {
+      display: flex;
+    }
+
+    .login-anim .spinner {
+      width: 56px;
+      height: 56px;
+      border: 4px solid rgba(0, 122, 255, 0.15);
+      border-top-color: var(--ios-blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .login-anim .log-txt {
+      font-size: 16px;
+      color: var(--ios-blue);
+      font-weight: 600;
+      margin-top: 20px;
+      animation: logPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes logPulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .login-anim .log-check {
+      display: none;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(52, 199, 89, 0.15);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-anim .log-check.show {
+      display: flex;
+      animation: checkPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes checkPop {
+      0% { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+
+    .login-anim .log-check svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--ios-green);
+    }
+
+    /* ==================== ONBOARDING POPUPS ==================== */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 800;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      flex-direction: column;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .popup-overlay.active {
+      display: flex;
+    }
+
+    .popup-box {
+      background: rgba(249, 249, 249, 0.96);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-radius: 20px;
+      padding: 32px 24px 24px;
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+      animation: modalIn 0.3s ease;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .popup-icon {
+      font-size: 40px;
+      margin-bottom: 8px;
+    }
+
+    .popup-box h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--ios-text);
+    }
+
+    .popup-box p {
+      font-size: 13px;
+      color: var(--ios-subtext);
+      margin-bottom: 20px;
+    }
+
+    .popup-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .popup-btn {
+      background: white;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 16px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ios-text);
+    }
+
+    .popup-btn:active {
+      background: var(--ios-gray);
+    }
+
+    .popup-btn.selected {
+      border-color: var(--ios-blue);
+      background: rgba(0, 122, 255, 0.06);
+    }
+
+    .popup-btn .popup-btn-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Scrollbar */
+    .chat-container::-webkit-scrollbar, .chat-area::-webkit-scrollbar, .menu-sessions::-webkit-scrollbar, .profile-area::-webkit-scrollbar {
+      width: 4px;
+    }
+    .chat-container::-webkit-scrollbar-track, .chat-area::-webkit-scrollbar-track, .menu-sessions::-webkit-scrollbar-track, .profile-area::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .chat-container::-webkit-scrollbar-thumb, .chat-area::-webkit-scrollbar-thumb, .menu-sessions::-webkit-scrollbar-thumb, .profile-area::-webkit-scrollbar-thumb {
+      background: var(--ios-separator);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <div class="nav">
+    <div class="status-bar">
+      <span class="status-dot offline" id="statusDot"></span>
+      <span id="statusText">Connecting...</span>
+    </div>
+    <div class="nav-inner">
+      <button class="menu-btn" id="menuBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <span class="nav-title">Support Chat</span>
+      <button class="profile-btn" id="profileBtn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ios-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat Messages -->
+  <div class="chat-container" id="chatContainer">
+    <div class="messages" id="messagesContainer">
+      <div class="welcome-msg" id="welcomeMsg">
+        <div class="wm-greeting">
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--ios-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 11V7a2 2 0 0 1 4 0v4"/><path d="M11 9V5a2 2 0 0 1 4 0v6"/><path d="M15 10V7a2 2 0 0 1 4 0v5"/><path d="M18 12v1a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3v-2"/><path d="M9 13.5V15a3 3 0 0 0 3 3h2a3 3 0 0 0 3-3v-1"/>
+          </svg>
+        </div>
+        <div class="wm-title">Welcome to Support!</div>
+        <div class="wm-subtitle">We're here to help you</div>
+        <div class="wm-text">Please select a language and issue category below, then send your message. Our team will respond shortly.</div>
+      </div>
+
+      <div class="wm-language-section" id="wmLanguageSection">
+        <div class="wm-language-title">Select Your Language</div>
+        <div class="wm-language-options">
+          <button class="wm-lang-btn" data-lang="english" onclick="selectLanguage(this, 'english')">
+            <span class="wm-lang-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+            <span class="wm-lang-label">English</span>
+          </button>
+          <button class="wm-lang-btn" data-lang="hinglish" onclick="selectLanguage(this, 'hinglish')">
+            <span class="wm-lang-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+            <span class="wm-lang-label">Hinglish</span>
+          </button>
+          <button class="wm-lang-btn" data-lang="urdu" onclick="selectLanguage(this, 'urdu')">
+            <span class="wm-lang-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+            <span class="wm-lang-label">Urdu</span>
+          </button>
+          <button class="wm-lang-btn" data-lang="indonesian" style="opacity:0.4;cursor:default;">
+            <span class="wm-lang-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-subtext)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+            <span class="wm-lang-label">Indonesian</span>
+          </button>
+          <button class="wm-lang-btn" data-lang="farsi" style="opacity:0.4;cursor:default;">
+            <span class="wm-lang-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-subtext)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+            <span class="wm-lang-label">Farsi</span>
+          </button>
+          <button class="wm-lang-btn" data-lang="kiswahili" style="opacity:0.4;cursor:default;">
+            <span class="wm-lang-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-subtext)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+            <span class="wm-lang-label">Kiswahili</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="wm-category-section" id="wmCategorySection">
+        <div class="wm-category-title">Select Your Issue Category</div>
+        <div class="wm-category-options">
+          <button class="wm-cat-btn" data-cat="deposit" onclick="selectCategory(this, 'deposit')">
+            <span class="wm-cat-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 7a5 5 0 0 0-10 0"/><path d="M7 17a5 5 0 0 0 10 0"/></svg></span>
+            <span class="wm-cat-label">Deposit Problem</span>
+          </button>
+          <button class="wm-cat-btn" data-cat="withdrawal" onclick="selectCategory(this, 'withdrawal')">
+            <span class="wm-cat-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+            <span class="wm-cat-label">Withdrawal Problem</span>
+          </button>
+          <button class="wm-cat-btn" data-cat="game" onclick="selectCategory(this, 'game')">
+            <span class="wm-cat-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/></svg></span>
+            <span class="wm-cat-label">Game Related</span>
+          </button>
+          <button class="wm-cat-btn" data-cat="email" onclick="selectCategory(this, 'email')">
+            <span class="wm-cat-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+            <span class="wm-cat-label">Email Verification</span>
+          </button>
+          <button class="wm-cat-btn" data-cat="account" onclick="selectCategory(this, 'account')">
+            <span class="wm-cat-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <span class="wm-cat-label">Account Problem</span>
+          </button>
+          <button class="wm-cat-btn" data-cat="other" onclick="selectCategory(this, 'other')">
+            <span class="wm-cat-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+            <span class="wm-cat-label">Other Issue</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Area -->
+  <div class="profile-area" id="profileArea">
+    <div class="prof-avatar" id="profAvatar"></div>
+    <div class="prof-name" id="profDisplayName">User</div>
+    <div class="prof-badge" id="profBadge">Loading...</div>
+    <div class="prof-card">
+      <div class="p-field">
+        <label>USER NAME</label>
+        <div class="p-val" id="profNameVal">-</div>
+        <input class="p-inp" id="profNameInp" type="text" maxlength="50">
+      </div>
+      <div class="p-field">
+        <label>UID</label>
+        <div class="p-val" id="profUidVal">-</div>
+        <input class="p-inp" id="profUidInp" type="text" maxlength="30">
+      </div>
+    </div>
+    <div class="prof-actions">
+      <button class="edit-btn" id="profEditBtn">Edit</button>
+      <button class="logout-btn" id="profLogoutBtn">Logout</button>
+    </div>
+    <div class="prof-actions" style="margin-top:8px;">
+      <button class="clear-btn" id="profClearBtn">Clear All Chats</button>
+    </div>
+  </div>
+
+  <!-- Input Bar -->
+  <div class="input-bar">
+    <div class="image-preview" id="imagePreview">
+      <img id="previewImg" src="" alt="preview">
+      <span id="previewName" style="font-size:13px;color:var(--ios-subtext);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">image.png</span>
+      <button class="remove-img" id="removeImg">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="input-inner">
+      <button class="attach-btn" id="attachBtn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--ios-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+        </svg>
+      </button>
+      <input type="file" id="fileInput" accept="image/*" style="display:none">
+      <textarea class="text-input" id="textInput" placeholder="Type a message..." rows="1"></textarea>
+      <button class="send-btn" id="sendBtn" disabled>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"/>
+          <polyline points="5 12 12 5 19 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="navChat" onclick="switchTab('chat')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>Chat</span>
+    </button>
+    <button class="nav-btn" id="navProfile" onclick="switchTab('profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <!-- Side Menu -->
+  <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+  <div class="menu-panel" id="menuPanel">
+    <div class="menu-header">
+      <span>Your Chats</span>
+      <button class="menu-close" onclick="toggleMenu()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="menu-sessions" id="menuSessions">
+      <div class="ms-title">Previous Conversations</div>
+      <div style="text-align:center;padding:20px;color:var(--ios-subtext);font-size:13px;">No previous chats yet</div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--ios-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+      <h2>Welcome to Support</h2>
+      <p>Enter your details to continue</p>
+      <div class="field">
+        <label>YOUR NAME</label>
+        <input type="text" id="loginName" placeholder="Enter your name" maxlength="50" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>YOUR UID</label>
+        <input type="text" id="loginUid" placeholder="Enter your UID" maxlength="30" autocomplete="off">
+      </div>
+      <button class="next-btn" id="loginNextBtn" onclick="handleLogin()">Next</button>
+    </div>
+  </div>
+
+  <!-- Login Animation -->
+  <div class="login-anim" id="loginAnimation">
+    <div class="spinner" id="animSpinner"></div>
+    <div class="log-check" id="animCheck">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="log-txt" id="animText">Logging in...</div>
+  </div>
+
+  <!-- Language Popup -->
+  <div class="popup-overlay" id="langPopup">
+    <div class="popup-box">
+      <div class="popup-icon"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="var(--ios-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+      <h2>Select Your Language</h2>
+      <p>Choose your preferred language</p>
+      <div class="popup-options">
+        <button class="popup-btn" onclick="selectLangFromPopup('english')">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span> English
+        </button>
+        <button class="popup-btn" onclick="selectLangFromPopup('hinglish')">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span> Hinglish
+        </button>
+        <button class="popup-btn" onclick="selectLangFromPopup('urdu')">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span> Urdu
+        </button>
+        <button class="popup-btn" style="opacity:0.4;cursor:default;">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--ios-subtext)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span> Indonesian
+        </button>
+        <button class="popup-btn" style="opacity:0.4;cursor:default;">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--ios-subtext)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span> Farsi
+        </button>
+        <button class="popup-btn" style="opacity:0.4;cursor:default;">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--ios-subtext)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span> Kiswahili
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Popup -->
+  <div class="popup-overlay" id="catPopup">
+    <div class="popup-box">
+      <div class="popup-icon"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="var(--ios-blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+      <h2>Select Issue Category</h2>
+      <p>Choose your issue type</p>
+      <div class="popup-options">
+        <button class="popup-btn" onclick="selectCatFromPopup('deposit')">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 7a5 5 0 0 0-10 0"/><path d="M7 17a5 5 0 0 0 10 0"/></svg></span> Deposit Problem
+        </button>
+        <button class="popup-btn" onclick="selectCatFromPopup('withdrawal')">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span> Withdrawal Problem
+        </button>
+        <button class="popup-btn" onclick="selectCatFromPopup('game')">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/></svg></span> Game Related
+        </button>
+        <button class="popup-btn" onclick="selectCatFromPopup('email')">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span> Email Verification
+        </button>
+        <button class="popup-btn" onclick="selectCatFromPopup('account')">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> Account Problem
+        </button>
+        <button class="popup-btn" onclick="selectCatFromPopup('other')">
+          <span class="popup-btn-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--ios-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> Other Issue
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

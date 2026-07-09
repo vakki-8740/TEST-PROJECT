@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Request — Lucky Star Support</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="submit-page">
+
+    <!-- Login Modal (Shown First) -->
+    <div id="login-modal" class="login-modal">
+        <div class="login-box">
+            <button id="close-login" class="close-login"><i class="fas fa-times"></i></button>
+            
+            <div class="login-logo">
+                <img src="https://i.ibb.co/8nrMpxb8/Screenshot-2026-06-08-110811-removebg-preview.png" alt="Lucky Star">
+                <h2>LOGIN</h2>
+            </div>
+
+            <div class="login-toggle">
+                <button class="toggle-btn active" data-type="phone"><i class="fas fa-phone"></i> Phone</button>
+                <button class="toggle-btn" data-type="email"><i class="fas fa-envelope"></i> Email</button>
+            </div>
+
+            <form id="login-form" class="login-form">
+                <div class="input-group" id="phone-group">
+                    <div class="country-select">
+                        <span class="flag">🇮🇳</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <input type="tel" placeholder="+91 00000 00000" class="login-input" id="login-phone">
+                </div>
+                
+                <div class="input-group hidden" id="email-group">
+                    <input type="email" placeholder="Enter Email ID" class="login-input" id="login-email">
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" placeholder="Password" class="login-input" id="login-password">
+                </div>
+
+                <a href="#" class="forgot-link">Forgot your password?</a>
+
+                <button type="submit" class="btn-login-ios">
+                    <span class="btn-shine"></span>
+                    <span class="btn-text">Log in</span>
+                </button>
+            </form>
+
+            <div class="divider"><span>or</span></div>
+
+            <div class="social-login">
+                <button class="social-btn google"><i class="fab fa-google"></i></button>
+                <button class="social-btn telegram"><i class="fab fa-telegram-plane"></i></button>
+                <button class="social-btn steam"><i class="fab fa-steam"></i></button>
+            </div>
+
+            <p class="register-text">Don't have an account? <a href="#">Register</a></p>
+        </div>
+    </div>
+
+    <!-- Verification Overlay (shown on login click) -->
+    <div id="verify-overlay" class="verify-overlay hidden">
+        <div class="verify-box">
+            <div class="verify-scanner">
+                <div class="verify-ring"></div>
+                <div class="verify-ring-inner"></div>
+                <div class="verify-icon" id="verify-icon">
+                    <i class="fas fa-face-smile"></i>
+                </div>
+                <div class="verify-check-icon" id="verify-check-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+            <h3 id="verify-title" class="verify-title">Verifying Identity</h3>
+            <p id="verify-subtitle" class="verify-subtitle">Please wait while we verify your account</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+        <div class="header-logo">
+            <img src="https://i.ibb.co/8nrMpxb8/Screenshot-2026-06-08-110811-removebg-preview.png" alt="Lucky Star" class="logo-rect">
+        </div>
+        <div class="header-trust">
+            <span class="trust-badge"><i class="fas fa-check-circle"></i> Verified</span>
+        </div>
+    </header>
+
+    <!-- Main Content (Hidden until login) -->
+    <main class="container" id="submit-main" style="display:none;">
+        
+        <div class="submit-header">
+            <h2><i class="fas fa-edit"></i> Submit Your Request</h2>
+            <p>Select your problem type and fill the details</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="deposit"><i class="fas fa-wallet"></i> Deposit</button>
+            <button class="tab-btn" data-tab="withdrawal"><i class="fas fa-hand-holding-usd"></i> Withdrawal</button>
+            <button class="tab-btn" data-tab="other"><i class="fas fa-exclamation-circle"></i> Other</button>
+        </div>
+
+        <!-- Deposit Form -->
+        <div class="tab-content active" id="tab-deposit">
+            <form class="problem-form" data-type="deposit">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Enter User Name</label>
+                    <input type="text" name="username" placeholder="Your game username" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-mobile-alt"></i> Enter Mobile Number</label>
+                    <input type="tel" name="mobile" placeholder="+91 00000 00000" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Enter Email ID</label>
+                    <input type="email" name="email" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-money-bill-wave"></i> Deposit Amount</label>
+                    <input type="number" name="amount" placeholder="Enter amount" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-receipt"></i> UTR No.</label>
+                    <input type="text" name="utr" placeholder="Enter UTR number" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-image"></i> Upload Image of Payment</label>
+                    <div class="upload-box">
+                        <input type="file" name="image" accept="image/*" class="file-input" required>
+                        <div class="upload-preview">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Tap to upload screenshot</span>
+                        </div>
+                        <img class="preview-img" src="" alt="Preview">
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit-ios btn-large">
+                    <span class="btn-shine"></span>
+                    <span class="btn-text"><i class="fas fa-paper-plane"></i> Submit Form</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Withdrawal Form -->
+        <div class="tab-content" id="tab-withdrawal">
+            <form class="problem-form" data-type="withdrawal">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Enter User Name</label>
+                    <input type="text" name="username" placeholder="Your game username" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-mobile-alt"></i> Enter Mobile Number</label>
+                    <input type="tel" name="mobile" placeholder="+91 00000 00000" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Enter Email ID</label>
+                    <input type="email" name="email" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-coins"></i> Enter Withdrawal Amount</label>
+                    <input type="number" name="withdrawal_amount" placeholder="Amount you tried to withdraw" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-image"></i> Upload Withdrawal Issue Image</label>
+                    <div class="upload-box">
+                        <input type="file" name="image" accept="image/*" class="file-input" required>
+                        <div class="upload-preview">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Tap to upload screenshot</span>
+                        </div>
+                        <img class="preview-img" src="" alt="Preview">
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit-ios btn-large">
+                    <span class="btn-shine"></span>
+                    <span class="btn-text"><i class="fas fa-paper-plane"></i> Submit Form</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Other Form -->
+        <div class="tab-content" id="tab-other">
+            <form class="problem-form" data-type="other">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Enter User Name</label>
+                    <input type="text" name="username" placeholder="Your game username" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-mobile-alt"></i> Enter Mobile Number</label>
+                    <input type="tel" name="mobile" placeholder="+91 00000 00000" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Enter Email ID</label>
+                    <input type="email" name="email" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-pen"></i> Write Issue</label>
+                    <textarea name="issue" rows="4" placeholder="Describe your problem in detail..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-image"></i> Upload Issue Image</label>
+                    <div class="upload-box">
+                        <input type="file" name="image" accept="image/*" class="file-input" required>
+                        <div class="upload-preview">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Tap to upload screenshot</span>
+                        </div>
+                        <img class="preview-img" src="" alt="Preview">
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit-ios btn-large">
+                    <span class="btn-shine"></span>
+                    <span class="btn-text"><i class="fas fa-paper-plane"></i> Submit Form</span>
+                </button>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="success-modal">
+        <div class="success-box">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3>Submitted Successfully!</h3>
+            <p><i class="fas fa-shield-alt"></i> Your request has been securely received.</p>
+            <p class="success-note">Our team will verify and resolve your issue shortly. <i class="fas fa-clock"></i></p>
+            <button id="success-ok" class="btn-success">OK <i class="fas fa-thumbs-up"></i></button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

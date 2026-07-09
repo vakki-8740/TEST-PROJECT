@@ -1,0 +1,120 @@
+/* ===== IOS-STYLE DESIGN SYSTEM ===== */
+:root {
+  --neon-yellow: #D8F529;
+  --dark-black: #0F1012;
+  --dark-gray-card: #1A1C20;
+  --white-text: #FFFFFF;
+  --blue-button: #3FA9F5;
+  --red-button: #FF3B30; /* iOS Red */
+  --red-button-hover: #FF5A54;
+  
+  --ios-radius: 22px;
+  --ios-radius-sm: 14px;
+  --ios-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --ios-shadow-hover: 0 12px 48px rgba(63, 169, 245, 0.25);
+  --ios-shadow-red: 0 12px 48px rgba(255, 59, 48, 0.35);
+  --ios-blur: blur(20px);
+  --ios-transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --font-stack: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-stack);
+  background: var(--dark-black);
+  color: var(--white-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ios-card {
+  background: var(--dark-gray-card);
+  border-radius: var(--ios-radius);
+  padding: 28px;
+  box-shadow: var(--ios-shadow);
+  backdrop-filter: var(--ios-blur);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: var(--ios-transition);
+}
+.ios-card:hover { transform: translateY(-2px); box-shadow: var(--ios-shadow-hover); }
+
+.ios-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15, 16, 18, 0.92);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px 20px;
+}
+.header-content { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.logo { width: 140px; height: auto; border-radius: 12px; }
+.ios-header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.3px; }
+.tagline { color: var(--neon-yellow); font-size: 0.9rem; font-weight: 500; opacity: 0.95; }
+
+.hero { max-width: 700px; margin: 32px auto 24px; text-align: center; }
+.hero h2 { font-size: 1.8rem; margin-bottom: 16px; font-weight: 700; }
+.hero p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 28px; max-width: 550px; margin-left: auto; margin-right: auto; }
+
+/* ===== BUTTONS ===== */
+.ios-button {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--blue-button); color: #000; font-weight: 700; font-size: 1.1rem;
+  padding: 18px 42px; border-radius: 18px; text-decoration: none; border: none; cursor: pointer;
+  box-shadow: 0 6px 24px rgba(63, 169, 245, 0.4); transition: var(--ios-transition); letter-spacing: 0.3px;
+}
+.ios-button:hover { transform: scale(1.03); box-shadow: 0 10px 36px rgba(63, 169, 245, 0.65); background: #4db8ff; }
+.ios-button:active { transform: scale(0.98); }
+
+/* 🔴 RED BUTTON (UPDATED) */
+.ios-button-red {
+  background: var(--red-button); color: #FFFFFF;
+  box-shadow: 0 6px 24px rgba(255, 59, 48, 0.45);
+}
+.ios-button-red:hover { background: var(--red-button-hover); box-shadow: var(--ios-shadow-red); }
+
+.hint { margin-top: 20px; font-size: 0.9rem; opacity: 0.75; font-weight: 500; }
+
+.guidance { max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; }
+.section-title { text-align: center; margin-bottom: 28px; }
+.section-title h3 { font-size: 1.6rem; margin-bottom: 8px; }
+.section-title p { opacity: 0.85; font-size: 1.05rem; }
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.guide-card { display: flex; flex-direction: column; gap: 16px; }
+.card-icon { font-size: 2.2rem; margin-bottom: 4px; }
+.guide-card h4 { font-size: 1.3rem; font-weight: 700; color: var(--neon-yellow); }
+.checklist { list-style: none; padding-left: 4px; }
+.checklist li { padding: 6px 0; font-size: 0.95rem; opacity: 0.92; display: flex; align-items: center; gap: 8px; }
+.checklist li::before { content: "•"; color: var(--neon-yellow); font-weight: bold; font-size: 1.4rem; line-height: 0.5; }
+.guide-img { width: 100%; border-radius: var(--ios-radius-sm); margin-top: 8px; border: 1px solid rgba(255,255,255,0.1); transition: var(--ios-transition); }
+.guide-img:hover { transform: scale(1.02); border-color: var(--blue-button); }
+
+.visual-help { max-width: 1100px; margin: 0 auto 40px; padding: 0 20px; text-align: center; }
+.visual-help h3 { font-size: 1.5rem; margin-bottom: 12px; }
+.visual-help p { opacity: 0.85; margin-bottom: 24px; font-size: 1.05rem; }
+.image-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 12px; }
+.gallery-img { width: 100%; border-radius: var(--ios-radius-sm); border: 1px solid rgba(255,255,255,0.12); transition: var(--ios-transition); cursor: pointer; }
+.gallery-img:hover { transform: scale(1.04); border-color: var(--neon-yellow); box-shadow: 0 8px 32px rgba(216, 245, 41, 0.15); }
+
+.trust-section { max-width: 900px; margin: 0 auto 50px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+.trust-badge { display: flex; align-items: center; gap: 16px; padding: 20px; }
+.badge-icon { font-size: 1.8rem; min-width: 40px; text-align: center; }
+.trust-badge strong { display: block; font-size: 1.05rem; margin-bottom: 4px; color: var(--neon-yellow); }
+.trust-badge p { font-size: 0.9rem; opacity: 0.85; }
+
+.ios-footer { text-align: center; padding: 32px 20px 50px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(15, 16, 18, 0.95); margin-top: 20px; }
+.ios-footer p { opacity: 0.75; font-size: 0.9rem; margin: 6px 0; }
+.footer-note { color: var(--neon-yellow) !important; font-weight: 500; font-size: 0.85rem !important; margin-top: 12px !important; }
+
+@media (max-width: 768px) {
+  .ios-header h1 { font-size: 1.25rem; }
+  .hero h2 { font-size: 1.55rem; }
+  .hero p { font-size: 1rem; }
+  .ios-button { width: 100%; padding: 16px; font-size: 1.05rem; }
+  .ios-card { padding: 22px; }
+  .guide-card { padding: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+.ios-button:focus-visible, a:focus-visible { outline: 3px solid var(--neon-yellow); outline-offset: 3px; }

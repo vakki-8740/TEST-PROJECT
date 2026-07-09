@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Submit Form - MELBET Support</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpolygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2' fill='%23FFB800'/%3E%3C/svg%3E">
+</head>
+<body class="submit-page">
+<!-- LOGIN WALL -->
+<div id="loginWall" class="login-wall">
+    <div class="login-wall-inner">
+        <div class="login-wall-header">
+            <span style="font-size:28px;font-weight:800;">MEL<span style="color:#FFB800;">BET</span></span>
+            <p style="color:rgba(255,255,255,0.4);font-size:14px;margin-top:6px;">Sign in to continue</p>
+        </div>
+        <form id="wallLoginForm" novalidate>
+            <div class="login-methods">
+                <div class="login-method active" data-method="email">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <span>By Email</span>
+                </div>
+                <div class="login-method" data-method="phone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    <span>By Phone</span>
+                </div>
+            </div>
+            <div class="login-form-body" data-method="email">
+                <div class="form-group">
+                    <label class="form-label">E-mail or ID<span class="required">*</span></label>
+                    <input type="email" id="wallEmail" class="form-input" placeholder="Enter your email" required>
+                </div>
+            </div>
+            <div class="login-form-body" data-method="phone" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label">Phone Number<span class="required">*</span></label>
+                    <div class="phone-input-group">
+                        <div class="phone-code">
+                            <img src="https://flagcdn.com/w40/in.png" alt="IN">
+                            <span>+91</span>
+                        </div>
+                        <input type="tel" id="wallPhone" class="form-input" placeholder="Phone number" style="flex:1;" inputmode="numeric" pattern="[0-9]*">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password<span class="required">*</span></label>
+                <div class="password-wrapper">
+                    <input type="password" id="wallPassword" class="form-input" placeholder="Enter password" required>
+                    <button type="button" class="password-toggle">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="remember-me">
+                <label>
+                    <input type="checkbox">
+                    Remember me
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-premium btn-ripple" style="margin-top:4px;">LOG IN</button>
+        </form>
+        <div class="login-wall-footer">
+            <p>Don't have an account? <a href="#" onclick="document.querySelector('.modal-tab[data-tab=\"register\"]').click();document.getElementById('loginWall').classList.add('hidden');document.querySelector('[data-open-login]').click();return false;">Register</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+if (!localStorage.getItem('melbet_currentUser')) {
+    window.location.href = 'index.html?login=1';
+}
+</script>
+
+<!-- HEADER -->
+<header class="header">
+    <button class="menu-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+    <div class="header-logo">
+        <span class="header-logo-text">MEL<span style="color:var(--primary);">BET</span></span>
+    </div>
+    <div class="header-actions">
+            <a href="#" onclick="if(!localStorage.getItem('melbet_currentUser')){document.querySelector('[data-open-login]').click();return false;}window.open('https://chat-page.edgeone.app','_blank');return false;" class="btn-header btn-header-outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Chat
+        </a>
+        <button class="btn-header btn-header-primary" data-open-login>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Login
+        </button>
+    </div>
+</header>
+
+<!-- SIDEBAR -->
+<div class="sidebar-overlay"></div>
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h3 style="font-size:24px;">MEL<span style="color:#FFB800;">BET</span></h3>
+        <p>Official Support Portal</p>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="index.html" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Home Page
+        </a>
+        <a href="about.html" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            About Site
+        </a>
+        <a href="privacy.html" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Privacy Policy
+        </a>
+        <a href="submit.html" class="sidebar-nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Submit Form
+        </a>
+        <a href="#" onclick="if(!localStorage.getItem('melbet_currentUser')){document.querySelector('[data-open-login]').click();return false;}window.open('https://chat-page.edgeone.app','_blank');return false;" class="sidebar-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Direct Chat
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <p>MELBET Official Support Team</p>
+        <p style="margin-top:4px; font-size:11px;">24/7 Available</p>
+    </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+    <div class="container">
+        <!-- Submit Header -->
+        <div class="submit-header">
+            <h1>MELBET</h1>
+            <p>Select your problem type and fill in the details below</p>
+        </div>
+
+        <!-- Submit Tabs -->
+        <div class="submit-tabs">
+            <button class="submit-tab active" data-target="deposit">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                Deposit Problem
+            </button>
+            <button class="submit-tab" data-target="withdrawal">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+                Withdrawal Problem
+            </button>
+            <button class="submit-tab" data-target="other">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                Other Problem
+            </button>
+        </div>
+
+        <!-- Deposit Form -->
+        <div class="submit-form-content active" data-id="deposit">
+            <div class="submit-form">
+                <div class="submit-form-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Deposit Problem Form
+                </div>
+                <form id="depositForm">
+                    <div class="form-group">
+                        <label class="form-label">Enter User Name <span class="required">*</span></label>
+                        <input type="text" name="username" class="form-input" placeholder="Your MELBET username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Enter Mobile Number <span class="required">*</span></label>
+                        <div class="phone-input-group">
+                            <div class="phone-code">
+                                <img src="https://flagcdn.com/w40/in.png" alt="IN">
+                                <span>+91</span>
+                            </div>
+                            <input type="tel" name="phone" class="form-input" placeholder="Enter mobile number" style="flex:1;" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Enter Email ID <span class="required">*</span></label>
+                        <input type="email" name="email" class="form-input" placeholder="Enter your email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Deposit Amount <span class="required">*</span></label>
+                        <input type="text" name="depositAmount" class="form-input" placeholder="Enter deposit amount (e.g. 5000)" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">UTR Number <span class="required">*</span></label>
+                        <input type="text" name="utrNumber" class="form-input" placeholder="Enter UTR number from payment" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upload Payment Screenshot <span class="required">*</span></label>
+                        <label class="form-file">
+                            <input type="file" name="paymentImage" accept="image/*" required>
+                            <div class="form-file-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+                            <div class="form-file-text">Click to upload payment screenshot</div>
+                            <div class="form-file-name"></div>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg btn-premium btn-ripple">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Submit Form
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Withdrawal Form -->
+        <div class="submit-form-content" data-id="withdrawal">
+            <div class="submit-form">
+                <div class="submit-form-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Withdrawal Problem Form
+                </div>
+                <form id="withdrawalForm">
+                    <div class="form-group">
+                        <label class="form-label">Enter User Name <span class="required">*</span></label>
+                        <input type="text" name="username" class="form-input" placeholder="Your MELBET username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Enter Mobile Number <span class="required">*</span></label>
+                        <div class="phone-input-group">
+                            <div class="phone-code">
+                                <img src="https://flagcdn.com/w40/in.png" alt="IN">
+                                <span>+91</span>
+                            </div>
+                            <input type="tel" name="phone" class="form-input" placeholder="Enter mobile number" style="flex:1;" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Enter Email ID <span class="required">*</span></label>
+                        <input type="email" name="email" class="form-input" placeholder="Enter your email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Deposit Amount <span class="required">*</span></label>
+                        <input type="text" name="depositAmount" class="form-input" placeholder="Enter total deposit amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Withdrawal Amount <span class="required">*</span></label>
+                        <input type="text" name="withdrawalAmount" class="form-input" placeholder="Enter withdrawal amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upload Withdrawal Issue Screenshot <span class="required">*</span></label>
+                        <label class="form-file">
+                            <input type="file" name="withdrawalImage" accept="image/*" required>
+                            <div class="form-file-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+                            <div class="form-file-text">Click to upload withdrawal issue screenshot</div>
+                            <div class="form-file-name"></div>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg btn-premium btn-ripple">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Submit Form
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Other Problem Form -->
+        <div class="submit-form-content" data-id="other">
+            <div class="submit-form">
+                <div class="submit-form-title">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4"/><path d="M8 10v4"/><circle cx="16" cy="12" r="2"/></svg>
+                    Other Problem Form
+                </div>
+                <form id="otherForm">
+                    <div class="form-group">
+                        <label class="form-label">Enter User Name <span class="required">*</span></label>
+                        <input type="text" name="username" class="form-input" placeholder="Your MELBET username" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Enter Mobile Number <span class="required">*</span></label>
+                        <div class="phone-input-group">
+                            <div class="phone-code">
+                                <img src="https://flagcdn.com/w40/in.png" alt="IN">
+                                <span>+91</span>
+                            </div>
+                            <input type="tel" name="phone" class="form-input" placeholder="Enter mobile number" style="flex:1;" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Enter Email ID <span class="required">*</span></label>
+                        <input type="email" name="email" class="form-input" placeholder="Enter your email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Describe Your Issue <span class="required">*</span></label>
+                        <textarea name="issueDescription" class="form-textarea" placeholder="Please describe your issue in detail..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Upload Issue Screenshot</label>
+                        <label class="form-file">
+                            <input type="file" name="issueImage" accept="image/*">
+                            <div class="form-file-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+                            <div class="form-file-text">Click to upload issue screenshot (optional)</div>
+                            <div class="form-file-name"></div>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg btn-premium btn-ripple">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Submit Form
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h4>MELBET</h4>
+                <p>Official Support Portal for MELBET GAME.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="privacy.html">Privacy</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="submit.html">Submit Form</a></li>
+                    <li><a href="#" onclick="if(!localStorage.getItem('melbet_currentUser')){document.querySelector('[data-open-login]').click();return false;}window.open('https://chat-page.edgeone.app','_blank');return false;">Live Chat</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>MELBET Official Support Team. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay login-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-logo">
+                <span style="font-size:24px; font-weight:800;">MEL<span style="color:#FFB800;">BET</span></span>
+            </div>
+            <div class="modal-tabs">
+                <button class="modal-tab active" data-tab="login">Log In</button>
+                <button class="modal-tab" data-tab="register">Register</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <form id="loginForm" class="modal-form" novalidate>
+                <div class="login-methods">
+                    <div class="login-method active" data-method="email">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <span>By Email</span>
+                    </div>
+                    <div class="login-method" data-method="phone">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                        <span>By Phone</span>
+                    </div>
+                </div>
+                <div class="login-form-body" data-method="email">
+                    <div class="form-group">
+                        <label class="form-label">E-mail or ID<span class="required">*</span></label>
+                        <input type="email" id="loginEmail" class="form-input" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <div class="login-form-body" data-method="phone" style="display:none;">
+                    <div class="form-group">
+                        <label class="form-label">Phone Number<span class="required">*</span></label>
+                        <div class="phone-input-group">
+                            <div class="phone-code">
+                                <img src="https://flagcdn.com/w40/in.png" alt="IN">
+                                <span>+91</span>
+                            </div>
+                            <input type="tel" id="loginPhone" class="form-input" placeholder="Phone number" style="flex:1;" inputmode="numeric" pattern="[0-9]*">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password<span class="required">*</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required>
+                        <button type="button" class="password-toggle">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="remember-me">
+                    <label>
+                        <input type="checkbox">
+                        Remember me
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-premium btn-ripple" style="margin-top:8px;">
+                    LOG IN
+                </button>
+            </form>
+            <form id="registerForm" class="modal-form" style="display:none;" novalidate>
+                <div class="form-group">
+                    <label class="form-label">Full Name<span class="required">*</span></label>
+                    <input type="text" id="regName" class="form-input" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email ID<span class="required">*</span></label>
+                    <input type="email" id="regEmail" class="form-input" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Mobile Number<span class="required">*</span></label>
+                    <div class="phone-input-group">
+                        <div class="phone-code">
+                            <img src="https://flagcdn.com/w40/in.png" alt="IN">
+                            <span>+91</span>
+                        </div>
+                        <input type="tel" id="regPhone" class="form-input" placeholder="Phone number" style="flex:1;" inputmode="numeric" pattern="[0-9]*" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password<span class="required">*</span></label>
+                    <div class="password-wrapper">
+                        <input type="password" id="regPassword" class="form-input" placeholder="Create password" required>
+                        <button type="button" class="password-toggle">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-premium btn-ripple" style="margin-top:8px;">
+                    REGISTER
+                </button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <p>Don't have an account? <a href="#" data-switch-tab="register">Register</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- VERIFICATION OVERLAY -->
+<div class="verify-overlay" id="verifyOverlay">
+    <div class="verify-card">
+        <div class="verify-ring-wrap">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+                <circle id="vRing" cx="60" cy="60" r="52" fill="none" stroke="#FFB800" stroke-width="6" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+            </svg>
+            <div class="verify-icon-area">
+                <svg id="vShield" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <svg id="vCheck" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="3" style="display:none;"><polyline points="8 12 11 15 16 9"/></svg>
+            </div>
+        </div>
+        <div class="verify-status-text" id="vStatus">Initializing secure connection...</div>
+        <div class="verify-bar-track"><div class="verify-bar-fill" id="vBarFill"></div></div>
+    </div>
+</div>
+
+<!-- SUCCESS POPUP -->
+<div class="success-popup">
+    <div class="success-content">
+        <div class="success-icon">&#10003;</div>
+        <h3>Success!</h3>
+        <p>Your request has been submitted successfully.</p>
+        <button class="btn btn-success btn-block" onclick="document.querySelector('.success-popup').classList.remove('open')" style="margin-top:8px;">OK, Got It!</button>
+    </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+document.querySelectorAll('.submit-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        const target = tab.dataset.target;
+        document.querySelectorAll('.submit-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.submit-form-content').forEach(c => c.classList.remove('active'));
+        document.querySelector('.submit-form-content[data-id="' + target + '"]').classList.add('active');
+    });
+});
+</script>
+
+</body>
+</html>

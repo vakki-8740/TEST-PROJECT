@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BATERYBET — Official Support Center</title>
+    <link rel="icon" href="https://i.ibb.co/8nv5mdJJ/image.webp" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --accent-light: #ff6b6b;
+            --gold: #f5a623;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8d1;
+            --success: #00d9a5;
+            --warning: #f5a623;
+            --danger: #e94560;
+            --ios-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 15, 26, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            flex-shrink: 1;
+        }
+
+        .logo-section img {
+            width: auto;
+            height: 42px;
+            border-radius: 0;
+            object-fit: contain;
+            display: block;
+            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.3);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-sub {
+            font-size: 10px;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .hamburger {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 2001;
+            flex-shrink: 0;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background: var(--text-secondary);
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .hamburger:hover {
+            background: rgba(233, 69, 96, 0.15);
+            border-color: rgba(233, 69, 96, 0.3);
+        }
+
+        .hamburger:hover span {
+            background: var(--accent-light);
+        }
+
+        .hamburger:active {
+            transform: scale(0.92);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 290px;
+            height: 100vh;
+            background: rgba(15, 15, 26, 0.97);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-right: 1px solid var(--glass-border);
+            z-index: 2000;
+            padding: 0;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .mobile-menu.open {
+            left: 0;
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s;
+        }
+
+        .mobile-menu-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 20px 16px;
+            padding-top: calc(env(safe-area-inset-top, 44px) + 16px);
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(233, 69, 96, 0.05);
+        }
+
+        .mobile-menu-title {
+            font-size: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-light) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .mobile-menu-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .mobile-menu-close:hover {
+            background: rgba(233, 69, 96, 0.15);
+            color: var(--accent-light);
+            transform: rotate(90deg);
+        }
+
+        .mobile-menu-body {
+            flex: 1;
+            padding: 12px 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .mobile-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            border-radius: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateX(-20px);
+            position: relative;
+        }
+
+        .mobile-menu.open .mobile-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .mobile-menu.open .mobile-link:nth-child(1) { transition-delay: 0.05s; }
+        .mobile-menu.open .mobile-link:nth-child(2) { transition-delay: 0.10s; }
+        .mobile-menu.open .mobile-link:nth-child(3) { transition-delay: 0.15s; }
+        .mobile-menu.open .mobile-link:nth-child(4) { transition-delay: 0.20s; }
+        .mobile-menu.open .mobile-link:nth-child(5) { transition-delay: 0.25s; }
+        .mobile-menu.open .mobile-link:nth-child(6) { transition-delay: 0.30s; }
+
+        .mobile-link:hover {
+            background: var(--glass);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        .mobile-link i {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .mobile-link .link-badge {
+            margin-left: auto;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-weight: 700;
+        }
+
+        .mobile-menu-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--glass-border);
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn-ios {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(233, 69, 96, 0.35);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-ios::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-ios:hover::before {
+            left: 100%;
+        }
+
+        .btn-ios:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(233, 69, 96, 0.5);
+        }
+
+        .btn-ios:active {
+            transform: scale(0.96);
+        }
+
+        .btn-ios svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .hero {
+            padding: 140px 24px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(135deg, var(--accent-light) 0%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 36px;
+            max-width: 480px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 36px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--accent-light);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 8px 24px rgba(233, 69, 96, 0.4);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(233, 69, 96, 0.55);
+        }
+
+        .btn-secondary {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+            padding: 16px 36px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-image-main {
+            width: 100%;
+            max-width: 520px;
+            border-radius: 24px;
+            box-shadow: var(--ios-shadow);
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+        }
+
+        .hero-image-main img {
+            width: 100%;
+            display: block;
+            border-radius: 24px;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--ios-shadow);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-card.card-1 {
+            top: -20px;
+            right: -20px;
+            animation-delay: 0s;
+        }
+
+        .floating-card.card-2 {
+            bottom: 40px;
+            left: -30px;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .floating-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .floating-icon.green { background: rgba(0, 217, 165, 0.2); color: var(--success); }
+        .floating-icon.gold { background: rgba(245, 166, 35, 0.2); color: var(--gold); }
+
+        .floating-text {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .floating-sub {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .trust-section {
+            padding: 40px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .trust-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 28px 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .trust-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(233, 69, 96, 0.3);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .trust-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .trust-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .trust-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .guides-section {
+            padding: 80px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: rgba(233, 69, 96, 0.15);
+            color: var(--accent-light);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 17px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .guides-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .guide-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .guide-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.3);
+            border-color: rgba(233, 69, 96, 0.25);
+        }
+
+        .guide-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .guide-card:hover::after {
+            opacity: 1;
+        }
+
+        .guide-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .guide-body {
+            padding: 28px;
+        }
+
+        .guide-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .badge-deposit {
+            background: rgba(0, 217, 165, 0.15);
+            color: var(--success);
+        }
+
+        .badge-withdrawal {
+            background: rgba(245, 166, 35, 0.15);
+            color: var(--gold);
+        }
+
+        .guide-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .guide-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .details-list {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .details-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .details-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(233, 69, 96, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .process-section {
+            padding: 60px 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 50px;
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .process-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 36px;
+            right: -24px;
+            width: 48px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        .step-number {
+            width: 72px;
+            height: 72px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 24px rgba(233, 69, 96, 0.35);
+            position: relative;
+        }
+
+        .step-number::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, var(--accent), transparent);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .cta-banner {
+            padding: 80px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cta-card {
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.2) 0%, rgba(22, 33, 62, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            border-radius: 32px;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .cta-text {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            color: var(--primary);
+            padding: 18px 48px;
+            border-radius: 18px;
+            font-size: 17px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.15);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 48px rgba(255, 255, 255, 0.25);
+        }
+
+        .cta-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 50px 24px 30px;
+            margin-top: 40px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .footer-brand img {
+            width: auto;
+            height: 36px;
+            border-radius: 0;
+            object-fit: contain;
+            display: block;
+        }
+
+        .footer-brand-text {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .footer-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 300px;
+        }
+
+        .footer-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-light);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+            }
+            .hero-content p {
+                margin: 0 auto 36px;
+            }
+            .hero-stats {
+                justify-content: center;
+            }
+            .hero-cta {
+                justify-content: center;
+            }
+            .hero-visual {
+                order: -1;
+            }
+            .trust-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .guides-grid {
+                grid-template-columns: 1fr;
+            }
+            .process-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .process-step:not(:last-child)::after {
+                display: none;
+            }
+            .footer-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .logo-section img {
+                height: 36px;
+            }
+            .logo-text {
+                font-size: 17px;
+            }
+            .logo-sub {
+                font-size: 9px;
+            }
+            .hero-content h1 {
+                font-size: 36px;
+            }
+            .section-title {
+                font-size: 28px;
+            }
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .footer-desc {
+                margin: 0 auto;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+            .floating-card {
+                display: none;
+            }
+            .mobile-menu {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .logo-section img {
+                height: 32px;
+            }
+            .logo-text {
+                font-size: 15px;
+            }
+            .logo-sub {
+                display: none;
+            }
+            .hamburger {
+                width: 36px;
+                height: 36px;
+            }
+            .hamburger span {
+                width: 16px;
+            }
+            .nav-container {
+                padding: 0 14px;
+                gap: 8px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="logo-section">
+                <img src="https://i.ibb.co/8nv5mdJJ/image.webp" alt="BATERYBET Logo">
+                <div>
+                    <div class="logo-text">BATERYBET</div>
+                    <div class="logo-sub">Official Support</div>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#guides">Support Guides</a>
+                <a href="#process">How It Works</a>
+                <a href="requests.html" class="btn-ios" style="background:linear-gradient(135deg,#AF52DE,#c084fc);box-shadow:0 4px 16px rgba(175,82,222,0.35);">
+                    <i class="fas fa-inbox" style="font-size:14px;"></i> My Requests
+                </a>
+                <a href="submit.html" class="btn-ios" style="background:linear-gradient(135deg,#007AFF,#00A2FF);box-shadow:0 4px 16px rgba(0,122,255,0.35);">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Submit Problem
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu-overlay" id="mobileOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <span class="mobile-menu-title">BATERYBET</span>
+            <button class="mobile-menu-close" id="mobileCloseBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+        <div class="mobile-menu-body">
+            <a class="mobile-link" href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a class="mobile-link" href="index.html#guides"><i class="fas fa-book"></i> Support Guides</a>
+            <a class="mobile-link" href="index.html#process"><i class="fas fa-sync"></i> How It Works</a>
+            <a class="mobile-link" href="requests.html" style="color:#AF52DE;"><i class="fas fa-inbox"></i> My Requests <span class="link-badge" style="background:rgba(175,82,222,0.15);color:#AF52DE;">View</span></a>
+            <a class="mobile-link" href="submit.html" style="color:#007AFF;"><i class="fas fa-plus-circle"></i> Submit Problem <span class="link-badge" style="background:rgba(0,122,255,0.15);color:#007AFF;">New</span></a>
+            <a class="mobile-link" href="unblock.html"><i class="fas fa-lock"></i> Unlock Withdrawal</a>
+        </div>
+        <div class="mobile-menu-footer">BATERYBET Support v1.0</div>
+    </div>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>We Solve Your <span>Game Problems</span> Instantly</h1>
+            <p>Official support center for BATERYBET players. Facing deposit or withdrawal issues? Our dedicated team is here to resolve your problems within minutes.</p>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <div class="stat-label">Support</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15min</span>
+                    <div class="stat-label">Avg. Response</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">99%</span>
+                    <div class="stat-label">Solved Rate</div>
+                </div>
+            </div>
+
+            <div class="hero-cta">
+                <a href="submit.html" class="btn-primary" style="background:linear-gradient(135deg,#007AFF,#00A2FF);box-shadow:0 8px 24px rgba(0,122,255,0.4);">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Submit Problem
+                </a>
+                <a href="unblock.html" class="btn-primary" style="background:linear-gradient(135deg,#e94560,#ff6b6b);box-shadow:0 8px 24px rgba(233,69,96,0.4);">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                    Unlock Withdrawal
+                </a>
+                <a href="https://chat-page.edgeone.app" class="btn-secondary" style="background:var(--success);color:#000;border-color:var(--success);" target="_blank">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                    DIRECT CHAT
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-image-main">
+                <img src="https://i.ibb.co/Cpfr5t8f/photo-2026-05-24-01-16-10.jpg" alt="BATERYBET Game Overview">
+            </div>
+            <div class="floating-card card-1">
+                <div class="floating-icon green">✓</div>
+                <div>
+                    <div class="floating-text">Issue Resolved</div>
+                    <div class="floating-sub">Deposit confirmed</div>
+                </div>
+            </div>
+            <div class="floating-card card-2">
+                <div class="floating-icon gold">⚡</div>
+                <div>
+                    <div class="floating-text">Fast Processing</div>
+                    <div class="floating-sub">Under 15 minutes</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="trust-section reveal">
+        <div class="trust-grid">
+            <div class="trust-card">
+                <div class="trust-icon">🔒</div>
+                <div class="trust-title">100% Secure</div>
+                <div class="trust-desc">Your account details are encrypted and handled with maximum security protocols.</div>
+            </div>
+            <div class="trust-card">
+                <div class="trust-icon">⚡</div>
+                <div class="trust-title">Instant Response</div>
+                <div class="trust-desc">Average resolution time under 15 minutes for all deposit and withdrawal issues.</div>
+            </div>
+            <div class="trust-card">
+                <div class="trust-icon">🎯</div>
+                <div class="trust-title">Accurate Solutions</div>
+                <div class="trust-desc">Our team verifies every detail to ensure your problem is solved correctly.</div>
+            </div>
+            <div class="trust-card">
+                <div class="trust-icon">🛡️</div>
+                <div class="trust-title">Verified Support</div>
+                <div class="trust-desc">Official BATERYBET support channel. No third-party involvement.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="guides-section" id="guides">
+        <div class="section-header reveal">
+            <div class="section-tag">Support Guides</div>
+            <h2 class="section-title">How We Solve Your Problems</h2>
+            <p class="section-subtitle">Follow these guides to understand how our support team handles your deposit and withdrawal requests efficiently.</p>
+        </div>
+
+        <div class="guides-grid">
+            <div class="guide-card reveal">
+                <img src="https://i.ibb.co/N6qJTmH9/photo-2026-05-24-01-16-11.jpg" alt="Deposit Support" class="guide-image">
+                <div class="guide-body">
+                    <div class="guide-badge badge-deposit">
+                        <span>💰</span> Deposit Issues
+                    </div>
+                    <h3 class="guide-title">Deposit Problem Resolution</h3>
+                    <p class="guide-text">
+                        If your deposit is not reflecting in your BATERYBET account, don't worry. Our support team can trace and credit your amount quickly. Please ensure you provide all the required details accurately so we can verify and process your request without delays.
+                    </p>
+                    <p class="guide-text">
+                        Common deposit issues include: UTR number mismatch, delayed bank processing, incorrect amount entry, or network timeout during transaction. We resolve all of these.
+                    </p>
+                    
+                    <div class="details-list">
+                        <div class="details-title">Required Details for Deposit Support</div>
+                        <div class="detail-item">
+                            <div class="detail-icon">📧</div>
+                            <span class="detail-label">Game Email ID</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon">📱</div>
+                            <span class="detail-label">Game Account Mobile Number</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon">🔐</div>
+                            <span class="detail-label">Game Account Password</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon">💵</div>
+                            <span class="detail-label">Deposit Amount</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon">🔢</div>
+                            <span class="detail-label">UTR Number</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guide-card reveal">
+                <img src="https://i.ibb.co/cVNZVXf/photo-2026-05-24-01-16-12.jpg" alt="Withdrawal Support" class="guide-image">
+                <div class="guide-body">
+                    <div class="guide-badge badge-withdrawal">
+                        <span>🏦</span> Withdrawal Issues
+                    </div>
+                    <h3 class="guide-title">Withdrawal Problem Resolution</h3>
+                    <p class="guide-text">
+                        Withdrawal pending or failed? Our team investigates every withdrawal request manually to ensure your money reaches your account safely. We handle failed transactions, delayed payouts, and bank rejection issues professionally.
+                    </p>
+                    <p class="guide-text">
+                        Most withdrawal problems are solved by verifying your game account details and re-processing the transaction from our end. Submit your details and we'll handle the rest.
+                    </p>
+                    
+                    <div class="details-list">
+                        <div class="details-title">Required Details for Withdrawal Support</div>
+                        <div class="detail-item">
+                            <div class="detail-icon">📧</div>
+                            <span class="detail-label">Game Email ID</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon">📱</div>
+                            <span class="detail-label">Game Account Mobile Number</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon">🔐</div>
+                            <span class="detail-label">Game Account Password</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon">💵</div>
+                            <span class="detail-label">Withdrawal Amount</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process-section" id="process">
+        <div class="section-header reveal">
+            <div class="section-tag">Process</div>
+            <h2 class="section-title">Simple 3-Step Resolution</h2>
+            <p class="section-subtitle">Getting your problem solved is quick and easy. Just follow these steps.</p>
+        </div>
+
+        <div class="process-grid">
+            <div class="process-step reveal">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Click Submit</h3>
+                <p class="step-desc">Click the "Submit Problem" button and fill in your game account details along with your deposit or withdrawal information.</p>
+            </div>
+            <div class="process-step reveal">
+                <div class="step-number">2</div>
+                <h3 class="step-title">We Verify</h3>
+                <p class="step-desc">Our support team verifies your details against our system and traces your transaction within minutes.</p>
+            </div>
+            <div class="process-step reveal">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Problem Solved</h3>
+                <p class="step-desc">Once verified, we instantly credit your deposit or re-process your withdrawal. You'll be notified immediately.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-banner reveal">
+        <div class="cta-card">
+            <div class="cta-content">
+                <h2 class="cta-title">Still Facing an Issue?</h2>
+                <p class="cta-text">Don't let a deposit or withdrawal problem ruin your gaming experience. Our team is online 24/7 to help you.</p>
+                <a href="https://parental-purple-rpgicvqq.edgeone.app/" class="cta-btn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Submit Your Problem Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div>
+                <div class="footer-brand">
+                    <img src="https://i.ibb.co/8nv5mdJJ/image.webp" alt="BATERYBET">
+                    <span class="footer-brand-text">BATERYBET</span>
+                </div>
+                <p class="footer-desc">Official support center for BATERYBET gaming platform. We ensure secure, fast, and reliable solutions for all your deposit and withdrawal concerns.</p>
+            </div>
+            <div>
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#guides">Support Guides</a></li>
+                    <li><a href="#process">How It Works</a></li>
+                    <li><a href="submit.html">Submit Problem</a></li>
+                    <li><a href="unblock.html">Unlock Withdrawal</a></li>
+                    <li><a href="requests.html">My Requests</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Support</h4>
+                <ul class="footer-links">
+                    <li><a href="#guides">Deposit Help</a></li>
+                    <li><a href="#guides">Withdrawal Help</a></li>
+                    <li><a href="#">Account Issues</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Responsible Gaming</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 BATERYBET. All rights reserved.</span>
+            <span>Official Support Center</span>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var hamburgerBtn = document.getElementById('hamburgerBtn');
+            var mobileMenu = document.getElementById('mobileMenu');
+            var mobileOverlay = document.getElementById('mobileOverlay');
+            var mobileCloseBtn = document.getElementById('mobileCloseBtn');
+            if (hamburgerBtn && mobileMenu && mobileOverlay) {
+                function openMenu() {
+                    mobileMenu.classList.add('open');
+                    mobileOverlay.classList.add('open');
+                    hamburgerBtn.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+                function closeMenu() {
+                    mobileMenu.classList.remove('open');
+                    mobileOverlay.classList.remove('open');
+                    hamburgerBtn.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+                hamburgerBtn.addEventListener('click', function() {
+                    if (mobileMenu.classList.contains('open')) {
+                        closeMenu();
+                    } else {
+                        openMenu();
+                    }
+                });
+                mobileCloseBtn.addEventListener('click', closeMenu);
+                mobileOverlay.addEventListener('click', closeMenu);
+                // Close menu on link click
+                mobileMenu.querySelectorAll('.mobile-link').forEach(function(link) {
+                    link.addEventListener('click', closeMenu);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
