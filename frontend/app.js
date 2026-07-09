@@ -1,4 +1,4 @@
-const BACKEND_URL = 'http://localhost:3000'; // Change this to your Render URL
+const BACKEND_URL = 'https://test-project-dg25.onrender.com';
 const API = BACKEND_URL + '/api';
 let token = localStorage.getItem('token');
 let currentUser = null;
