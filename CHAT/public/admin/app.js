@@ -105,7 +105,15 @@ document.querySelectorAll('.tab-item').forEach(function(tab) {
 function switchTab(tabId) {
   currentTab = tabId;
   document.querySelectorAll('.tab-item').forEach(function(t) { t.classList.remove('active'); });
-  document.querySelector('.tab-item[data-tab="' + tabId + '"]').classList.add('active');
+  var activeTab = document.querySelector('.tab-item[data-tab="' + tabId + '"]');
+  activeTab.classList.add('active');
+  // iOS spring bounce on icon
+  var icon = activeTab.querySelector('.tab-icon');
+  if (icon) {
+    icon.style.transition = 'transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    icon.style.transform = 'scale(1.15)';
+    setTimeout(function() { icon.style.transform = 'scale(1)'; }, 200);
+  }
   document.querySelectorAll('.page-section').forEach(function(p) { p.classList.remove('active'); });
   document.getElementById(tabId).classList.add('active');
 
@@ -212,10 +220,15 @@ function refreshStats() {
 // Stats refresh button
 document.getElementById('statsRefreshBtn').addEventListener('click', function() {
   var svg = this.querySelector('svg');
-  svg.style.transition = 'transform 0.5s ease';
+  svg.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
   svg.style.transform = 'rotate(360deg)';
+  this.style.transform = 'scale(1.1)';
   refreshStats();
-  setTimeout(function() { svg.style.transform = 'rotate(0deg)'; }, 500);
+  var self = this;
+  setTimeout(function() {
+    svg.style.transform = 'rotate(0deg)';
+    self.style.transform = 'scale(1)';
+  }, 500);
 });
 
 // ====================== SETTINGS ======================
@@ -258,6 +271,12 @@ tgNotifyToggle.addEventListener('change', function() {
   }
 })();
 
+document.getElementById('clearAllChatsBtn').addEventListener('mousedown touchstart', function() {
+  this.style.transform = 'scale(0.95)';
+});
+document.getElementById('clearAllChatsBtn').addEventListener('mouseup touchend mouseleave', function() {
+  this.style.transform = 'scale(1)';
+});
 document.getElementById('clearAllChatsBtn').addEventListener('click', async function() {
   if (!confirm('Are you sure you want to delete ALL chats? This cannot be undone!')) return;
   this.disabled = true;
@@ -376,9 +395,8 @@ function renderUserList(filter = '') {
         ${u.logo ? `<img src="${u.logo}" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : displayName[0]}
         <span class="online-indicator ${isOnline ? 'online' : 'offline'}"></span>
       </div>
-      <div class="user-info" style="flex-direction:row;justify-content:space-between;align-items:center;">
-        <span style="font-size:16px;font-weight:500;">${displayName}</span>
-        <span style="font-size:13px;color:var(--ios-subtext);font-weight:500;flex-shrink:0;">#${u.assignedId || '?'}</span>
+      <div class="user-info">
+        <div class="user-name">${u.assignedId || '?'}. ${displayName}</div>
       </div>
     `;
 
@@ -441,7 +459,7 @@ async function selectUser(userId) {
   adminChatContainer.style.gap = '6px';
   inputBar.style.display = 'block';
   navTitle.textContent = headerHtml;
-  navRight.textContent = `#${assignedId}`;
+  navRight.textContent = '';
 
   navActions.style.display = 'flex';
   updateBlockBtn(userId);
@@ -879,7 +897,10 @@ function showToast(msg) {
   if (old) old.remove();
   const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
   document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2500);
+  setTimeout(function() {
+    t.classList.add('toast-out');
+    setTimeout(function() { t.remove(); }, 250);
+  }, 2500);
 }
 
 // ====================== INIT ======================

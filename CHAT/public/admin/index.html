@@ -86,12 +86,13 @@
       flex-shrink: 0;
       align-items: center;
       gap: 1px;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s, transform 0.15s;
       -webkit-tap-highlight-color: transparent;
     }
 
     .nav-back:active {
       opacity: 0.5;
+      transform: scale(0.94);
     }
 
     .nav-back.show {
@@ -127,18 +128,19 @@
       background: none;
       border: none;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       font-family: inherit;
-      padding: 4px 10px;
-      border-radius: 12px;
+      padding: 6px 14px;
+      border-radius: 14px;
       cursor: pointer;
       color: var(--ios-blue);
-      transition: background 0.15s;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       -webkit-tap-highlight-color: transparent;
     }
 
     .action-btn:active {
       background: rgba(0, 122, 255, 0.1);
+      transform: scale(0.94);
     }
 
     .action-btn.danger {
@@ -162,15 +164,15 @@
       justify-content: center;
       flex-direction: column;
       gap: 5px;
-      transition: opacity 0.2s;
+      transition: opacity 0.2s, transform 0.15s;
     }
     .hamburger-btn:active {
-      opacity: 0.6;
+      transform: scale(0.88);
     }
     .hamburger-btn span {
       display: block;
       width: 22px;
-      height: 2px;
+      height: 2.5px;
       background: var(--ios-blue);
       border-radius: 2px;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -228,13 +230,19 @@
     .search-input {
       width: 100%;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       background: #E4E4E8;
-      padding: 9px 14px;
+      padding: 10px 14px;
       font-size: 15px;
       font-family: inherit;
       color: var(--ios-text);
       outline: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .search-input:focus {
+      background: #fff;
+      box-shadow: 0 0 0 1.5px var(--ios-blue);
     }
 
     .search-input::placeholder {
@@ -255,13 +263,14 @@
       align-items: center;
       padding: 12px 16px;
       cursor: pointer;
-      transition: background 0.15s;
+      transition: background 0.15s, transform 0.1s;
       border-bottom: 0.5px solid var(--ios-separator);
       position: relative;
     }
 
     .user-item:active {
       background: rgba(0, 0, 0, 0.05);
+      transform: scale(0.98);
     }
 
     .user-item.unread {
@@ -525,30 +534,33 @@
     }
     .msg-actions.show { display: flex; }
     .msg-actions button {
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(4px);
       border: none;
       color: white;
-      padding: 3px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       line-height: 1.6;
       font-family: inherit;
+      letter-spacing: 0.2px;
     }
-    .msg-actions button:active { transform: scale(0.95); }
-    .msg-actions .copy-act { color: #fff; }
-    .msg-actions .edit-act { color: #ffeb3b; }
-    .msg-actions .del-act { color: #ff8a80; }
-    .message.editing { outline: 2px solid #ff9500; outline-offset: 2px; border-radius: 18px; }
+    .msg-actions button:active { transform: scale(0.9); }
+    .msg-actions .copy-act { background: rgba(255,255,255,0.3); color: #fff; }
+    .msg-actions .edit-act { background: rgba(255,193,7,0.3); color: #ffe082; }
+    .msg-actions .del-act { background: rgba(255,59,48,0.3); color: #ff8a80; }
+    .message.editing { outline: 2.5px solid #ff9500; outline-offset: 3px; border-radius: 18px; box-shadow: 0 0 16px rgba(255,149,0,0.2); }
 
     /* Edit bar */
     .edit-bar {
       display: none;
-      background: #fff8e1;
+      background: rgba(255,248,225,0.95);
+      backdrop-filter: blur(10px);
       padding: 6px 16px;
-      border-top: 1px solid #ffe082;
+      border-top: 0.5px solid #ffe082;
       flex-shrink: 0;
       align-items: center;
       gap: 8px;
@@ -558,15 +570,20 @@
     .edit-bar.active { display: flex; }
     .edit-bar .cancel-edit {
       margin-left: auto;
-      background: #f2f2f7;
+      background: var(--ios-bg);
       border: none;
       color: var(--ios-blue);
-      padding: 4px 12px;
-      border-radius: 8px;
+      padding: 5px 14px;
+      border-radius: 10px;
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       font-family: inherit;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .edit-bar .cancel-edit:active {
+      transform: scale(0.92);
+      background: #e4e4e8;
     }
 
     .no-chat-selected {
@@ -614,9 +631,9 @@
 
     .input-inner {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       gap: 8px;
-      padding: 8px 12px;
+      padding: 6px 10px;
       min-height: 52px;
     }
 
@@ -633,6 +650,11 @@
       max-height: 100px;
       resize: none;
       line-height: 1.4;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .admin-text-input:focus {
+      box-shadow: 0 0 0 1.5px rgba(0,122,255,0.3);
     }
 
     .admin-text-input::placeholder {
@@ -652,17 +674,21 @@
       flex-shrink: 0;
       color: white;
       font-size: 16px;
-      transition: opacity 0.2s, transform 0.15s;
+      transition: opacity 0.2s, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 2px 8px rgba(0,122,255,0.3);
     }
 
     .admin-send-btn:active {
-      opacity: 0.7;
-      transform: scale(0.92);
+      opacity: 0.8;
+      transform: scale(0.88);
+      box-shadow: 0 1px 3px rgba(0,122,255,0.2);
     }
 
     .admin-send-btn:disabled {
       opacity: 0.3;
       cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
     }
 
     /* ==================== BOTTOM TAB BAR ==================== */
@@ -688,23 +714,32 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
+      gap: 1px;
       background: none;
       border: none;
       font-family: inherit;
       cursor: pointer;
-      padding: 4px 12px;
-      min-width: 60px;
-      transition: opacity 0.2s;
+      padding: 4px 0;
+      min-width: 64px;
       -webkit-tap-highlight-color: transparent;
       position: relative;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .tab-item:active {
-      opacity: 0.6;
+      transform: scale(0.88);
     }
 
-    .tab-item svg {
+    .tab-item .tab-icon {
+      position: relative;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tab-item .tab-icon svg {
       width: 24px;
       height: 24px;
       stroke: var(--ios-dark-gray);
@@ -712,16 +747,34 @@
       stroke-width: 1.8;
       stroke-linecap: round;
       stroke-linejoin: round;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .tab-item.active svg {
+    .tab-item .tab-icon svg.icon-filled {
+      display: none;
+    }
+
+    .tab-item.active .tab-icon svg.icon-outline {
+      display: none;
+    }
+
+    .tab-item.active .tab-icon svg.icon-filled {
+      display: block;
       stroke: var(--ios-blue);
+      fill: var(--ios-blue);
+      stroke-width: 0.5;
+    }
+
+    .tab-item.active .tab-icon {
+      transform: scale(1);
     }
 
     .tab-item span {
       font-size: 10px;
       font-weight: 500;
       color: var(--ios-dark-gray);
+      transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.2px;
     }
 
     .tab-item.active span {
@@ -730,12 +783,13 @@
 
     .tab-item .badge-dot {
       position: absolute;
-      top: 2px;
+      top: 0;
       right: 6px;
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: var(--ios-red);
+      border: 1.5px solid rgba(249, 249, 249, 0.94);
     }
 
     /* ==================== PAGE SECTIONS ==================== */
@@ -775,8 +829,8 @@
     }
 
     .image-preview .remove-img {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       background: var(--ios-dark-gray);
       color: white;
@@ -786,6 +840,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .image-preview .remove-img:active {
+      transform: scale(0.85);
+      background: #636366;
     }
 
     /* ==================== ATTACH BUTTON ==================== */
@@ -793,15 +852,17 @@
       background: none;
       border: none;
       cursor: pointer;
-      padding: 4px;
+      padding: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       -webkit-tap-highlight-color: transparent;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .attach-btn:active {
+      transform: scale(0.82);
       opacity: 0.6;
     }
 
@@ -833,17 +894,21 @@
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       color: #fff;
       padding: 12px 24px;
       border-radius: 14px;
       font-size: 14px;
       font-weight: 500;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
       z-index: 700;
-      animation: toastIn 0.3s ease;
+      animation: toastIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(10px) scale(0.95); } }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.9); } }
+    .toast-out { animation: toastOut 0.25s ease forwards; }
+    @keyframes toastOut { to { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.95); } }
 
     /* Tablet / Desktop: split view */
     @media (min-width: 768px) {
@@ -933,7 +998,8 @@
       }
       .action-btn {
         font-size: 12px;
-        padding: 4px 8px;
+        padding: 5px 10px;
+        border-radius: 12px;
       }
 
       .chat-messages {
@@ -950,7 +1016,7 @@
       }
 
       .input-inner {
-        padding: 6px 10px;
+        padding: 5px 8px;
         gap: 6px;
       }
       .admin-text-input {
@@ -1071,7 +1137,7 @@
 
   <!-- Page: Chat -->
   <div class="page-section active" id="pageChat">
-    <div class="app-container" style="height:100%;padding-top:0;">
+    <div class="app-container">
       <!-- User List -->
       <div class="user-list-panel" id="userListPanel">
         <div class="search-bar">
@@ -1141,7 +1207,7 @@
     <div class="nav" style="position:relative;">
       <div class="nav-inner">
         <span class="nav-title">Statistics</span>
-        <button id="statsRefreshBtn" style="background:none;border:none;color:var(--ios-blue);font-size:22px;cursor:pointer;padding:4px;flex-shrink:0;font-family:inherit;" title="Refresh">
+        <button id="statsRefreshBtn" style="background:none;border:none;color:var(--ios-blue);font-size:22px;cursor:pointer;padding:6px;flex-shrink:0;font-family:inherit;border-radius:50%;transition:all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);-webkit-tap-highlight-color:transparent;" title="Refresh">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
         </button>
       </div>
@@ -1270,7 +1336,7 @@
         </div>
       </div>
       <div style="background:var(--ios-grouped-bg);border-radius:14px;padding:16px;">
-        <button id="clearAllChatsBtn" style="background:var(--ios-red);color:white;border:none;padding:10px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;width:100%;font-family:inherit;">Clear All Chats</button>
+        <button id="clearAllChatsBtn" style="background:var(--ios-red);color:white;border:none;padding:12px;border-radius:14px;font-size:15px;font-weight:600;cursor:pointer;width:100%;font-family:inherit;transition:all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);-webkit-tap-highlight-color:transparent;">Clear All Chats</button>
       </div>
       <div id="settingsStatus" style="font-size:12px;color:var(--ios-subtext);padding:4px;text-align:center;"></div>
     </div>
@@ -1279,15 +1345,24 @@
   <!-- Bottom Tab Bar -->
   <div class="tab-bar" id="tabBar">
     <button class="tab-item active" data-tab="pageChat">
-      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/><line x1="12" y1="13" x2="15" y2="13"/></svg>
+      <div class="tab-icon">
+        <svg class="icon-outline" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/><line x1="12" y1="13" x2="15" y2="13"/></svg>
+        <svg class="icon-filled" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/><line x1="12" y1="13" x2="15" y2="13"/></svg>
+      </div>
       <span>Chat</span>
     </button>
     <button class="tab-item" data-tab="pageStats">
-      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <div class="tab-icon">
+        <svg class="icon-outline" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <svg class="icon-filled" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
       <span>Stats</span>
     </button>
     <button class="tab-item" data-tab="pageSettings">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <div class="tab-icon">
+        <svg class="icon-outline" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <svg class="icon-filled" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </div>
       <span>Settings</span>
     </button>
   </div>
