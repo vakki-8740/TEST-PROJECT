@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="auth-screen">
+    <div class="auth-box">
+      <h2 id="auth-title">Login</h2>
+      <input type="text" id="auth-username" placeholder="Username" autocomplete="off">
+      <input type="password" id="auth-password" placeholder="Password">
+      <p id="auth-error" class="error"></p>
+      <button id="auth-btn">Login</button>
+      <p class="switch-text">
+        <span id="switch-auth">Don't have an account? Sign up</span>
+      </p>
+    </div>
+  </div>
+
+  <div id="chat-screen" style="display:none">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h3>Users</h3>
+        <button id="logout-btn">Logout</button>
+      </div>
+      <div id="user-list"></div>
+    </div>
+    <div class="chat-area">
+      <div class="chat-header" id="chat-header">
+        <h3>Select a user to chat</h3>
+      </div>
+      <div id="messages"></div>
+      <div class="chat-input">
+        <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
+        <button id="send-btn">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
