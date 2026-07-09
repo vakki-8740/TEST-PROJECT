@@ -368,18 +368,19 @@ function renderUserList(filter = '') {
     item.dataset.userId = u.id;
 
     const displayName = u.userName || u.name || `User #${u.assignedId || '?'}`;
+    const isOnline = u.online === true;
     const hasUnread = unreadUsers.has(u.id);
 
-    var uidLabel = '#' + (u.assignedId || '?');
-
-    item.innerHTML =
-      '<div style="display:flex;align-items:center;justify-content:space-between;width:100%;">' +
-        '<div style="display:flex;align-items:center;gap:8px;min-width:0;flex:1;">' +
-          (hasUnread ? '<span style="width:8px;height:8px;border-radius:50%;background:var(--ios-blue);flex-shrink:0;"></span>' : '') +
-          '<span style="font-size:16px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + displayName + '</span>' +
-        '</div>' +
-        '<span style="font-size:13px;color:var(--ios-subtext);font-weight:500;flex-shrink:0;margin-left:8px;">' + uidLabel + '</span>' +
-      '</div>';
+    item.innerHTML = `
+      <div class="user-avatar" style="${u.logo ? '' : `background: ${getAvatarColor(u.assignedId || 1)}`}">
+        ${u.logo ? `<img src="${u.logo}" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">` : displayName[0]}
+        <span class="online-indicator ${isOnline ? 'online' : 'offline'}"></span>
+      </div>
+      <div class="user-info" style="flex-direction:row;justify-content:space-between;align-items:center;">
+        <span style="font-size:16px;font-weight:500;">${displayName}</span>
+        <span style="font-size:13px;color:var(--ios-subtext);font-weight:500;flex-shrink:0;">#${u.assignedId || '?'}</span>
+      </div>
+    `;
 
     item.addEventListener('click', () => selectUser(u.id));
     userListEl.appendChild(item);
