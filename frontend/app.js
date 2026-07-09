@@ -88,8 +88,11 @@ function parseToken(token) {
 }
 
 function connectSocket() {
-  socket = io(BACKEND_URL);
-  socket.emit('login', token);
+  socket = io(BACKEND_URL, { transports: ['websocket', 'polling'] });
+
+  socket.on('connect', () => {
+    socket.emit('login', token);
+  });
 
   socket.on('private-message', (msg) => {
     if (selectedUserId && (msg.sender_id === selectedUserId || msg.receiver_id === selectedUserId)) {
