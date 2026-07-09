@@ -95,8 +95,14 @@ function connectSocket() {
   });
 
   socket.on('private-message', (msg) => {
-    if (selectedUserId && (msg.sender_id === selectedUserId || msg.receiver_id === selectedUserId)) {
+    const isForCurrentChat = selectedUserId && (msg.sender_id === selectedUserId || msg.receiver_id === selectedUserId);
+    const isForMe = msg.receiver_id === currentUser.id;
+    if (isForCurrentChat) {
       appendMessage(msg);
+    }
+    if (isForMe && !isForCurrentChat) {
+      const senderEl = document.querySelector(`.user-item[data-user-id="${msg.sender_id}"]`);
+      if (senderEl) senderEl.style.fontWeight = 'bold';
     }
   });
 
