@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('private-message', ({ receiverId, message }) => {
-    if (!socket.userId) return;
+    if (socket.userId == null) return;
 
     db.run('INSERT INTO messages (sender_id, receiver_id, message) VALUES (?, ?, ?)',
       [socket.userId, receiverId, message]);

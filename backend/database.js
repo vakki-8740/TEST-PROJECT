@@ -65,12 +65,10 @@ function get(sql, params = []) {
 }
 
 function run(sql, params = []) {
-  const stmt = db.prepare(sql);
-  stmt.bind(params);
-  stmt.run();
-  stmt.free();
+  db.run(sql, params);
   saveDB();
-  return { lastInsertRowid: db.exec("SELECT last_insert_rowid() as id")[0]?.values[0][0] };
+  const result = db.exec("SELECT last_insert_rowid() as id");
+  return { lastInsertRowid: result[0]?.values[0][0] };
 }
 
 module.exports = { initDB, query, get, run, saveDB };
