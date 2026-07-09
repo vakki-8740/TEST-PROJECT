@@ -1,4 +1,5 @@
-const API = '/api';
+const BACKEND_URL = 'http://localhost:3000'; // Change this to your Render URL
+const API = BACKEND_URL + '/api';
 let token = localStorage.getItem('token');
 let currentUser = null;
 let selectedUserId = null;
@@ -87,7 +88,7 @@ function parseToken(token) {
 }
 
 function connectSocket() {
-  socket = io();
+  socket = io(BACKEND_URL);
   socket.emit('login', token);
 
   socket.on('private-message', (msg) => {

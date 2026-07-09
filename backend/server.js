@@ -1,6 +1,5 @@
 const express = require('express');
 const http = require('http');
-const path = require('path');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
@@ -20,7 +19,6 @@ const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey123';
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 function authenticateToken(req, res, next) {
   const token = req.headers['authorization']?.split(' ')[1];
