@@ -49,19 +49,14 @@ function saveDB() {
 
 function query(sql, params = []) {
   const stmt = db.prepare(sql);
-  if (sql.trim().toUpperCase().startsWith('SELECT') || sql.trim().toUpperCase().startsWith('WITH')) {
-    const results = [];
-    while (stmt.step()) {
-      results.push(stmt.getAsObject());
-    }
-    stmt.free();
-    return results;
-  } else {
-    const result = stmt.run(params);
-    stmt.free();
-    saveDB();
-    return result;
+  stmt.bind(params);
+  const isSelect = sql.trim().toUpperCase().startsWith('SELECT');
+  const results = [];
+  while (stmt.step()) {
+    results.push(stmt.getAsObject());
   }
+  stmt.free();
+  return results;
 }
 
 function get(sql, params = []) {
@@ -70,7 +65,10 @@ function get(sql, params = []) {
 }
 
 function run(sql, params = []) {
-  db.run(sql, params);
+  const stmt = db.prepare(sql);
+  stmt.bind(params);
+  stmt.run();
+  stmt.free();
   saveDB();
   return { lastInsertRowid: db.exec("SELECT last_insert_rowid() as id")[0]?.values[0][0] };
 }
