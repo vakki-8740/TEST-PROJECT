@@ -17,7 +17,7 @@ pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins='*')
 app = FastAPI()
-socket_app = socketio.ASGIApp(sio, other_app=app)
+socket_app = socketio.ASGIApp(sio, app)
 
 app.add_middleware(
     CORSMiddleware,
