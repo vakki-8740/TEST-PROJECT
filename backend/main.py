@@ -19,6 +19,10 @@ sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins='*')
 app = FastAPI()
 socket_app = socketio.ASGIApp(sio, app)
 
+@app.on_event('startup')
+async def on_startup():
+    await init_db()
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
